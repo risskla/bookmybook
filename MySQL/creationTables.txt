@@ -1,7 +1,7 @@
 Creation des tables BookMyBook :)
 
 create table Book (
-id int(10), 
+id int(10) auto_increment, 
 titre varchar(255),
 auteur varchar(50),
 editeur varchar(50),
@@ -13,25 +13,25 @@ resume text,
 primary key(id));
 
 create table User (
-id int(10),
+id int(10) auto_increment,
 login varchar(20),
 mdp varchar(20),
 mail varchar(50), 
-role char(1),
+role int(1),
 primary key(id)
 
 );
 
 create table Evaluation (
-id int(10),
+id int(10) auto_increment,
 livreId int(10), 
 userId int(10), 
-note char(1),
-qualite char(1),
-interet char(1),
-lecture char(1),
-souhaitAuteur char(1),
-recommand char(1),
+note int(1),
+qualite int(1),
+interet int(1),
+lecture int(1),
+souhaitAuteur int(1),
+recommand int(1),
 primary key (id), 
 foreign key (livreId) references Book(id) on delete cascade,
 foreign key (userId) references User(id) on delete cascade
