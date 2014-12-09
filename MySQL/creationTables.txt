@@ -1,0 +1,13 @@
+Creation des tables BookMyBook :)
+
+create table Book (
+id int(10), 
+titre varchar(255),
+auteur varchar(50),
+editeur varchar(50),
+isbn varchar(20), 
+pays varchar(50),
+genre varchar(255),
+anneePubli int(4),
+resume text, 
+primary key(id));
