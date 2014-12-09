@@ -1,0 +1,18 @@
+Idées pour l'algo de match : 
+
+>>>>>>>>> Match user <<<<<<<<<<
+Stocker dans une table : 
+User, livre, Ecart
+
+pour calculer l'écart des notes globale entre le user tous les autres users sur les livres qu'il a lu
+
+calculer ensuite : 
+User, MoyenneEcart 
+
+Pour le lecteur le plus proche : prendre le user correspondant au min de MoyenneEcart; en cas d'égalité on prend le premier ; 
+Pour le lecteur le moins proche : prendre le user correspondant au max de MoyenneEcart; en cas d'égalité on prend le premier ; 
+
+>>>>>>>>> Match Livre <<<<<<<<<<
+-si la rubrique "lire un autre livre du meme auteur est cochée", et s'il existe d'autres livres du meme auteur en base, alors on prend le premier qui vient ;
+-si cette rubrique n'est pas cochée ou s'il n'existe pas de livres du meme auteur, et s'il a aimé le genre (3,4) alors on lui propose le premier livre du meme genre et avec un auteur différent ; 
+-s'il n'a pas aimé le genre, ....

@@ -55,7 +55,6 @@ public class AddBook extends HttpServlet {
 		
 		Book b = new Book(0, titre, auteur, editeur, intisbn, pays, genre, ap, resume);
 		
-			System.out.println("insertion"); 
 			BooksDao.insert(b);
 			response.setContentType("text/html");
 			try {

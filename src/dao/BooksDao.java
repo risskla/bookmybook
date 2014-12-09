@@ -207,6 +207,7 @@ public class BooksDao {
 
 		
 			//Requete
+			System.out.println("dans le dao : debut et fin : " + start + " " + nbElts); 
 			String sql = "SELECT id,titre, auteur,editeur,isbn,pays,genre,anneePubli,resume FROM book LIMIT ?,?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, start);

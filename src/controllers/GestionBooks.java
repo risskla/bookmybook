@@ -36,9 +36,24 @@ public class GestionBooks extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
-		   List<Book> lb = BooksDao.findAll();
 		int id = 0;
 		String action = request.getParameter("action");
+		/*gestion pagination*/
+		int page = 1;
+        int recordsPerPage = 5;
+        if(request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page")); //page actuelle
+        List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        System.out.println(listeB); //ok
+        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+        System.out.println(noOfPages); 
+        System.out.println(page);
+        
+        /*fin bloc gestion pagination*/
+
+		
+		
 		if (action != null) {
 			String idCh = request.getParameter("id");
 			if (idCh != null) {
@@ -51,21 +66,37 @@ public class GestionBooks extends HttpServlet {
 
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
+				PrintWriter out = response.getWriter();
+				response.setContentType("text/html");
+				try {
+				out.println("<!DOCTYPE html>");
+				out.println("<html><head>"); 
+				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+				out.println("<title>Insertion d'un livre</title></head>");
+				out.println("<body>");
+				out.println("<h1>Livre supprimé de la base avec succès ! </h1>");
+				out.println("</body>");
+				out.println("</html>");
+				//lien vers la page precedente 
+				out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+				}
+				finally { out.close() ;}
+				
 			} else if (action.equals("modifier")) {
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
 				
 			} else if (action.equals("sort")) {
-				// ordina la lista implicitamente utilizzando il metodo
-				// compareTo dell'interfaccia Comparable (vedere la classe
-				// Users)
-				Collections.sort(lb);
+
+				Collections.sort(listeB);
 			}
 		}
 
 		// recuperer une liste d'utilisateurs
 
-		request.setAttribute("listeB", lb);
+		request.setAttribute("listeB", listeB);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
 
 		// rediriger vers une page : on retourne sur la page davant 
 		request.getRequestDispatcher("BooksList.jsp").forward(request, response);
@@ -76,9 +107,23 @@ public class GestionBooks extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Book> listeB = BooksDao.findAll();
+		//List<Book> listeB = BooksDao.findAll();
 
 		String action = request.getParameter("action");
+		
+		/*gestion pagination*/
+		int page = 1;
+        int recordsPerPage = 5;
+        if(request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page")); //page actuelle
+        List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        System.out.println(listeB); 
+        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+        System.out.println(noOfPages); 
+        System.out.println(page);
+        
+        /*fin bloc gestion pagination*/
 
 		if (action != null) {
 			if (action.equals("sort")) { //on trie simplement
@@ -90,6 +135,8 @@ public class GestionBooks extends HttpServlet {
 			}
 		} 
 		request.setAttribute("listeB", listeB);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
 		request.getRequestDispatcher("BooksList.jsp").forward(request, response);  
 		// tri OK
 		

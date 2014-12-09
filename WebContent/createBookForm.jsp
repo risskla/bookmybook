@@ -9,14 +9,14 @@
 </head>
 <body>
 <h1>Insert your book !</h1>
-<form method="post" action="echo">
+<form method="post" action="AddBook">
 <fieldset>
 <legend>General informations</legend>
-Title : <input type='text'  name='title'/> <br> <br>
-Author : <input type='text'  name='author'/> <br> <br>
-Editor : <input type='text'  name='editor'/> <br> <br>
+Title : <input type='text'  name='titre'/> <br> <br>
+Author : <input type='text'  name='auteur'/> <br> <br>
+Editor : <input type='text'  name='editeur'/> <br> <br>
 ISBN : <input type='text'  name='isbn'/> <br> <br>
-Country : <select name="country"> 
+Country : <select name="pays"> 
 		<option value="France" selected="selected">France </option>
 		<option value="Afghanistan">Afghanistan </option>
 		<option value="Afrique_Centrale">Afrique_Centrale </option>
@@ -279,7 +279,7 @@ Genre : <select name="genre">
 </select>
 <br><br>
 Publication year : 
-	<select name = "annee">
+	<select name = "anneePubli">
 	<script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
 		for(i=new Date().getFullYear();i>0;i--) 
@@ -288,7 +288,7 @@ Publication year :
 	</select>
 <br><br>
 
-Summary : <textarea name="summary" rows="10" cols="50"></textarea> <br>
+Summary : <textarea name="resume" rows="10" cols="50"></textarea> <br>
 
 </fieldset>
 <input type='submit'  value='SEND'/>

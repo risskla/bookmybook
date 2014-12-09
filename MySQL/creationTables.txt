@@ -11,3 +11,28 @@ genre varchar(255),
 anneePubli int(4),
 resume text, 
 primary key(id));
+
+create table User (
+id int(10),
+login varchar(20),
+mdp varchar(20),
+mail varchar(50), 
+role char(1),
+primary key(id)
+
+);
+
+create table Evaluation (
+id int(10),
+livreId int(10), 
+userId int(10), 
+note char(1),
+qualite char(1),
+interet char(1),
+lecture char(1),
+souhaitAuteur char(1),
+recommand char(1),
+primary key (id), 
+foreign key (livreId) references Book(id) on delete cascade,
+foreign key (userId) references User(id) on delete cascade
+);
