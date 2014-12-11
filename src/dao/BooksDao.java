@@ -153,6 +153,49 @@ public class BooksDao {
 
 		return lb;
 	}
+	
+	public static List<Book> findByKeyword(String k, int start, int nbElts) {
+		List<Book> lb = new ArrayList<Book>();
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+			
+			//Requete
+			String sql = "SELECT id, titre,auteur,editeur,isbn,pays, genre, anneePubli, resume FROM book WHERE titre LIKE ? OR titre LIKE ? LIMIT ?,?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1,"%"+k);
+			ps.setString(2,k+"%");
+			ps.setInt(3, start);
+			ps.setInt(4, nbElts);
+			
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				lb.add(new Book(res.getInt("id"),
+						res.getString("titre"),
+						res.getString("auteur"),
+						res.getString("editeur"),
+						res.getInt("isbn"),
+						res.getString("pays"),
+						res.getString("genre"),
+						res.getInt("anneePubli"),
+						res.getString("resume")
+						));
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		//
+
+		return lb;
+	}
 
 
 	public static Book find(int id) {
@@ -263,5 +306,33 @@ public class BooksDao {
 		}
 		return counter;
 	}
+	
+public static int countBooksByKeyword(String k){
+		
+		int counter = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+		
+			String sql = "SELECT COUNT(*) FROM book WHERE titre LIKE ? OR titre LIKE ?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1,"%"+k);
+			ps.setString(2,k+"%");
+			
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+			 counter = res.getInt("COUNT(*)");
+			 break;
+				
+			}
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return counter;
+	}
+	
 	
 }

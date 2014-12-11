@@ -10,7 +10,7 @@
 <h1>Bienvenue dans la vue administrateur</h1>
 > Gestion des users <br>
 > Gestion des évaluations <br>
-> <a href="BooksList.jsp">Gestion des livres </a> <br>
+> Gestion des livres : <a href="BooksList.jsp"> Consulter la liste de tous les livres </a> / <a href="searchBook.jsp"> Chercher un livre par mot clé </a> <br>
 > Gestion des matches <br>
 </body>
 </html>
