@@ -163,12 +163,13 @@ public class BooksDao {
 
 			
 			//Requete
-			String sql = "SELECT id, titre,auteur,editeur,isbn,pays, genre, anneePubli, resume FROM book WHERE titre LIKE ? OR titre LIKE ? LIMIT ?,?";
+			String sql = "SELECT id, titre,auteur,editeur,isbn,pays, genre, anneePubli, resume FROM book WHERE titre LIKE ? OR titre LIKE ? OR titre LIKE ? LIMIT ?,?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1,"%"+k);
 			ps.setString(2,k+"%");
-			ps.setInt(3, start);
-			ps.setInt(4, nbElts);
+			ps.setString(3,"%"+k+"%");
+			ps.setInt(5, start);
+			ps.setInt(6, nbElts);
 			
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
@@ -314,10 +315,11 @@ public static int countBooksByKeyword(String k){
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
 		
-			String sql = "SELECT COUNT(*) FROM book WHERE titre LIKE ? OR titre LIKE ?";
+			String sql = "SELECT COUNT(*) FROM book WHERE titre LIKE ? OR titre LIKE ? OR titre LIKE ?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1,"%"+k);
 			ps.setString(2,k+"%");
+			ps.setString(3,"%"+k+"%");
 			
 			ResultSet res = ps.executeQuery();
 			
