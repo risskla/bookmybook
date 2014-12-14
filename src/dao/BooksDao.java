@@ -96,7 +96,6 @@ public class BooksDao {
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
-
 				
 			//Requete
 			String sql = "DELETE FROM book WHERE id=?";
