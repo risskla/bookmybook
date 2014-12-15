@@ -79,5 +79,14 @@ create table MatchBook (
 	foreign key (evaluationId) references Evaluation(id) on delete cascade
 );
 
+drop table AdminParameters;
+create table AdminParameters (
+	id int(10) auto_increment,
+    algoMatchBook int(1), 
+	algoMatchReader int(1), 
+	dateSaisie date,
+	primary key (id)
+);
+
 
 commit;
