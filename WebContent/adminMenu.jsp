@@ -8,9 +8,10 @@
 </head>
 <body>
 <h1>Bienvenue dans la vue administrateur</h1>
-> Gestion des users : <a href="GestionUser"> Consulter la liste de tous les users </a><br>
-> Gestion des évaluations <br>
+> Gestion des users : <a href="GestionUser"> Consulter la liste de tous les users </a> / Chercher un user <br>
 > Gestion des livres : <a href="GestionBooks"> Consulter la liste de tous les livres </a> / <a href="searchBook.jsp"> Chercher un livre par mot clé </a> <br>
-> Gestion des matches <br>
+> Gestion des évaluations : <a href="GestionEval?action=afficher&id=0"> Consulter la liste de toutes les evaluations </a><br>
+> Gestion des matches : <a href="choixAlgoMatchForm.jsp">Choisir les algorithmes</a><br>
+<br>
 </body>
 </html>

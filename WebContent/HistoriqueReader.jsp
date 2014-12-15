@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Menu lecteur</title>
+<title>Insert title here</title>
 </head>
 <body>
-<h1>Bienvenue dans la vue lecteur</h1>
-> <a href="GestionBooks"> Evaluer un livre</a> <br>
-> Historique de vos évaluations et de vos matches <br>
+
 </body>
 </html>

@@ -15,6 +15,7 @@ import beans.Book;
 import beans.IsbnComp;
 import beans.TitleComp;
 import dao.BooksDao;
+import dao.EvaluationDao;
 
 /**
  * Servlet implementation class GestionBooks
@@ -44,11 +45,8 @@ public class GestionBooks extends HttpServlet {
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
         List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-        System.out.println(listeB); //ok
         int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-        System.out.println(noOfPages); 
-        System.out.println(page);
         
         /*fin bloc gestion pagination*/
 
@@ -72,7 +70,7 @@ public class GestionBooks extends HttpServlet {
 				out.println("<!DOCTYPE html>");
 				out.println("<html><head>"); 
 				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-				out.println("<title>Insertion d'un livre</title></head>");
+				out.println("<title>Suppression d'un livre</title></head>");
 				out.println("<body>");
 				out.println("<h1>Livre supprimé de la base avec succès ! </h1>");
 				out.println("</body>");
@@ -86,13 +84,19 @@ public class GestionBooks extends HttpServlet {
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
 				
-			} else if (action.equals("sort")) {
+			}
+		
+			else if (action.equals("sort")) {
 
 				Collections.sort(listeB);
+			} else if (action.equals("evaluer")) {
+				request.setAttribute("bEval", BooksDao.find(id));
+				System.out.println("dans gestion books vers eval"); 
+				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  
+				
 			}
 		}
 
-		// recuperer une liste d'utilisateurs
 
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);

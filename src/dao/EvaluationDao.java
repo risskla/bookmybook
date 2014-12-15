@@ -228,6 +228,50 @@ public class EvaluationDao {
 
 		return le;
 	}
+	
+	public static List<Evaluation> findByBook(int bid, int start, int nbElts) {
+		List<Evaluation> le = new ArrayList<Evaluation>();
+		
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+		
+			//Requete
+			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE livreId=? LIMIT ?,?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, bid);
+			ps.setInt(2, start);
+			ps.setInt(3, nbElts);
+			
+			
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				le.add(new Evaluation(res.getInt("id"),
+						res.getInt("livreId"),
+						res.getInt("userId"),
+						res.getInt("note"),
+						res.getInt("qualite"),
+						res.getInt("interet"),
+						res.getInt("lecture"),
+						res.getInt("souhaitAuteur"),
+						res.getInt("recommand")
+						));
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+
+		//
+
+		return le;
+	}
 	public static List<Evaluation> findAll(int start, int nbElts) {
 		List<Evaluation> le = new ArrayList<Evaluation>();
 		
@@ -271,14 +315,14 @@ public class EvaluationDao {
 		return le;
 	}
 	
-	/* inutile pour le moment : public static int countBooks(){
+	public static int countEval(){
 		
 		int counter = 0;
 		Connection cnx=null;
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
 		
-			String sql = "SELECT COUNT(*) FROM book";
+			String sql = "SELECT COUNT(*) FROM evaluation";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ResultSet res = ps.executeQuery();
 			
@@ -293,6 +337,31 @@ public class EvaluationDao {
 			e.printStackTrace();
 		}
 		return counter;
-	}*/
+	}
+	
+	public static int countEvalByBook(int idBook){
+		
+		int counter = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+		
+			String sql = "SELECT COUNT(*) FROM evaluation WHERE livreId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, idBook);
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+			 counter = res.getInt("COUNT(*)");
+			 break;
+				
+			}
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return counter;
+	}
 	
 }

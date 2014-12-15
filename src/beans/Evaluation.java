@@ -80,6 +80,7 @@ public class Evaluation implements Serializable {
 		this.souhaitAuteur = souhaitAuteur;
 		this.recommand = recommand;
 	}
+
 	public Evaluation() {
 		super();
 		// TODO Auto-generated constructor stub
