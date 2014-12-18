@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Book;
+import beans.Evaluation;
 import beans.IsbnComp;
 import beans.TitleComp;
 import dao.BooksDao;
@@ -50,7 +51,7 @@ public class GestionBooks extends HttpServlet {
         
         /*fin bloc gestion pagination*/
 
-		
+        PrintWriter out = response.getWriter();
 		
 		if (action != null) {
 			String idCh = request.getParameter("id");
@@ -64,7 +65,7 @@ public class GestionBooks extends HttpServlet {
 
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
-				PrintWriter out = response.getWriter();
+				
 				response.setContentType("text/html");
 				try {
 				out.println("<!DOCTYPE html>");
@@ -90,9 +91,31 @@ public class GestionBooks extends HttpServlet {
 
 				Collections.sort(listeB);
 			} else if (action.equals("evaluer")) {
-				request.setAttribute("bEval", BooksDao.find(id));
-				System.out.println("dans gestion books vers eval"); 
-				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  
+				
+				Evaluation e=EvaluationDao.findByBookAndUser(id, 1);
+				if (e==null){
+				request.setAttribute("bEval", BooksDao.find(id)); 
+				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  }
+				else {
+					response.setContentType("text/html");
+					try {
+					int eid=e.getId(); 
+					out.println("<!DOCTYPE html>");
+					out.println("<html><head>"); 
+					out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+					out.println("<title>Evaluation d'un livre</title></head>");
+					out.println("<body>");
+					out.println("<h1>Vous avez déjà évalué ce livre ! </h1>");
+					String s1="GestionEval?action=modifierByReader&id="+eid;
+					String s="<a href='"+s1+"'>Demander une modification</a><br>"; 
+					out.println(s);
+					out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+					out.println("</body>");
+					out.println("</html>");
+					
+					}
+					finally { out.close() ;}
+				}
 				
 			}
 		}

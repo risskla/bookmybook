@@ -1,18 +1,40 @@
-IdÃ©es pour l'algo de match : 
+Idees pour l'algo de match : 
 
 >>>>>>>>> Match user <<<<<<<<<<
-Stocker dans une table : 
-User, livre, Ecart
 
-pour calculer l'Ã©cart des notes globale entre le user tous les autres users sur les livres qu'il a lu
+METHODE 1 
+Stocker dans une table1 : User, livre, EcartNoteGlobale
+pour calculer l'Ã©cart des notes globale entre le user et tous les autres users sur les livres qu'il a lu
 
-calculer ensuite : 
+	-vider la table1 (elle sert juste de calcul intermédiaire/et les notes globales sont susceptibles d'avoir été modifiées par l'admin depuis le dernier calcul de match)
+	-pour tous les users qui ont lu les memes livres que le userSource : la remplir avec User, livre, EcartNoteGlobale
+
+
+calculer ensuite dans une table2 (après l'avoir préalablement effacée pour les memes raisons): 
 User, MoyenneEcart 
 
-Pour le lecteur le plus proche : prendre le user correspondant au min de MoyenneEcart; en cas d'Ã©galitÃ© on prend le premier ; 
-Pour le lecteur le moins proche : prendre le user correspondant au max de MoyenneEcart; en cas d'Ã©galitÃ© on prend le premier ; 
+Pour le lecteur le plus proche : prendre le user correspondant au min de MoyenneEcart; en cas d'egalite on prend le premier ; 
+Pour le lecteur le moins proche : prendre le user correspondant au max de MoyenneEcart; en cas d'egalite on prend le premier ; 
+
+METHODE 2
+Choix au hasard ? Ou prendre le premier user trouvé ? (je crois que le prof se fou vraiment de la 2e méthode, il trouve ça juste intéressant de pouvoir choisir l'algo.
+donc un algo réfléchi et un algo stupide doivent suffir amplement).
+
+PB : Dans le code, ça donne quoi ? 
+-Pour choisir les algo : création d'une table AdminParameters avec 0 ou 1 en fonction de l'algo. les 2 fonctions de calcul de match n'auront plus qu'à regarder quel paramètre est 1 à et entrer dans le bon bloc de code.
+-Pour la méthode 1 du match user: 2 autres bean avec leur dao pour chaque table de calcul ? et les fonctions de leur dao appelées dans la fonction de calcul du match user. ça parait bourin. est-ce qu'on pourrait se permettre de remplir ces tables dans 
+une fonction du dao MatchUser ? cf mail prof 
+-à quel endroit mettre les fonctions de calcul ???
 
 >>>>>>>>> Match Livre <<<<<<<<<<
--si la rubrique "lire un autre livre du meme auteur est cochÃ©e", et s'il existe d'autres livres du meme auteur en base, alors on prend le premier qui vient ;
--si cette rubrique n'est pas cochÃ©e ou s'il n'existe pas de livres du meme auteur, et s'il a aimÃ© le genre (3,4) alors on lui propose le premier livre du meme genre et avec un auteur diffÃ©rent ; 
--s'il n'a pas aimÃ© le genre, ....
+METHODE 1
+-si la rubrique "lire un autre livre du meme auteur" est cochee, et s'il existe d'autres livres du meme auteur en base, alors on prend le premier qui vient ;
+-si cette rubrique n'est pas cochee ou s'il n'existe pas de livres du meme auteur, et s'il a aime le genre (3,4) alors on lui propose le premier livre du meme genre et avec un auteur different ; 
+-s'il n'a pas aime le genre ni l'auteur, alors on lui propose un livre au pif d'un genre different et d'un auteur different . Si un tel livre n'existe pas, on prend un livre au hasard.
+
+
+METHODE 2
+Choix au hasard
+
+>>>>>>>>> Evaluations : comment modifier le formulaire dynamiquement ... ? <<<<<<<<<<
+cf mail prof 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@page import="beans.Book"%>
+<%@page import="beans.Evaluation"%>
+<%@page import="dao.EvaluationDao"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,6 +16,7 @@ Book b=(Book) obj; %>
 <h1>Evaluation du livre : 
 "<%=b.getTitre()%>" de <%=b.getAuteur()%></h1>
 <br><br>
+
 <form method='post' action='AddEval'>
 Note globale : 
 <INPUT type= "radio" name="note" value="1">1
@@ -52,6 +55,5 @@ Le recommanderiez-vous à un ami  ?
 <input type='submit'  value='SEND'/>
 <input type='reset'  value='CLEAR'/>
 </form>
-
 </body>
 </html>

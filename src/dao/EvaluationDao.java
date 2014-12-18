@@ -272,6 +272,50 @@ public class EvaluationDao {
 
 		return le;
 	}
+	
+	public static Evaluation findByBookAndUser(int bid, int uid) {
+		System.out.println("find by book and user"+ bid + " " + uid); 
+		Evaluation e = null;
+		
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+		
+			//Requete
+			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE livreId=? and userId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, bid);
+			ps.setInt(2, uid);
+			
+			
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				e=new Evaluation(res.getInt("id"),
+						res.getInt("livreId"),
+						res.getInt("userId"),
+						res.getInt("note"),
+						res.getInt("qualite"),
+						res.getInt("interet"),
+						res.getInt("lecture"),
+						res.getInt("souhaitAuteur"),
+						res.getInt("recommand")
+						);
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+
+		//
+        System.out.println(e); 
+		return e;
+	}
 	public static List<Evaluation> findAll(int start, int nbElts) {
 		List<Evaluation> le = new ArrayList<Evaluation>();
 		

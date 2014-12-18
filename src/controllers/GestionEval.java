@@ -79,6 +79,12 @@ public class GestionEval extends HttpServlet {
 				request.getRequestDispatcher("ModifEval.jsp").forward(request, response);  
 				
 			} 
+			 else if (action.equals("modifierByReader")) {
+					request.setAttribute("eModif", EvaluationDao.find(id));
+					request.getRequestDispatcher("AskEvalModif.jsp").forward(request, response);  
+					
+				} 
+			
 			else if (action.equals("affichEval")) {
 				int idBook = Integer.parseInt(request.getParameter("idBook"));
 				int noOfRecords = EvaluationDao.countEvalByBook(idBook); //nb total d'enregistrement

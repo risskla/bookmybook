@@ -20,10 +20,11 @@
 Book b=BooksDao.find(e.getLivreId());
 User u=UserDao.find(e.getUserId());%>
 <h1>Modification d'une évaluation</h1> 
+<h3>Un mail va être envoyé à l'administrateur pour qu'il analyse puis traite votre demande</h3>
 Livre : "<%=b.getTitre()%>" de <%=b.getAuteur()%> (isbn : <%=b.getIsbn()%>)<br>
 User : <%=u.getLogin()%>
 <br><br>
-<form method='post' action='ModifEval'>
+<form method='post' action='ModifEvalByReader'>
 Note globale : 
 <%if (e.getNote()==1) {%>
 <INPUT type= "radio" name="note" id="note" value="1" checked="true">1
