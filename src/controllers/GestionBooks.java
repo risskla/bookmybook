@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Book;
+import beans.Evaluation;
 import beans.IsbnComp;
 import beans.TitleComp;
 import dao.BooksDao;
+import dao.EvaluationDao;
 
 /**
  * Servlet implementation class GestionBooks
@@ -44,15 +46,12 @@ public class GestionBooks extends HttpServlet {
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
         List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-        System.out.println(listeB); //ok
         int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-        System.out.println(noOfPages); 
-        System.out.println(page);
         
         /*fin bloc gestion pagination*/
 
-		
+        PrintWriter out = response.getWriter();
 		
 		if (action != null) {
 			String idCh = request.getParameter("id");
@@ -66,13 +65,13 @@ public class GestionBooks extends HttpServlet {
 
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
-				PrintWriter out = response.getWriter();
+				
 				response.setContentType("text/html");
 				try {
 				out.println("<!DOCTYPE html>");
 				out.println("<html><head>"); 
 				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-				out.println("<title>Insertion d'un livre</title></head>");
+				out.println("<title>Suppression d'un livre</title></head>");
 				out.println("<body>");
 				out.println("<h1>Livre supprimé de la base avec succès ! </h1>");
 				out.println("</body>");
@@ -86,13 +85,41 @@ public class GestionBooks extends HttpServlet {
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
 				
-			} else if (action.equals("sort")) {
+			}
+		
+			else if (action.equals("sort")) {
 
 				Collections.sort(listeB);
+			} else if (action.equals("evaluer")) {
+				
+				Evaluation e=EvaluationDao.findByBookAndUser(id, 1);
+				if (e==null){
+				request.setAttribute("bEval", BooksDao.find(id)); 
+				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  }
+				else {
+					response.setContentType("text/html");
+					try {
+					int eid=e.getId(); 
+					out.println("<!DOCTYPE html>");
+					out.println("<html><head>"); 
+					out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+					out.println("<title>Evaluation d'un livre</title></head>");
+					out.println("<body>");
+					out.println("<h1>Vous avez déjà évalué ce livre ! </h1>");
+					String s1="GestionEval?action=modifierByReader&id="+eid;
+					String s="<a href='"+s1+"'>Demander une modification</a><br>"; 
+					out.println(s);
+					out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+					out.println("</body>");
+					out.println("</html>");
+					
+					}
+					finally { out.close() ;}
+				}
+				
 			}
 		}
 
-		// recuperer une liste d'utilisateurs
 
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);

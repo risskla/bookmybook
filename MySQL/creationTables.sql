@@ -53,4 +53,40 @@ create table Evaluation (
 #Exemples :
 INSERT INTO Evaluation VALUES (null,1,1,4,4,4,4,4,4);
 
+drop table MatchReader;
+create table MatchReader (
+	id int(10) auto_increment,
+	userSourceId int(10), 
+	userPlusProcheId int(10), 
+	userPlusLoinId int(10),
+	evaluationId int(10),
+	primary key (id), 
+	foreign key (userSourceId) references User(id) on delete cascade,
+	foreign key (userPlusProcheId) references User(id) on delete cascade,
+	foreign key (userPlusLoinId) references User(id) on delete cascade,
+	foreign key (evaluationId) references Evaluation(id) on delete cascade
+);
+
+drop table MatchBook;
+create table MatchBook (
+	id int(10) auto_increment,
+	userSourceId int(10), 
+	livreSuggereId int(10), 
+	evaluationId int(10),
+	primary key (id), 
+	foreign key (userSourceId) references User(id) on delete cascade,
+	foreign key (livreSuggereId) references Book(id) on delete cascade,
+	foreign key (evaluationId) references Evaluation(id) on delete cascade
+);
+
+drop table AdminParameters;
+create table AdminParameters (
+	id int(10) auto_increment,
+    algoMatchBook int(1), 
+	algoMatchReader int(1), 
+	dateSaisie date,
+	primary key (id)
+);
+
+
 commit;

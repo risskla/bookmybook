@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <?xml version="1.0" encoding="UTF-8" ?>
+<%@page import="beans.Evaluation"%>
 <%@page import="beans.User"%>
+<%@page import="beans.Book"%>
+<%@page import="dao.BooksDao"%>
+<%@page import="dao.UserDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
@@ -9,57 +13,50 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Liste des Users</title>
+<title>Liste des evaluations</title>
 </head>
 <body>
-<h1>Liste des users en base</h1>
-<br>
-
-<%
-	Object alert = request.getAttribute("alert");
-	if(alert!=null){
-		String alrt = (String)alert;
-		%>
-		<p>
-			Message d'alert : <%=alrt%>	
-		</p>	
-		<%
-	}
-%>
+<h1>Liste des évaluations en base</h1>
 
 <table border="1" cellpadding="5" cellspacing="5">
 <tr>
-	<th>LOGIN</th>
-	<th>MDP</th>
-	<th>MAIL</th>
-	<th>ROLE</th>	
+	<th>USER (login)</th>
+	<th>LIVRE (isbn)</th>
+	<th>NOTE GLOBALE</th>
+	<th>QUALITE D'ECRITURE</th>
+	<th>INTERET</th>
+	<th>LECTURE JUSQU'AU BOUT</th>
+	<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
+	<th>RECOMMANDATION</th>
+	<th>ACTION SOUHAITEE</th>
+	
 </tr>
 <%
-		Object obj = request.getAttribute("listeU");
+		Object obj = request.getAttribute("listeE");
 		if(obj!=null){
-			List<User> lb = (List<User>)obj;
-			for(User b : lb){
+			List<Evaluation> le = (List<Evaluation>)obj;
+			for(Evaluation e : le){
+				User u=UserDao.find(e.getUserId()); 
+				Book b=BooksDao.find(e.getLivreId()); 
 	%>
 			<tr>
-				<td><%=b.getLogin()%></td>
-				<td><%=b.getMdp()%></td>
-				<td><%=b.getMail()%></td>
-				<td><%=b.getRole()%></td>
-
+				<td><%=u.getLogin()%></td>
+				<td><%=b.getIsbn()%></td>
+				<td><%=e.getNote()%></td>
+				<td><%=e.getQualite()%></td>
+				<td><%=e.getInteret()%></td>
+				<td><%=e.getLecture()%></td>
+				<td><%=e.getSouhaitAuteur()%></td>
+				<td><%=e.getRecommand()%></td>
 				<td>
-					<a href="GestionUser?action=supprimer&id=<%=b.getId()%>">Supprimer</a>
-					<a href="GestionUser?action=modifier&id=<%=b.getId()%>">Modifier</a>
-					<a href="GestionUser?action=evallist&id=<%=b.getId()%>">Afficher évaluations</a>	
+					<a href="GestionEval?action=supprimer&id=<%=e.getId()%>">Supprimer</a>
+					<a href="GestionEval?action=modifier&id=<%=e.getId()%>">Modifier</a>
 				</td>
 			</tr>
 				<%
-			}	
-		}
-		else {
-			%>
-				Soit la table est vide, soit on essaie d'accéder à la page sans passer par le servlet GestionUser!
+			}
 			
-			<%
+			
 		}
 	%>
 </table>
@@ -74,7 +71,7 @@
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionUser?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionEval?page=${currentPage - 1}">Previous</a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -97,10 +94,10 @@
     <%--For displaying Next link --%>
      <% 
      if (curPage!= max) { %>
-        <td><a href="GestionUser?page=${currentPage + 1}">Next</a></td>
+        <td><a href="GestionEval?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="createUser.jsp">Ajouter un user</a>
+<a href="BooksList.jsp">Ajouter une evaluation</a>
 
 </body>
 </html>
