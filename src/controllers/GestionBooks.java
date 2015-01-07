@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Book;
 import beans.Evaluation;
@@ -39,6 +40,14 @@ public class GestionBooks extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
+		
+		//on recupère la session :
+		HttpSession session = request.getSession();
+		//On recupère l'id du user depuis une variable de session (initialisée au login) :
+		//Il faut le caster comme ceci : (int)session.getAttribute("id")
+		System.out.println("Id de session :");
+		System.out.println((int)session.getAttribute("id"));
+		
 		String action = request.getParameter("action");
 		/*gestion pagination*/
 		int page = 1;

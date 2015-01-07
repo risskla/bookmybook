@@ -22,12 +22,12 @@
 
    <h1>login</h1>
    <!-- TODO -> ACTION  -->
-   <form method="post" action="TODO">
-      <label for="form_login">Login : </label>
-      <input type="text" name="form_login" placeholder="email">
+   <form method="post" action="Login">
+      <label for="login">Login : </label>
+      <input type="text" name="login" placeholder="email">
       <br>
-      <label for="form_pwd">Mot de passe : </label>
-      <input type="text" name="form_pwd" placeholder="pwd">
+      <label for="pwd">Mot de passe : </label>
+      <input type="text" name="pwd" placeholder="pwd">
       <br>
       <input type="submit" value="SEND"/>
       <input type="reset" value="CLEAR"/>
