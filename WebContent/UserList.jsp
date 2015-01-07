@@ -32,7 +32,15 @@
 	<th>LOGIN</th>
 	<th>MDP</th>
 	<th>MAIL</th>
-	<th>ROLE</th>	
+	<th>ROLE</th>
+	<th>NOM</th>
+	<th>PRENOM</th>
+	<th>AGE</th>
+	<th>SEXE</th>
+	<th>ADRESSE</th>
+	<th>CODEPOSTALE</th>
+	<th>VILLE</th>
+	<th>TELEPHONE</th>	
 </tr>
 <%
 		Object obj = request.getAttribute("listeU");
@@ -45,6 +53,15 @@
 				<td><%=b.getMdp()%></td>
 				<td><%=b.getMail()%></td>
 				<td><%=b.getRole()%></td>
+				<td><%=b.getNom()%></td>
+				<td><%=b.getPrenom()%></td>
+				<td><%=b.getAge()%></td>
+				<td><%=b.getSexe()%></td>
+				<td><%=b.getAdresse()%></td>
+				<td><%=b.getCodepostale()%></td>
+				<td><%=b.getVille()%></td>
+				<td><%=b.getTelephone()%></td>
+				
 
 				<td>
 					<a href="GestionUser?action=supprimer&id=<%=b.getId()%>">Supprimer</a>

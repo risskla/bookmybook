@@ -7,6 +7,19 @@
    <title>Login</title>
 </head>
 <body>
+
+<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			Message d'alert : <%=alrt%>	
+		</p>	
+		<%
+	}
+%>
+
    <h1>login</h1>
    <!-- TODO -> ACTION  -->
    <form method="post" action="TODO">

@@ -25,13 +25,21 @@ create table User (
 	mdp varchar(20),
 	mail varchar(50), 
 	role int(1),
+    nom varchar(50),
+	prenom varchar(50),
+	age int(100),
+	sexe varchar(10),
+	adresse varchar(255),
+	codepostale int(5),
+	ville varchar(255),
+	telephone int(10),
 	primary key(id)
 
 );
 
 #Exemples :
-INSERT INTO User VALUES (null,'mey68','0000','ulysse.meyer@gmail.com','0');
-INSERT INTO User VALUES (null,'admin','admin','admin@gmail.com','1');
+INSERT INTO User VALUES (null,'mey68','0000','ulysse.meyer@gmail.com','0','Meyer', 'Ulysse', '22', 'H', '21 rue du dépôt', '60280', 'Margny-Les-Compiègne', '0624567682');
+INSERT INTO User VALUES (null,'admin','admin','admin@gmail.com','1', 'Jean', 'Troll', '14', 'H', 'rue des ours', '75003', 'Paris', '0666666666');
 
 
 drop table Evaluation;
