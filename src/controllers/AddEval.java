@@ -10,10 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.AdminParameters;
 import beans.Book;
 import beans.Evaluation;
+import beans.MatchBook;
+import dao.AdminParametersDao;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
 
 /**
  * Servlet implementation class AddBook
@@ -92,8 +96,23 @@ public class AddEval extends HttpServlet {
 		
 			EvaluationDao.insert(e);
 			
-			//GERER ICI LES MATCHES : A AJOUTER
 			
+			//CALCUL DU MATCH
+			
+			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
+			MatchBook m=null; 
+			
+			/*if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1();
+			else*/ 
+			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
+			System.out.println("evaluatioooon : "+ e2.getId()); 
+			m=MatchBookDao.calculMatchBook2(user, e2.getId()); 
+			System.out.println("livre conseille : "+m.getLivreSuggereId()); 
+			
+			MatchBookDao.insert(m); 
+			Book b=BooksDao.find(m.getLivreSuggereId()); 
+			
+			//recapitulatif de l'eval et du match nouvellement calculé
 			response.setContentType("text/html");
 			try {
 			
@@ -108,7 +127,16 @@ public class AddEval extends HttpServlet {
 			out.println("<p> Intérêt : "+request.getParameter("interet") +"</p");
 			out.println("<p> Lecture jusqu'à la fin : "+request.getParameter("lecture") +"</p");
 			out.println("<p> Souhait pour livre un livre du même auteur : "+request.getParameter("souhaitAuteur") +"</p");
-			out.println("<p> Livre recommandé :  "+request.getParameter("recommandation") +"</p");
+			out.println("<p> Recommandation du livre :  "+request.getParameter("recommandation") +"</p");
+			
+			out.println("<h1>Nous vous proposons un prochain livre à lire ! </h1>");
+			out.println("<p> Titre : "+b.getTitre() +"</p");
+			out.println("<p> Auteur : "+b.getAuteur() +"</p");
+			out.println("<p> Editeur : "+b.getEditeur() +"</p");
+			out.println("<p> ISBN : "+b.getIsbn() +"</p");
+			out.println("<p> Genre : "+b.getGenre() +"</p");
+			out.println("<p> Pays :  "+b.getPays()+"</p");
+			out.println("<p> Resume :  "+b.getResume() +"</p");
 			out.println("</body>");
 			out.println("</html>");
 			//lien vers la page precedente 

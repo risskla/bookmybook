@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import beans.Book;
+import beans.Evaluation;
 import beans.MatchBook; 
 
 public class MatchBookDao {
@@ -330,6 +333,68 @@ public static int countMatchBooksByUser(int u){
 		}
 		return counter;
 	}
+
+public static MatchBook calculMatchBook1(){
+	
+	MatchBook m=null; 
+	//CALCUL A COMPLETER
+	
+	return m; 
+}
+
+public static MatchBook calculMatchBook2(int userSourceId, int evalId){
+	
+	MatchBook m=null; 
+	
+	Book b = null;
+	Connection cnx=null;
+	try {
+		cnx = ConnexionBDD.getInstance().getCnx();
+		System.out.println("connection :" + cnx); 
+
+		//On prend un livre au hasard 
+		Evaluation e=EvaluationDao.find(evalId); 
+		int bookId=e.getLivreId(); 
+		String sql = "SELECT * FROM Book WHERE id NOT IN ("
+				+ "SELECT livreId FROM Evaluation WHERE userId = ? )"
+				+ " ORDER BY RAND() "
+				+ "LIMIT 1 ";
+		
+		System.out.println("ici1"); 
+		PreparedStatement ps = cnx.prepareStatement(sql); // BUG ICI
+		
+		System.out.println("ici2 prim"); 
+		ps.setInt(1,userSourceId);
+		
+		//Execution et traitement de la réponse
+		ResultSet res = ps.executeQuery();
+		System.out.println("ici2"); 
+		while(res.next()){
+			b = new Book(res.getInt("id"),
+					res.getString("titre"),
+					res.getString("auteur"),
+					res.getString("editeur"),
+					res.getInt("isbn"),
+					res.getString("pays"),
+					res.getString("genre"),
+					res.getInt("anneePubli"),
+					res.getString("resume"));
+			break;
+		}
+		System.out.println("ici3"); 
+		System.out.println("le livre : "+b.getId()); 
+		m=new MatchBook(0, userSourceId, b.getId(), evalId); 
+		
+		res.close();
+		ConnexionBDD.getInstance().closeCnx();			
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+	System.out.println("calcul fini : livre numero : "+m.getLivreSuggereId()); 
+	
+	return m; 
+}
 	
 	
 }

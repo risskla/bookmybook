@@ -68,20 +68,8 @@ public class GestionBooks extends HttpServlet {
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
 				
-				response.setContentType("text/html");
-				try {
-				out.println("<!DOCTYPE html>");
-				out.println("<html><head>"); 
-				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-				out.println("<title>Suppression d'un livre</title></head>");
-				out.println("<body>");
-				out.println("<h1>Livre supprimé de la base avec succès ! </h1>");
-				out.println("</body>");
-				out.println("</html>");
-				//lien vers la page precedente 
-				out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
-				}
-				finally { out.close() ;}
+				request.setAttribute("alert", "Suppression du livre n° " + id +  " réalisée avec succes !");
+				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
 				request.setAttribute("bModif", BooksDao.find(id));

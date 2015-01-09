@@ -14,7 +14,22 @@
 <title>Liste des livres</title>
 </head>
 <body>
+
+
 <h1>Liste des livres en base</h1>
+<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			<%=alrt%>	
+		</p>	
+		<%
+	}
+%>
+
+
 <h4>Trier l'affichage des livres par : </h4>
 <form method="post" action="GestionBooks">
 	<input name="sortType" type="radio" value="1"/>Titre
