@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Book;
 import beans.Evaluation;
@@ -83,8 +84,9 @@ public class AddEval extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		int book=Integer.parseInt(bookId); 
-		//int user=Integer.parseInt(userId); 
-		int user=1; 
+		
+		HttpSession session = request.getSession();
+		int user= (int)session.getAttribute("id");
 		
 		Evaluation e = new Evaluation(0, book, user, note, qualite, interet, lecture, souhaitAuteur, recommand);
 		
@@ -110,7 +112,7 @@ public class AddEval extends HttpServlet {
 			out.println("</body>");
 			out.println("</html>");
 			//lien vers la page precedente 
-			out.println("<a href='BooksList.jsp'>Retour à la liste des livres</a>"); 
+			out.println("<a href='GestionBooks'>Retour à la liste des livres</a>"); 
 			}
 			
 			finally {

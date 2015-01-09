@@ -41,13 +41,6 @@ public class GestionBooks extends HttpServlet {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
 		
-		//on recupère la session :
-		HttpSession session = request.getSession();
-		//On recupère l'id du user depuis une variable de session (initialisée au login) :
-		//Il faut le caster comme ceci : (int)session.getAttribute("id")
-		System.out.println("Id de session :");
-		System.out.println((int)session.getAttribute("id"));
-		
 		String action = request.getParameter("action");
 		/*gestion pagination*/
 		int page = 1;
@@ -101,7 +94,10 @@ public class GestionBooks extends HttpServlet {
 				Collections.sort(listeB);
 			} else if (action.equals("evaluer")) {
 				
-				Evaluation e=EvaluationDao.findByBookAndUser(id, 1);
+				HttpSession session = request.getSession();
+				int userId= (int)session.getAttribute("id");
+				
+				Evaluation e=EvaluationDao.findByBookAndUser(id, userId);
 				if (e==null){
 				request.setAttribute("bEval", BooksDao.find(id)); 
 				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  }
@@ -118,7 +114,7 @@ public class GestionBooks extends HttpServlet {
 					String s1="GestionEval?action=modifierByReader&id="+eid;
 					String s="<a href='"+s1+"'>Demander une modification</a><br>"; 
 					out.println(s);
-					out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+					out.println("<a href='GestionBooks'>Retour vers la liste des livres</a>"); 
 					out.println("</body>");
 					out.println("</html>");
 					

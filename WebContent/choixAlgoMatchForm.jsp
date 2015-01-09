@@ -8,15 +8,29 @@
 </head>
 <body>
 <h1>Choix des algorithmes de Matches</h1>
-<form method='post' action='XXXX'>
+<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			<%=alrt%>	
+		</p>	
+		<%
+	}
+%>
+
+<form method='post' action='ChoixAlgoServlet'>
 Pour suggérer un livre à lire (MatchBook) : <br> 
-<INPUT type= "radio" name="algoMatchBook" value="1">Algorithme 1 (A DEFINIR)<br> 
-<INPUT type= "radio" name="algoMatchBook" value="2">Algorithme 2 (A DEFINIR) <br> 
+<INPUT type= "radio" name="algoMatchBook" value="1">Algorithme 1<br> 
+<INPUT type= "radio" name="algoMatchBook" value="2">Algorithme 2 (au hasard)<br> 
 <br> <br> 
 Pour définir les lecteurs le plus loin et le plus proche (MatchReader) : <br> 
-<INPUT type= "radio" name="algoMatchReader" value="1">Algorithme 1 (A DEFINIR)<br> 
-<INPUT type= "radio" name="algoMatchReader" value="2">Algorithme 2 (A DEFINIR) <br> 
-<input type='submit'  value='SEND'/>
+<INPUT type= "radio" name="algoMatchReader" value="1">Algorithme 1<br> 
+<INPUT type= "radio" name="algoMatchReader" value="2">Algorithme 2 (au hasard)<br> 
+<input type='submit'  value='SEND'/><br>
+
+<a href="adminMenu.jsp">Retour au menu administrateur</a>
 </form>
 </body>
 </html>
