@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import beans.Book;
 import beans.Evaluation;
 import beans.IsbnComp;
+import beans.MatchBook;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
 
 /**
  * Servlet implementation class GestionEval
@@ -58,6 +60,9 @@ public class GestionEval extends HttpServlet {
 
 			if (action.equals("supprimer")) {
 				EvaluationDao.delete(id);
+				MatchBook m=MatchBookDao.findByEval(id); 
+				System.out.println("dans la suppr d'une eval :"+m); 
+				MatchBookDao.delete(m.getId()); 
 				PrintWriter out = response.getWriter();
 				response.setContentType("text/html");
 				try {

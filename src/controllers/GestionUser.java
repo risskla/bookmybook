@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.User;
 import beans.IsbnComp;
@@ -38,6 +39,7 @@ public class GestionUser extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
+		int forward=0; 
 		String action = request.getParameter("action");
 		/*gestion pagination*/
 		int page = 1;
@@ -77,28 +79,34 @@ public class GestionUser extends HttpServlet {
 				finally { out.close() ;}
 				
 			} else if (action.equals("modifier")) {
+				forward=1; 
 				request.setAttribute("uModif", UserDao.find(id));
 				request.getRequestDispatcher("ModifUser.jsp").forward(request, response);  
 				
 			}
 			 else if (action.equals("evallist")) {
+				 forward=1;
 				//Si on désire afficher les évaluations d'un utilisateur :
 				//-> On transmet des informations sur l'utilisateur:
-				request.setAttribute("uInfo", UserDao.find(id));
+				 
+				HttpSession session = request.getSession();
+				int userId= (int)session.getAttribute("id");
+				request.setAttribute("uInfo", UserDao.find(userId));
 				//-> On transmet la liste de ses évaluations :
-				request.setAttribute("EvalList", EvaluationDao.findbyuser(id));
-				request.getRequestDispatcher("EvalList.jsp").forward(request, response);  
+				request.setAttribute("EvalList", EvaluationDao.findbyuser(userId));
+				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
 			}
 		
 		}
 		// recuperer une liste d'utilisateurs
-
+        if (forward==0) {
 		request.setAttribute("listeU", listeU);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
 
 		// rediriger vers une page : on retourne sur la page davant 
 		request.getRequestDispatcher("UserList.jsp").forward(request, response);
+        }
 	}
 
 

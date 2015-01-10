@@ -69,7 +69,7 @@
 				<td><%=b.getAnneePubli()%></td>
 				<td><%=b.getResume()%></td>
 				<td>
-				<%--if ( u.getRole()==1 ) { --%>
+				
 				<%
 				int userId= (int)request.getSession().getAttribute("id");
 				User u=UserDao.find(userId); 

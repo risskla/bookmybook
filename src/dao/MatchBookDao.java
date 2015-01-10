@@ -207,43 +207,39 @@ public class MatchBookDao {
 		return lb;
 	}
 	
-	public static List<MatchBook> findByUser(int u, int start, int nbElts) {
-		List<MatchBook> lb = new ArrayList<MatchBook>();
-		
+	public static MatchBook findByEval(int e) {
+		MatchBook m=null; 
 		Connection cnx=null;
+		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 
-		
 			//Requete
-			String sql = "SELECT id,userSourceId,livreSuggereId,evaluationId FROM MatchBook WHERE userSourceId= ? LIMIT ?,?";
+			String sql = "SELECT id,userSourceId,livreSuggereId,evaluationId FROM MatchBook WHERE evaluationId= ? ";
 			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, u);
-			ps.setInt(2, start);
-			ps.setInt(3, nbElts);
-			
-			
+			ps.setInt(1, e);
+
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
 			while(res.next()){
-				lb.add(new MatchBook(res.getInt("id"),
+				m=new MatchBook(res.getInt("id"),
 						res.getInt("userSourceId"),
 						res.getInt("livreSuggereId"),
 						res.getInt("evaluationId")
-						));
+					);
 			}
 			
 			res.close();
 			ConnexionBDD.getInstance().closeCnx();			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException e2) {
+			e2.printStackTrace();
 		}
 
 		//
 
-		return lb;
+		return m;
 	}
 	
 	public static MatchBook findByUserAndEval(int u, int e) {

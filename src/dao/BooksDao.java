@@ -53,16 +53,6 @@ public class BooksDao {
 		try {
 			// chargement du driver
 			cnx = ConnexionBDD.getInstance().getCnx();
-			System.out.println("modif"); 
-			
-			System.out.println(b.getTitre()); 
-			System.out.println(b.getAuteur());
-			System.out.println(b.getEditeur());
-			System.out.println(b.getIsbn()); 
-			System.out.println(b.getPays()); 
-			System.out.println(b.getGenre()); 
-			System.out.println(b.getAnneePubli()); 
-			System.out.println(b.getResume()); 
 			
 			//Requete
 			String sql = "UPDATE book SET titre=?,auteur=?,editeur=?,isbn=?, pays=?, genre=?, anneePubli=?, resume=? WHERE id=?";

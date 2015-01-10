@@ -2,7 +2,12 @@
     pageEncoding="UTF-8"%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@page import="beans.Book"%>
+<%@page import="beans.User"%>
 <%@page import="beans.Evaluation"%>
+<%@page import="beans.MatchBook"%>
+<%@page import="dao.MatchBookDao"%>
+<%@page import="dao.BooksDao"%>
+<%@page import="dao.UserDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
@@ -23,14 +28,17 @@
 	<th>INTERET</th>
 	<th>LECTURE</th>
 	<th>SOUHAITAUTEUR</th>
-	<th>RECOMMAND</th>
+	<th>RECOMMANDATION</th>
+	<th>IDENTIFIANT DU LIVRE SUGGERE</th>
 	
 </tr>
 <%
 		Object obj = request.getAttribute("EvalList");
 		if(obj!=null){
-			List<Evaluation> lb = (List<Evaluation>) obj;
+			List<Evaluation> lb = (List<Evaluation>) obj; 
 			for(Evaluation b : lb){
+				MatchBook m=MatchBookDao.findByEval(b.getId()); 
+				Book b2=BooksDao.find(m.getLivreSuggereId()); 
 	%>
 			<tr>
 				<td><%=b.getLivreId()%></td>
@@ -41,12 +49,18 @@
 				<td><%=b.getLecture()%></td>
 				<td><%=b.getSouhaitAuteur()%></td>
 				<td><%=b.getRecommand()%></td>
-				<td>TODO : match + loin</td>
-				<td>TODO : match - loin</td>
+				<td><%=b2.getId()%></td>
+				
+				<%
+				int userId= (int)request.getSession().getAttribute("id");
+				User u=UserDao.find(userId); 
+				if(u.getRole()==1) {
+				%>
 				<td>
 					<a href="GestionEval?action=supprimer&id=<%=b.getId()%>">TODO : Supprimer</a>
 					<a href="GestionEval?action=modifier&id=<%=b.getId()%>">TODO : Modifier</a>	
 				</td>
+				<% } %>
 			</tr>
 				<%
 			}
@@ -92,6 +106,13 @@
         <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<br><a href='GestionUser'>Retour vers la liste des users</a>
+<br>
+<%
+				int userId= (int)request.getSession().getAttribute("id");
+				User u=UserDao.find(userId); 
+				if(u.getRole()==1) {
+				%>
+<a href='GestionUser'>Retour vers la liste des users</a>
+<%} %>
 </body>
 </html>
