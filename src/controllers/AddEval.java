@@ -101,12 +101,9 @@ public class AddEval extends HttpServlet {
 			
 			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
 			MatchBook m=null; 
-			
-			/*if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1();
-			else*/ 
 			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
-			System.out.println("evaluatioooon : "+ e2.getId()); 
-			m=MatchBookDao.calculMatchBook2(user, e2.getId()); 
+			if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1(user, e2.getId());
+			else m=MatchBookDao.calculMatchBook2(user, e2.getId()); 
 			System.out.println("livre conseille : "+m.getLivreSuggereId()); 
 			
 			MatchBookDao.insert(m); 
