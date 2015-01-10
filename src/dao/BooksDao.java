@@ -300,7 +300,7 @@ public class BooksDao {
 				
 			}
 			
-			
+			ConnexionBDD.getInstance().closeCnx();		
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -328,7 +328,7 @@ public static int countBooksByKeyword(String k){
 				
 			}
 			
-			
+			ConnexionBDD.getInstance().closeCnx();		
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -224,6 +224,8 @@ public class AdminParametersDao {
 			 break;	
 			}
 			
+			ConnexionBDD.getInstance().closeCnx();	
+			
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -245,6 +247,7 @@ public static int getLastParameters(){
 		 break;	
 		}
 		
+		ConnexionBDD.getInstance().closeCnx();	
 	}catch (SQLException e) {
 		e.printStackTrace();
 	}

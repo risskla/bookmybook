@@ -40,6 +40,7 @@ public class GestionBooks extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
+		int forward=0; 
 		
 		String action = request.getParameter("action");
 		/*gestion pagination*/
@@ -72,6 +73,7 @@ public class GestionBooks extends HttpServlet {
 				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
+				forward=1;
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
 				
@@ -87,8 +89,12 @@ public class GestionBooks extends HttpServlet {
 				
 				Evaluation e=EvaluationDao.findByBookAndUser(id, userId);
 				if (e==null){
+					forward=1;
+					System.out.println("evaluation gestionboook"); 
 				request.setAttribute("bEval", BooksDao.find(id)); 
-				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  }
+				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  
+				System.out.println("redirection");
+				}
 				else {
 					response.setContentType("text/html");
 					try {
@@ -113,13 +119,14 @@ public class GestionBooks extends HttpServlet {
 			}
 		}
 
-
+        if (forward==0) {
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
 
 		// rediriger vers une page : on retourne sur la page davant 
 		request.getRequestDispatcher("BooksList.jsp").forward(request, response);
+        }
 	}
 
 

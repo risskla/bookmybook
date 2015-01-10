@@ -376,6 +376,7 @@ public class EvaluationDao {
 				
 			}
 			
+			ConnexionBDD.getInstance().closeCnx();		
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -401,6 +402,7 @@ public class EvaluationDao {
 				
 			}
 			
+			ConnexionBDD.getInstance().closeCnx();		
 			
 		}catch (SQLException e) {
 			e.printStackTrace();

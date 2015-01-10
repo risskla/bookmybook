@@ -34,8 +34,8 @@ public class MatchBookDao {
 			
 			//Execution et traitement de la réponse
 			res = ps.executeUpdate();
+			ConnexionBDD.getInstance().closeCnx();	
 			
-			ConnexionBDD.getInstance().closeCnx();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -341,13 +341,14 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 	Book b2 = null;
 	Connection cnx=null;
 	ResultSet res=null; 
+	Evaluation e=EvaluationDao.find(evalId); 
+	int bookId=e.getLivreId(); 
+	b=BooksDao.find(bookId); 
 	//CALCUL A COMPLETER
 	
 	try {
 		cnx = ConnexionBDD.getInstance().getCnx();
-		Evaluation e=EvaluationDao.find(evalId); 
-		int bookId=e.getLivreId(); 
-		b=BooksDao.find(bookId); 
+		
 		//-si la rubrique "lire un autre livre du meme auteur" est cochee, et s'il existe d'autres livres du meme auteur en base, alors on prend le premier qui vient ;
 		if (e.getSouhaitAuteur()==1) {
 			String sql = "SELECT * FROM Book WHERE auteur = ? and id <> ? limit 1 "; 
@@ -376,7 +377,7 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 				String sql = "SELECT * FROM Book WHERE genre = ? and id <> ? limit 1"; 
 				PreparedStatement ps = cnx.prepareStatement(sql);
 				ps.setString(1,b.getGenre());
-				ps.setInt(1,bookId);
+				ps.setInt(2,bookId);
 				res = ps.executeQuery();
 				while(res.next()){
 					b2 = new Book(res.getInt("id"),
@@ -401,8 +402,8 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 		
 		res.close();
 		ConnexionBDD.getInstance().closeCnx();			
-	} catch (SQLException e) {
-		e.printStackTrace();
+	} catch (SQLException e2) {
+		e2.printStackTrace();
 	}
 	
 	System.out.println("calcul fini : livre numero : "+m.getLivreSuggereId()); 
@@ -415,15 +416,15 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 	MatchBook m=null; 
 	Book b = null;
 	Connection cnx=null;
+	Evaluation e=EvaluationDao.find(evalId);
 	
 	try {
 		cnx = ConnexionBDD.getInstance().getCnx(); 
 
-		//On prend un livre au hasard 
-		Evaluation e=EvaluationDao.find(evalId); 
+		//On prend un livre au hasard  
 		int bookId=e.getLivreId(); 
-		/*String sql = "SELECT * FROM Book WHERE id NOT IN ("
-				+ "SELECT livreId FROM Evaluation WHERE userId = ? )"
+		//String sql = "SELECT * FROM Book WHERE id NOT IN ("
+				/*+ "SELECT livreId FROM Evaluation WHERE userId = ? )"
 				+ " ORDER BY RAND() "
 				+ "LIMIT 1 ";*/
 		
@@ -433,7 +434,7 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 		PreparedStatement ps = cnx.prepareStatement(sql); // BUG ICI
 		
 		System.out.println("ici2 prim"); 
-		ps.setInt(1,userSourceId);
+		//ps.setInt(1,userSourceId);
 		
 		//Execution et traitement de la réponse
 		ResultSet res = ps.executeQuery();
@@ -456,8 +457,8 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 		
 		res.close();
 		ConnexionBDD.getInstance().closeCnx();			
-	} catch (SQLException e) {
-		e.printStackTrace();
+	} catch (SQLException e2) {
+		e2.printStackTrace();
 	}
 	
 	System.out.println("calcul fini : livre numero : "+m.getLivreSuggereId()); 
