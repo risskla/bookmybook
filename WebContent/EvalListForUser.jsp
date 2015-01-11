@@ -57,8 +57,8 @@
 				if(u.getRole()==1) {
 				%>
 				<td>
-					<a href="GestionEval?action=supprimer&id=<%=b.getId()%>">TODO : Supprimer</a>
-					<a href="GestionEval?action=modifier&id=<%=b.getId()%>">TODO : Modifier</a>	
+					<a href="GestionEval?action=supprimer&id=<%=b.getId()%>">Supprimer</a> <br></br>
+					<a href="GestionEval?action=modifier&id=<%=b.getId()%>">Modifier</a>	
 				</td>
 				<% } %>
 			</tr>

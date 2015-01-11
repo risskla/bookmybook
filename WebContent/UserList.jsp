@@ -66,7 +66,7 @@
 				<td>
 					<a href="GestionUser?action=supprimer&id=<%=b.getId()%>">Supprimer</a>
 					<a href="GestionUser?action=modifier&id=<%=b.getId()%>">Modifier</a>
-					<a href="GestionUser?action=evallist&id=<%=b.getId()%>">Afficher évaluations</a>	
+					<a href="GestionUser?action=evallistUserAdmin&id=<%=b.getId()%>">Afficher évaluations</a>	
 				</td>
 			</tr>
 				<%

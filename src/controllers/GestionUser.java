@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.Evaluation;
 import beans.User;
 import beans.IsbnComp;
 import beans.TitleComp;
@@ -85,12 +86,26 @@ public class GestionUser extends HttpServlet {
 				
 			}
 			 else if (action.equals("evallist")) {
+				 System.out.println("dans gestion user evallist"); 
 				 forward=1;
 				//Si on désire afficher les évaluations d'un utilisateur :
 				//-> On transmet des informations sur l'utilisateur:
-				 
 				HttpSession session = request.getSession();
 				int userId= (int)session.getAttribute("id");
+				request.setAttribute("uInfo", UserDao.find(userId));
+				System.out.println("dans gestion user evallist2"); 
+				//-> On transmet la liste de ses évaluations :
+				List<Evaluation> EvalList=EvaluationDao.findbyuser(userId); 
+				System.out.println("liste : "+ EvalList); 
+				request.setAttribute("EvalList", EvalList);
+				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
+			}
+			
+			 else if (action.equals("evallistUserAdmin")) {
+				 forward=1;
+				//Si on désire afficher les évaluations d'un utilisateur :
+				//-> On transmet des informations sur l'utilisateur:
+				 int userId = Integer.parseInt(request.getParameter("id"));
 				request.setAttribute("uInfo", UserDao.find(userId));
 				//-> On transmet la liste de ses évaluations :
 				request.setAttribute("EvalList", EvaluationDao.findbyuser(userId));

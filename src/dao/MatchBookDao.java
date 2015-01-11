@@ -72,7 +72,7 @@ public class MatchBookDao {
 		return res;
 	}
 	
-	public static int delete(int id) {
+	public static int deleteByEval(int id) {
 		int res = 0;
 		Connection cnx=null;
 		try {
@@ -80,7 +80,7 @@ public class MatchBookDao {
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 				
 			//Requete
-			String sql = "DELETE FROM MatchBook WHERE id=?";
+			String sql = "DELETE FROM MatchBook WHERE evaluationId=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1,id);
 			
@@ -169,57 +169,21 @@ public class MatchBookDao {
 
 		return m;
 	}
-	public static List<MatchBook> findAll(int start, int nbElts) {
-		List<MatchBook> lb = new ArrayList<MatchBook>();
-		
-		Connection cnx=null;
-		try {
-			cnx = ConnexionBDD.getInstance().getCnx();
-			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
-
-		
-			//Requete
-			String sql = "SELECT id,userSourceId,livreSuggereId,evaluationId FROM MatchBook LIMIT ?,?";
-			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, start);
-			ps.setInt(2, nbElts);
-			
-			
-			//Execution et traitement de la réponse
-			ResultSet res = ps.executeQuery();
-			
-			while(res.next()){
-				lb.add(new MatchBook(res.getInt("id"),
-						res.getInt("userSourceId"),
-						res.getInt("livreSuggereId"),
-						res.getInt("evaluationId")
-						));
-			}
-			
-			res.close();
-			ConnexionBDD.getInstance().closeCnx();			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		//
-
-		return lb;
-	}
 	
 	public static MatchBook findByEval(int e) {
 		MatchBook m=null; 
 		Connection cnx=null;
+		System.out.println("dans find by eval"); 
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 
 			//Requete
-			String sql = "SELECT id,userSourceId,livreSuggereId,evaluationId FROM MatchBook WHERE evaluationId= ? ";
+			String sql = "SELECT id,userSourceId,livreSuggereId,evaluationId FROM MatchBook WHERE evaluationId=? ";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, e);
-
+            
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
 			
@@ -238,9 +202,11 @@ public class MatchBookDao {
 		}
 
 		//
-
+        
 		return m;
 	}
+	
+	
 	
 	public static MatchBook findByUserAndEval(int u, int e) {
 		MatchBook m = new MatchBook();
