@@ -313,7 +313,7 @@ public class EvaluationDao {
 		}
 
 		//
-        System.out.println(e); 
+        System.out.println(e); //bug ici 
 		return e;
 	}
 	public static List<Evaluation> findAll(int start, int nbElts) {
@@ -376,6 +376,7 @@ public class EvaluationDao {
 				
 			}
 			
+			ConnexionBDD.getInstance().closeCnx();		
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -401,6 +402,7 @@ public class EvaluationDao {
 				
 			}
 			
+			ConnexionBDD.getInstance().closeCnx();		
 			
 		}catch (SQLException e) {
 			e.printStackTrace();

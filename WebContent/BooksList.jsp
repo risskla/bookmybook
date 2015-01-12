@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@page import="beans.Book"%>
+<%@page import="dao.UserDao"%>
+<%@page import="beans.User"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
@@ -12,7 +14,22 @@
 <title>Liste des livres</title>
 </head>
 <body>
+
+
 <h1>Liste des livres en base</h1>
+<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			<%=alrt%>	
+		</p>	
+		<%
+	}
+%>
+
+
 <h4>Trier l'affichage des livres par : </h4>
 <form method="post" action="GestionBooks">
 	<input name="sortType" type="radio" value="1"/>Titre
@@ -52,11 +69,17 @@
 				<td><%=b.getAnneePubli()%></td>
 				<td><%=b.getResume()%></td>
 				<td>
-				<%--if ( u.getRole()==1 ) { --%>
+				
+				<%
+				int userId= (int)request.getSession().getAttribute("id");
+				User u=UserDao.find(userId); 
+				
+				if(u.getRole()==1) {
+				%>
 					<a href="GestionBooks?action=supprimer&id=<%=b.getId()%>">Supprimer</a><br></br>
 					<a href="GestionBooks?action=modifier&id=<%=b.getId()%>">Modifier</a><br></br>
 					<a href="GestionEval?action=affichEval&idBook=<%=b.getId()%>">Afficher les evaluations pour ce livre</a><br></br>
-				<%-- } --%>
+				<% } %>
 					<a href="GestionBooks?action=evaluer&id=<%=b.getId()%>">Evaluer</a>
 				</td>
 			</tr>

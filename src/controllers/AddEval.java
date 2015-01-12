@@ -8,11 +8,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import beans.AdminParameters;
 import beans.Book;
 import beans.Evaluation;
+import beans.MatchBook;
+import beans.MatchReader;
+import beans.User;
+import dao.AdminParametersDao;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
+import dao.MatchReaderDao;
+import dao.UserDao;
 
 /**
  * Servlet implementation class AddBook
@@ -83,15 +92,48 @@ public class AddEval extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		int book=Integer.parseInt(bookId); 
-		//int user=Integer.parseInt(userId); 
-		int user=1; 
+		System.out.println("le livre est : "+book); 
+		
+		HttpSession session = request.getSession();
+		int user= (int)session.getAttribute("id");
 		
 		Evaluation e = new Evaluation(0, book, user, note, qualite, interet, lecture, souhaitAuteur, recommand);
 		
 			EvaluationDao.insert(e);
 			
-			//GERER ICI LES MATCHES : A AJOUTER
 			
+			//CALCUL DU MATCH BOOK
+			
+			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
+			MatchBook m=null; 
+			MatchReader m2=null; 
+			Book b=null;
+			User userPlusProche=null;
+			User userPlusLoin=null; 
+			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
+			
+			System.out.println("dans add eval avant matchbook, jai le user "+user+" et l'eval : "+e2.getId()); 
+			if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1(user, e2.getId());
+			else m=MatchBookDao.calculMatchBook2(user, e2.getId());  
+			
+			if (m!=null) {
+				MatchBookDao.insert(m); 
+				b=BooksDao.find(m.getLivreSuggereId()); 
+				System.out.println("livre conseille : "+m.getLivreSuggereId());
+			}
+			
+			//CALCUL DU MATCH USER
+			
+			if (a==null || a.getAlgoMatchReader()==1) m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
+			else m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
+			
+			if (m2!=null)  {
+				MatchReaderDao.insert(m2); 
+				userPlusProche=UserDao.find(m2.getUserPlusProcheId()); 
+				userPlusLoin=UserDao.find(m2.getUserPlusLoinId()); 
+			}
+			
+			//recapitulatif de l'eval et du match nouvellement calculé
 			response.setContentType("text/html");
 			try {
 			
@@ -106,11 +148,35 @@ public class AddEval extends HttpServlet {
 			out.println("<p> Intérêt : "+request.getParameter("interet") +"</p");
 			out.println("<p> Lecture jusqu'à la fin : "+request.getParameter("lecture") +"</p");
 			out.println("<p> Souhait pour livre un livre du même auteur : "+request.getParameter("souhaitAuteur") +"</p");
-			out.println("<p> Livre recommandé :  "+request.getParameter("recommandation") +"</p");
+			out.println("<p> Recommandation du livre :  "+request.getParameter("recommandation") +"</p");
+			
+			if (m!=null) {
+			out.println("<h1>Nous vous proposons un prochain livre à lire ! </h1>");
+			out.println("<p> Titre : "+b.getTitre() +"</p");
+			out.println("<p> Auteur : "+b.getAuteur() +"</p");
+			out.println("<p> Editeur : "+b.getEditeur() +"</p");
+			out.println("<p> ISBN : "+b.getIsbn() +"</p");
+			out.println("<p> Genre : "+b.getGenre() +"</p");
+			out.println("<p> Pays :  "+b.getPays()+"</p");
+			out.println("<p> Resume :  "+b.getResume() +"</p");
+			}
+			else {
+				out.println("<h1>Il n'y a pas assez de livres en base pour vous proposer un match livre!</h1>");
+			}
+			if (m2!=null) {
+			out.println("<h1>Le lecteur le plus proche de vous est : </h1>");
+			out.println("<p> Login : "+userPlusProche.getLogin() +"</p");
+			out.println("<h1>Le lecteur le plus eloigne de vous est : </h1>");
+			out.println("<p> Login : "+userPlusLoin.getLogin() +"</p");
+			}
+			else {
+				out.println("<h1>Il n'y a pas assez de lecteurs en base pour vous proposer un match lecteur!</h1>");
+			}
+			
 			out.println("</body>");
 			out.println("</html>");
 			//lien vers la page precedente 
-			out.println("<a href='BooksList.jsp'>Retour à la liste des livres</a>"); 
+			out.println("<a href='GestionBooks'>Retour à la liste des livres</a>"); 
 			}
 			
 			finally {

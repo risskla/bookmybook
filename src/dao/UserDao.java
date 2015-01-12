@@ -324,7 +324,7 @@ public static int countUser(){
 			 break;
 				
 			}
-			
+			ConnexionBDD.getInstance().closeCnx();		
 			
 		}catch (SQLException e) {
 			e.printStackTrace();

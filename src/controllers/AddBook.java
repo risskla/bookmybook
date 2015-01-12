@@ -77,6 +77,7 @@ public class AddBook extends HttpServlet {
 			out.println("</html>");
 			//lien vers la page precedente 
 			out.println("<a href='CreateBookForm.jsp'>Inserer un autre livre</a>"); 
+			out.println("<a href='GestionBooks'>Retour vers la liste des livres</a>");
 			}
 			
 			finally {

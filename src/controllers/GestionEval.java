@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import beans.Book;
 import beans.Evaluation;
 import beans.IsbnComp;
+import beans.MatchBook;
+import beans.TitleComp;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
+import dao.MatchReaderDao;
 
 /**
  * Servlet implementation class GestionEval
@@ -58,21 +62,13 @@ public class GestionEval extends HttpServlet {
 
 			if (action.equals("supprimer")) {
 				EvaluationDao.delete(id);
+				System.out.println("id de l'eval à supprimer : "+id); 
+				MatchBookDao.deleteByEval(id);  
+				MatchReaderDao.deleteByEval(id); 
 				PrintWriter out = response.getWriter();
 				response.setContentType("text/html");
-				try {
-				out.println("<!DOCTYPE html>");
-				out.println("<html><head>"); 
-				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-				out.println("<title>Suppression d'une evaluation</title></head>");
-				out.println("<body>");
-				out.println("<h1>Evluation supprimée de la base avec succès ! </h1>");
-				out.println("</body>");
-				out.println("</html>");
-				//lien vers la page precedente 
-				out.println("<a href='AllEvalList.jsp'>Retour vers la liste des evaluations</a>"); 
-				}
-				finally { out.close() ;}
+				request.setAttribute("alert", "Suppression de l'evaluation n° " + id +  " réalisée avec succes !");
+				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
 				request.setAttribute("eModif", EvaluationDao.find(id));
@@ -116,7 +112,28 @@ public class GestionEval extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-doGet(request, response); 
+
+String action = request.getParameter("action");
+		
+		/*gestion pagination*/
+		int page = 1;
+        int recordsPerPage = 5;
+        if(request.getParameter("page") != null)
+            page = Integer.parseInt(request.getParameter("page")); //page actuelle
+        List<Evaluation> listeB = EvaluationDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        System.out.println(listeB); 
+        int noOfRecords = EvaluationDao.countEval(); //nb total d'enregistrement
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+        System.out.println(noOfPages); 
+        System.out.println(page);
+        
+        /*fin bloc gestion pagination*/
+
+		request.setAttribute("listeB", listeB);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
+		request.getRequestDispatcher("AllEvalList.jsp").forward(request, response);  
+		// tri OK
 		
 	}
 

@@ -6,6 +6,10 @@
 <%@page import="beans.Book"%>
 <%@page import="dao.BooksDao"%>
 <%@page import="dao.UserDao"%>
+<%@page import="beans.MatchBook"%>
+<%@page import="dao.MatchBookDao"%>
+<%@page import="beans.MatchReader"%>
+<%@page import="dao.MatchReaderDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
@@ -16,18 +20,33 @@
 <title>Liste des evaluations</title>
 </head>
 <body>
+
 <h1>Liste des évaluations en base</h1>
+<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			<%=alrt%>	
+		</p>	
+		<%
+	}
+%>
 
 <table border="1" cellpadding="5" cellspacing="5">
 <tr>
-	<th>USER (login)</th>
-	<th>LIVRE (isbn)</th>
+	<th>USER</th>
+	<th>LIVRE</th>
 	<th>NOTE GLOBALE</th>
 	<th>QUALITE D'ECRITURE</th>
 	<th>INTERET</th>
 	<th>LECTURE JUSQU'AU BOUT</th>
 	<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
 	<th>RECOMMANDATION</th>
+	<th>LIVRE SUGGERE</th>
+	<th>USER LE PLUS PROCHE</th>
+	<th>USER LE PLUS LOIN</th>
 	<th>ACTION SOUHAITEE</th>
 	
 </tr>
@@ -38,16 +57,40 @@
 			for(Evaluation e : le){
 				User u=UserDao.find(e.getUserId()); 
 				Book b=BooksDao.find(e.getLivreId()); 
+				
+				MatchBook m=MatchBookDao.findByEval(e.getId()); 
+				Book b2=BooksDao.find(m.getLivreSuggereId()); 
+				MatchReader m2=MatchReaderDao.findByEval(e.getId());
 	%>
 			<tr>
 				<td><%=u.getLogin()%></td>
-				<td><%=b.getIsbn()%></td>
+				<td><%=b.getTitre()%> de <%=b.getAuteur() %> (numéro : <%=b.getId()%>) </td>
 				<td><%=e.getNote()%></td>
 				<td><%=e.getQualite()%></td>
 				<td><%=e.getInteret()%></td>
 				<td><%=e.getLecture()%></td>
 				<td><%=e.getSouhaitAuteur()%></td>
 				<td><%=e.getRecommand()%></td>
+				
+				<% if (m!=null) { %>
+				<td><%=b2.getTitre()%> de <%=b2.getAuteur() %> (numéro : <%=b2.getId()%>)</td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<%} %>
+				
+				<% if (m2!=null) { 
+				User up=UserDao.find(m2.getUserPlusProcheId()); 
+				User ul=UserDao.find(m2.getUserPlusLoinId()); %>
+				
+				<td><%=up.getLogin()%></td>
+				<td><%=ul.getLogin()%></td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<td>aucun</td>
+				<%} %>
+				
 				<td>
 					<a href="GestionEval?action=supprimer&id=<%=e.getId()%>">Supprimer</a>
 					<a href="GestionEval?action=modifier&id=<%=e.getId()%>">Modifier</a>

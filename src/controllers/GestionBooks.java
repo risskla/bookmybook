@@ -40,13 +40,7 @@ public class GestionBooks extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
-		
-		//on recupère la session :
-		HttpSession session = request.getSession();
-		//On recupère l'id du user depuis une variable de session (initialisée au login) :
-		//Il faut le caster comme ceci : (int)session.getAttribute("id")
-		System.out.println("Id de session :");
-		System.out.println((int)session.getAttribute("id"));
+		int forward=0; 
 		
 		String action = request.getParameter("action");
 		/*gestion pagination*/
@@ -75,22 +69,11 @@ public class GestionBooks extends HttpServlet {
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
 				
-				response.setContentType("text/html");
-				try {
-				out.println("<!DOCTYPE html>");
-				out.println("<html><head>"); 
-				out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-				out.println("<title>Suppression d'un livre</title></head>");
-				out.println("<body>");
-				out.println("<h1>Livre supprimé de la base avec succès ! </h1>");
-				out.println("</body>");
-				out.println("</html>");
-				//lien vers la page precedente 
-				out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
-				}
-				finally { out.close() ;}
+				request.setAttribute("alert", "Suppression du livre n° " + id +  " réalisée avec succes !");
+				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
+				forward=1;
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
 				
@@ -101,10 +84,17 @@ public class GestionBooks extends HttpServlet {
 				Collections.sort(listeB);
 			} else if (action.equals("evaluer")) {
 				
-				Evaluation e=EvaluationDao.findByBookAndUser(id, 1);
+				HttpSession session = request.getSession();
+				int userId= (int)session.getAttribute("id");
+				
+				Evaluation e=EvaluationDao.findByBookAndUser(id, userId);
 				if (e==null){
+					forward=1;
+					System.out.println("evaluation gestionboook"); 
 				request.setAttribute("bEval", BooksDao.find(id)); 
-				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  }
+				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  
+				System.out.println("redirection");
+				}
 				else {
 					response.setContentType("text/html");
 					try {
@@ -118,7 +108,7 @@ public class GestionBooks extends HttpServlet {
 					String s1="GestionEval?action=modifierByReader&id="+eid;
 					String s="<a href='"+s1+"'>Demander une modification</a><br>"; 
 					out.println(s);
-					out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+					out.println("<a href='GestionBooks'>Retour vers la liste des livres</a>"); 
 					out.println("</body>");
 					out.println("</html>");
 					
@@ -129,13 +119,14 @@ public class GestionBooks extends HttpServlet {
 			}
 		}
 
-
+        if (forward==0) {
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
 
 		// rediriger vers une page : on retourne sur la page davant 
 		request.getRequestDispatcher("BooksList.jsp").forward(request, response);
+        }
 	}
 
 

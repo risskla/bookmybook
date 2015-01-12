@@ -56,6 +56,7 @@ public class ModifUser extends HttpServlet {
 			//Correspond à create user :
 			b = new User (modif, request.getParameter("login"), request.getParameter("mdp"), request.getParameter("mail"), role, request.getParameter("nom"), request.getParameter("prenom"), Integer.parseInt(request.getParameter("age")), request.getParameter("sexe"),request.getParameter("adresse"), Integer.parseInt(request.getParameter("codepostale")), request.getParameter("ville"), Integer.parseInt(request.getParameter("telephone")));
 			UserDao.insert(b); 
+			/*MANQUE UN MESSAGE DE CONFIRMATION*/
 		}
 		else { 
 			//Correspond à modif user:

@@ -2,7 +2,14 @@
     pageEncoding="UTF-8"%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@page import="beans.Book"%>
+<%@page import="beans.User"%>
 <%@page import="beans.Evaluation"%>
+<%@page import="beans.MatchBook"%>
+<%@page import="dao.MatchBookDao"%>
+<%@page import="beans.MatchReader"%>
+<%@page import="dao.MatchReaderDao"%>
+<%@page import="dao.BooksDao"%>
+<%@page import="dao.UserDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
@@ -16,24 +23,39 @@
 <h3>Liste des evaluations de l'utilisateur ${uInfo.login}</h3>
 <table border="1" cellpadding="5" cellspacing="5">
 <tr>
-	<th>LIVREID</th>
-	<th>USERID</th>
+	<th>LIVRE</th>
+	<th>USER</th>
 	<th>NOTE</th>
 	<th>QUALITE</th>
 	<th>INTERET</th>
 	<th>LECTURE</th>
 	<th>SOUHAITAUTEUR</th>
-	<th>RECOMMAND</th>
-	
+	<th>RECOMMANDATION</th>
+	<th>LIVRE SUGGERE</th>
+	<th>USER LE PLUS PROCHE</th>
+	<th>USER LE PLUS LOIN</th>
+	<%
+	int user= (int)request.getSession().getAttribute("id");
+	User u=UserDao.find(user); 
+	if(u.getRole()==1) {%>
+	<th>ACTION SOUHAITEE</th>
+	<%} %>
 </tr>
 <%
 		Object obj = request.getAttribute("EvalList");
 		if(obj!=null){
-			List<Evaluation> lb = (List<Evaluation>) obj;
+			List<Evaluation> lb = (List<Evaluation>) obj; 
 			for(Evaluation b : lb){
+				MatchBook m=MatchBookDao.findByEval(b.getId()); 
+				Book b2=BooksDao.find(m.getLivreSuggereId()); 
+				MatchReader m2=MatchReaderDao.findByEval(b.getId()); 
+				
+				System.out.println("dans jsp : match reader : " + m2); 
+				
 	%>
 			<tr>
-				<td><%=b.getLivreId()%></td>
+				<%Book b3=BooksDao.find(b.getLivreId()); %>
+				<td><%=b3.getTitre()%> de <%=b3.getAuteur() %> (numéro : <%=b3.getId()%>) </td>
 				<td><%=b.getUserId()%></td>
 				<td><%=b.getNote()%></td>
 				<td><%=b.getQualite()%></td>
@@ -41,12 +63,34 @@
 				<td><%=b.getLecture()%></td>
 				<td><%=b.getSouhaitAuteur()%></td>
 				<td><%=b.getRecommand()%></td>
-				<td>TODO : match + loin</td>
-				<td>TODO : match - loin</td>
+				
+				<% if (m!=null) { %>
+				<td><%=b2.getTitre()%> de <%=b2.getAuteur() %> (numéro : <%=b2.getId()%>)</td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<%} %>
+				
+				<% if (m2!=null) { 
+				User up=UserDao.find(m2.getUserPlusProcheId()); 
+				User ul=UserDao.find(m2.getUserPlusLoinId()); %>
+				<td><%=up.getLogin()%></td>
+				<td><%=ul.getLogin()%></td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<td>aucun</td>
+				<%} %>
+				
+				
+				<%
+				if(u.getRole()==1) {
+				%>
 				<td>
-					<a href="GestionEval?action=supprimer&id=<%=b.getId()%>">TODO : Supprimer</a>
-					<a href="GestionEval?action=modifier&id=<%=b.getId()%>">TODO : Modifier</a>	
+					<a href="GestionEval?action=supprimer&id=<%=b.getId()%>">Supprimer</a> <br></br>
+					<a href="GestionEval?action=modifier&id=<%=b.getId()%>">Modifier</a>	
 				</td>
+				<% } %>
 			</tr>
 				<%
 			}
@@ -92,6 +136,11 @@
         <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<br><a href='GestionUser'>Retour vers la liste des users</a>
+<br>
+<%
+				if(u.getRole()==1) {
+				%>
+<a href='GestionUser'>Retour vers la liste des users</a>
+<%} %>
 </body>
 </html>
