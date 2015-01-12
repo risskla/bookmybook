@@ -117,15 +117,15 @@ public class AddEval extends HttpServlet {
 			else m=MatchBookDao.calculMatchBook2(user, e2.getId());  
 			
 			if (m!=null) {
-				//MatchBookDao.insert(m); 
+				MatchBookDao.insert(m); 
 				b=BooksDao.find(m.getLivreSuggereId()); 
 				System.out.println("livre conseille : "+m.getLivreSuggereId());
 			}
 			
 			//CALCUL DU MATCH USER
 			
-			/*if (a==null || a.getAlgoMatchReader()==1)*/ m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
-			//else m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
+			if (a==null || a.getAlgoMatchReader()==1) m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
+			else m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
 			
 			if (m2!=null)  {
 				MatchReaderDao.insert(m2); 

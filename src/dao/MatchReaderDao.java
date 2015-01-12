@@ -105,6 +105,26 @@ public class MatchReaderDao {
 		return res;
 	}
 	
+	public static int countUsersTable1() {
+		
+		Connection cnx=null;
+		int nb=0; 
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			String sql = "SELECT COUNT(DISTINCT user) as c FROM calculMatchUser1";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next())nb=res.getInt("c"); 
+
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return nb;
+	}
+	
 	public static int insertTable1(int userSourceId, int evalId) {
 		int res = 0;
 		Connection cnx=null;
@@ -458,14 +478,14 @@ public static MatchReader calculMatchReader1(int userSourceId, int evalId){
 	
 	try {
 		
-		//A NE PAS OUBLIER DE GERER : cette méthode suppose qu'on a assez d'eval différentes de users differents en base 
-		//il faut donc 2 autres eval pour chaque livre lu par le user ..
-        
 		//effacer la 1ere table de calcul
 		deleteTable1(); 
 		//Stocker dans une table1 : User, livre, EcartNoteGlobale
 		insertTable1(userSourceId, evalId); 
 		System.out.println("apres le remplissage de la premiere table"); 
+		//les eval en base peuvent ne pas suffir pour cette methode de calcul : on teste l'autre
+		if (countUsersTable1()<2) return calculMatchReader2(userSourceId, evalId); 
+		
 		
 		//effacer la 2e table de calcul
 		deleteTable2(); 
@@ -473,17 +493,28 @@ public static MatchReader calculMatchReader1(int userSourceId, int evalId){
 		insertTable2(); 
 		System.out.println("apres le remplissage de la 2e table"); 
 
+		//user le plus loin
 		cnx = ConnexionBDD.getInstance().getCnx(); 
-		String sql = "SELECT user, max(moyenneEcart) as m1, min(moyenneEcart) as m2 FROM calculMatchUser2";
+		String sql = "SELECT user FROM calculMatchUser2 WHERE moyenneEcart IN"
+				+ "(SELECT max(moyenneEcart) FROM calculMatchUser2)"
+				+ "LIMIT 1"; //en cas d'égalité on prend le premier
 		PreparedStatement ps = cnx.prepareStatement(sql); 
 		ResultSet res = ps.executeQuery();
 		while(res.next()){ 
-			
-			//RESTE A RECUPERER LES USERS CORRESPONDANT AU MAX => encore des requetes !
-			userPlusLoin = res.getInt("m1");
-			userPlusProche = res.getInt("m2");
-			System.out.println("le plus loin : "+userPlusLoin + " et le plus proche : "+userPlusProche); 
+			userPlusLoin = res.getInt("user");
 		}
+		
+		//user le plus proche
+		sql = "SELECT user FROM calculMatchUser2 WHERE moyenneEcart IN"
+				+ "(SELECT min(moyenneEcart) FROM calculMatchUser2)"
+				+ "LIMIT 1"; //en cas d'égalité on prend le premier
+		ps = cnx.prepareStatement(sql); 
+		res = ps.executeQuery();
+		while(res.next()){ 
+			userPlusProche = res.getInt("user");
+		}
+		
+		System.out.println("le plus loin : "+userPlusLoin + " et le plus proche : "+userPlusProche); 
 		
 		//on ne gere pas les cas d'egalite pour l'instant
 		
