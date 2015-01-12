@@ -270,7 +270,7 @@ public static int insertTable2() {
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 
 			//Requete
-			String sql = "id,userSourceId,userPlusProcheId,userPlusLoinId,evaluationId WHERE evaluationId=? ";
+			String sql = "SELECT id,userSourceId,userPlusProcheId,userPlusLoinId,evaluationId FROM matchReader WHERE evaluationId=? ";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, e);
             

@@ -6,6 +6,8 @@
 <%@page import="beans.Evaluation"%>
 <%@page import="beans.MatchBook"%>
 <%@page import="dao.MatchBookDao"%>
+<%@page import="beans.MatchReader"%>
+<%@page import="dao.MatchReaderDao"%>
 <%@page import="dao.BooksDao"%>
 <%@page import="dao.UserDao"%>
 <%@page import="java.util.List"%>
@@ -21,16 +23,23 @@
 <h3>Liste des evaluations de l'utilisateur ${uInfo.login}</h3>
 <table border="1" cellpadding="5" cellspacing="5">
 <tr>
-	<th>LIVREID</th>
-	<th>USERID</th>
+	<th>LIVRE</th>
+	<th>USER</th>
 	<th>NOTE</th>
 	<th>QUALITE</th>
 	<th>INTERET</th>
 	<th>LECTURE</th>
 	<th>SOUHAITAUTEUR</th>
 	<th>RECOMMANDATION</th>
-	<th>IDENTIFIANT DU LIVRE SUGGERE</th>
-	
+	<th>LIVRE SUGGERE</th>
+	<th>USER LE PLUS PROCHE</th>
+	<th>USER LE PLUS LOIN</th>
+	<%
+	int user= (int)request.getSession().getAttribute("id");
+	User u=UserDao.find(user); 
+	if(u.getRole()==1) {%>
+	<th>ACTION SOUHAITEE</th>
+	<%} %>
 </tr>
 <%
 		Object obj = request.getAttribute("EvalList");
@@ -39,9 +48,14 @@
 			for(Evaluation b : lb){
 				MatchBook m=MatchBookDao.findByEval(b.getId()); 
 				Book b2=BooksDao.find(m.getLivreSuggereId()); 
+				MatchReader m2=MatchReaderDao.findByEval(b.getId()); 
+				
+				System.out.println("dans jsp : match reader : " + m2); 
+				
 	%>
 			<tr>
-				<td><%=b.getLivreId()%></td>
+				<%Book b3=BooksDao.find(b.getLivreId()); %>
+				<td><%=b3.getTitre()%> de <%=b3.getAuteur() %> (numéro : <%=b3.getId()%>) </td>
 				<td><%=b.getUserId()%></td>
 				<td><%=b.getNote()%></td>
 				<td><%=b.getQualite()%></td>
@@ -49,11 +63,27 @@
 				<td><%=b.getLecture()%></td>
 				<td><%=b.getSouhaitAuteur()%></td>
 				<td><%=b.getRecommand()%></td>
-				<td><%=b2.getId()%></td>
+				
+				<% if (m!=null) { %>
+				<td><%=b2.getTitre()%> de <%=b2.getAuteur() %> (numéro : <%=b2.getId()%>)</td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<%} %>
+				
+				<% if (m2!=null) { 
+				User up=UserDao.find(m2.getUserPlusProcheId()); 
+				User ul=UserDao.find(m2.getUserPlusLoinId()); %>
+				<td><%=up.getLogin()%></td>
+				<td><%=ul.getLogin()%></td>
+				<%} 
+				else {%>
+				<td>aucun</td>
+				<td>aucun</td>
+				<%} %>
+				
 				
 				<%
-				int userId= (int)request.getSession().getAttribute("id");
-				User u=UserDao.find(userId); 
 				if(u.getRole()==1) {
 				%>
 				<td>
@@ -108,8 +138,6 @@
 <br></br>
 <br>
 <%
-				int userId= (int)request.getSession().getAttribute("id");
-				User u=UserDao.find(userId); 
 				if(u.getRole()==1) {
 				%>
 <a href='GestionUser'>Retour vers la liste des users</a>
