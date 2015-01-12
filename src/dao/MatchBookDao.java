@@ -383,6 +383,8 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 	if (BooksDao.countBooks()<2) return null; 
 	
 	try {
+		
+		System.out.println("dans le matchbook2"); 
 		cnx = ConnexionBDD.getInstance().getCnx(); 
 		//On prend un livre au hasard  
 		int bookId=e.getLivreId(); 
@@ -413,6 +415,8 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 			break;
 		}
 		System.out.println("ici3"); 
+		//il peut alors ne plus y avoir de livre si le user a tout lu ! 
+		if (b==null) return null; 
 		System.out.println("le livre : "+b.getId()); 
 		m=new MatchBook(0, userSourceId, b.getId(), evalId); 
 		

@@ -107,23 +107,31 @@ public class AddEval extends HttpServlet {
 			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
 			MatchBook m=null; 
 			MatchReader m2=null; 
+			Book b=null;
+			User userPlusProche=null;
+			User userPlusLoin=null; 
 			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
-			if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1(user, e2.getId());
-			else m=MatchBookDao.calculMatchBook2(user, e2.getId()); 
-			System.out.println("livre conseille : "+m.getLivreSuggereId()); 
 			
-			if (m!=null) MatchBookDao.insert(m); 
+			System.out.println("dans add eval avant matchbook, jai le user "+user+" et l'eval : "+e2.getId()); 
+			if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1(user, e2.getId());
+			else m=MatchBookDao.calculMatchBook2(user, e2.getId());  
+			
+			if (m!=null) {
+				//MatchBookDao.insert(m); 
+				b=BooksDao.find(m.getLivreSuggereId()); 
+				System.out.println("livre conseille : "+m.getLivreSuggereId());
+			}
 			
 			//CALCUL DU MATCH USER
 			
-			/*if (a==null || a.getAlgoMatchReader()==1) m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
-			else*/ m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
+			/*if (a==null || a.getAlgoMatchReader()==1)*/ m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
+			//else m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
 			
-			if (m2!=null) MatchReaderDao.insert(m2); 
-			
-			Book b=BooksDao.find(m.getLivreSuggereId()); 
-			User userPlusProche=UserDao.find(m2.getUserPlusProcheId()); 
-			User userPlusLoin=UserDao.find(m2.getUserPlusLoinId()); 
+			if (m2!=null)  {
+				MatchReaderDao.insert(m2); 
+				userPlusProche=UserDao.find(m2.getUserPlusProcheId()); 
+				userPlusLoin=UserDao.find(m2.getUserPlusLoinId()); 
+			}
 			
 			//recapitulatif de l'eval et du match nouvellement calculé
 			response.setContentType("text/html");

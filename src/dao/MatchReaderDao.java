@@ -44,35 +44,6 @@ public class MatchReaderDao {
 	}
 
 	
-	public static int update(MatchReader m) {
-		int res = 0;
-		
-		Connection cnx=null;
-		
-		try {
-			// chargement du driver
-			cnx = ConnexionBDD.getInstance().getCnx();
-			
-			//Requete
-			String sql = "UPDATE MatchReader SET userSourceId=?,userPlusProcheId=?,userPlusLoinId=?,evaluationId=? WHERE id=?";
-			PreparedStatement ps = cnx.prepareStatement(sql);
-			ps.setInt(1, m.getUserSourceId());
-			ps.setInt(2, m.getUserPlusProcheId());
-			ps.setInt(3, m.getUserPlusLoinId());
-			ps.setInt(4, m.getEvaluationId());
-			ps.setInt(5, m.getId());
-			
-			//Execution et traitement de la réponse
-			res = ps.executeUpdate();
-			
-			ConnexionBDD.getInstance().closeCnx();			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return res;
-	}
-	
 	public static int deleteByEval(int id) {
 		int res = 0;
 		Connection cnx=null;
@@ -96,6 +67,102 @@ public class MatchReaderDao {
 		return res;
 	}
 	
+	public static int deleteTable1() {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			//Requete
+			String sql = "DELETE FROM calculMatchUser1";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
+	public static int deleteTable2() {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			//Requete
+			String sql = "DELETE FROM calculMatchUser2";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
+	public static int insertTable1(int userSourceId, int evalId) {
+		int res = 0;
+		Connection cnx=null;
+		Evaluation e=EvaluationDao.find(evalId); 
+		int noteGlobaleSource=e.getNote(); 
+		System.out.println("dans insertTable1"); 
+		
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			//Requete : pour l'evaluation des autres users qui ont lu les memes livres, on calcule l'écart par rapport à la noteGlobaleSource
+			String sql = "INSERT INTO calculMatchUser1(user, book, ecartNoteGLobale) "
+					+ "SELECT userId, livreId, note from evaluation where userId<>? "
+					+ "and livreId in ("
+					+ "select livreid from evaluation where userid=?)"; 
+			
+			
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1,userSourceId);
+			ps.setInt(2,userSourceId);
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			System.out.println("execution1"); 
+			//maintenant on calcule la différence avec la valeur absolue
+			sql = "UPDATE calculMatchUser1 SET ecartNoteGlobale=abs(ecartNoteGlobale-?)"; 
+			ps = cnx.prepareStatement(sql);
+			ps.setInt(1,noteGlobaleSource);
+			res = ps.executeUpdate();
+			System.out.println("execution2");
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e2) {
+			e2.printStackTrace();
+		}
+
+		return res;
+	}
+	
+	
+public static int insertTable2() {
+		int res = 0;
+		Connection cnx=null;
+		
+		
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			//Requete
+			String sql = "INSERT INTO calculMatchUser2 (SELECT user, avg(EcartNoteGlobale) FROM calculMatchUser1 group by user) "; 
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
 	
 	public static List<MatchReader> findAll() {
 		List<MatchReader> lb = new ArrayList<MatchReader>();
@@ -385,38 +452,51 @@ public static MatchReader calculMatchReader1(int userSourceId, int evalId){
 	Book b = null;
 	Connection cnx=null;
 	Evaluation e=EvaluationDao.find(evalId);
+	int userPlusProche=0; 
+	int userPlusLoin=0; 
+	if (UserDao.countUser()<3) return null; 
 	
-/*	try {
+	try {
+		
+		//A NE PAS OUBLIER DE GERER : cette méthode suppose qu'on a assez d'eval différentes de users differents en base 
+		//il faut donc 2 autres eval pour chaque livre lu par le user ..
+        
+		//effacer la 1ere table de calcul
+		deleteTable1(); 
+		//Stocker dans une table1 : User, livre, EcartNoteGlobale
+		insertTable1(userSourceId, evalId); 
+		System.out.println("apres le remplissage de la premiere table"); 
+		
+		//effacer la 2e table de calcul
+		deleteTable2(); 
+		//calculer ensuite dans une table2 : User, MoyenneEcart 
+		insertTable2(); 
+		System.out.println("apres le remplissage de la 2e table"); 
+
 		cnx = ConnexionBDD.getInstance().getCnx(); 
-
-		//On prend un livre au hasard  
-		int bookId=e.getLivreId(); 
-
-		
-		String sql = "";
-		
-		System.out.println("ici1"); 
-		PreparedStatement ps = cnx.prepareStatement(sql); // BUG ICI
-		
-		System.out.println("ici2 prim"); 
-		//ps.setInt(1,userSourceId);
-		
-		//Execution et traitement de la réponse
+		String sql = "SELECT user, max(moyenneEcart) as m1, min(moyenneEcart) as m2 FROM calculMatchUser2";
+		PreparedStatement ps = cnx.prepareStatement(sql); 
 		ResultSet res = ps.executeQuery();
-		System.out.println("ici2"); 
-		while(res.next()){
+		while(res.next()){ 
 			
-			break;
+			//RESTE A RECUPERER LES USERS CORRESPONDANT AU MAX => encore des requetes !
+			userPlusLoin = res.getInt("m1");
+			userPlusProche = res.getInt("m2");
+			System.out.println("le plus loin : "+userPlusLoin + " et le plus proche : "+userPlusProche); 
 		}
-		System.out.println("ici3"); 
-		System.out.println("le livre : "+b.getId()); 
-		//m=new MatchBook(0, userSourceId, b.getId(), evalId); 
+		
+		//on ne gere pas les cas d'egalite pour l'instant
+		
+		System.out.println("ici2"); 
+		
+		m = new MatchReader(0, userSourceId, userPlusProche, userPlusLoin, evalId); 
 		
 		res.close();
-		ConnexionBDD.getInstance().closeCnx();			
+		ConnexionBDD.getInstance().closeCnx();		
+		
 	} catch (SQLException e2) {
 		e2.printStackTrace();
-	}*/
+	}
 	
 	return m; 
 }
@@ -455,7 +535,7 @@ public static MatchReader calculMatchReader2(int userSourceId, int evalId){
 		System.out.println("ici2 avant resultat"); 
 		System.out.println(res); 
 		while(res.next()){ userPlusProche = res.getInt("id");
-		System.out.println("userPlusProche : "+userPlusProche); //BUG ICI
+		System.out.println("userPlusProche : "+userPlusProche); 
 		}
 		
 		//user le plus loin : n'importe lequel different du user actuel et du user plus proche 

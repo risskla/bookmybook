@@ -96,5 +96,15 @@ create table AdminParameters (
 	primary key (id)
 );
 
+create table calculMatchUser1 (
+user int(10), 
+book int(10), 
+ecartNoteGlobale int(1)
+);
+
+create table calculMatchUser2 (
+user int(10), 
+moyenneEcart double
+);
 
 commit;
