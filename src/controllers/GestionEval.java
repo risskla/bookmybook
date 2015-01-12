@@ -19,6 +19,7 @@ import beans.TitleComp;
 import dao.BooksDao;
 import dao.EvaluationDao;
 import dao.MatchBookDao;
+import dao.MatchReaderDao;
 
 /**
  * Servlet implementation class GestionEval
@@ -63,6 +64,7 @@ public class GestionEval extends HttpServlet {
 				EvaluationDao.delete(id);
 				System.out.println("id de l'eval à supprimer : "+id); 
 				MatchBookDao.deleteByEval(id);  
+				MatchReaderDao.deleteByEval(id); 
 				PrintWriter out = response.getWriter();
 				response.setContentType("text/html");
 				request.setAttribute("alert", "Suppression de l'evaluation n° " + id +  " réalisée avec succes !");
