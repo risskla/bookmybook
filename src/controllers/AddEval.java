@@ -14,10 +14,14 @@ import beans.AdminParameters;
 import beans.Book;
 import beans.Evaluation;
 import beans.MatchBook;
+import beans.MatchReader;
+import beans.User;
 import dao.AdminParametersDao;
 import dao.BooksDao;
 import dao.EvaluationDao;
 import dao.MatchBookDao;
+import dao.MatchReaderDao;
+import dao.UserDao;
 
 /**
  * Servlet implementation class AddBook
@@ -88,6 +92,7 @@ public class AddEval extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		int book=Integer.parseInt(bookId); 
+		System.out.println("le livre est : "+book); 
 		
 		HttpSession session = request.getSession();
 		int user= (int)session.getAttribute("id");
@@ -97,17 +102,28 @@ public class AddEval extends HttpServlet {
 			EvaluationDao.insert(e);
 			
 			
-			//CALCUL DU MATCH
+			//CALCUL DU MATCH BOOK
 			
 			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
 			MatchBook m=null; 
+			MatchReader m2=null; 
 			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
 			if (a==null || a.getAlgoMatchBook()==1) m=MatchBookDao.calculMatchBook1(user, e2.getId());
 			else m=MatchBookDao.calculMatchBook2(user, e2.getId()); 
 			System.out.println("livre conseille : "+m.getLivreSuggereId()); 
 			
-			MatchBookDao.insert(m); 
+			if (m!=null) MatchBookDao.insert(m); 
+			
+			//CALCUL DU MATCH USER
+			
+			/*if (a==null || a.getAlgoMatchReader()==1) m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
+			else*/ m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
+			
+			if (m2!=null) MatchReaderDao.insert(m2); 
+			
 			Book b=BooksDao.find(m.getLivreSuggereId()); 
+			User userPlusProche=UserDao.find(m2.getUserPlusProcheId()); 
+			User userPlusLoin=UserDao.find(m2.getUserPlusLoinId()); 
 			
 			//recapitulatif de l'eval et du match nouvellement calculé
 			response.setContentType("text/html");
@@ -126,6 +142,7 @@ public class AddEval extends HttpServlet {
 			out.println("<p> Souhait pour livre un livre du même auteur : "+request.getParameter("souhaitAuteur") +"</p");
 			out.println("<p> Recommandation du livre :  "+request.getParameter("recommandation") +"</p");
 			
+			if (m!=null) {
 			out.println("<h1>Nous vous proposons un prochain livre à lire ! </h1>");
 			out.println("<p> Titre : "+b.getTitre() +"</p");
 			out.println("<p> Auteur : "+b.getAuteur() +"</p");
@@ -134,6 +151,20 @@ public class AddEval extends HttpServlet {
 			out.println("<p> Genre : "+b.getGenre() +"</p");
 			out.println("<p> Pays :  "+b.getPays()+"</p");
 			out.println("<p> Resume :  "+b.getResume() +"</p");
+			}
+			else {
+				out.println("<h1>Il n'y a pas assez de livres en base pour vous proposer un match livre!</h1>");
+			}
+			if (m2!=null) {
+			out.println("<h1>Le lecteur le plus proche de vous est : </h1>");
+			out.println("<p> Login : "+userPlusProche.getLogin() +"</p");
+			out.println("<h1>Le lecteur le plus eloigne de vous est : </h1>");
+			out.println("<p> Login : "+userPlusLoin.getLogin() +"</p");
+			}
+			else {
+				out.println("<h1>Il n'y a pas assez de lecteurs en base pour vous proposer un match lecteur!</h1>");
+			}
+			
 			out.println("</body>");
 			out.println("</html>");
 			//lien vers la page precedente 

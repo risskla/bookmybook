@@ -306,6 +306,7 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 	Evaluation e=EvaluationDao.find(evalId); 
 	int bookId=e.getLivreId(); 
 	b=BooksDao.find(bookId); 
+	if (BooksDao.countBooks()<2) return null; 
 	//CALCUL A COMPLETER
 	
 	try {
@@ -379,24 +380,22 @@ public static MatchBook calculMatchBook2(int userSourceId, int evalId){
 	Book b = null;
 	Connection cnx=null;
 	Evaluation e=EvaluationDao.find(evalId);
+	if (BooksDao.countBooks()<2) return null; 
 	
 	try {
 		cnx = ConnexionBDD.getInstance().getCnx(); 
-
 		//On prend un livre au hasard  
 		int bookId=e.getLivreId(); 
-		//String sql = "SELECT * FROM Book WHERE id NOT IN ("
-				/*+ "SELECT livreId FROM Evaluation WHERE userId = ? )"
+		String sql = "SELECT * FROM Book WHERE id NOT IN ("
+				+ "SELECT livreId FROM Evaluation WHERE userId = ? )"
 				+ " ORDER BY RAND() "
-				+ "LIMIT 1 ";*/
-		
-		String sql = "SELECT * FROM Book ORDER BY RAND() LIMIT 1 ";
+				+ "LIMIT 1 ";
 		
 		System.out.println("ici1"); 
-		PreparedStatement ps = cnx.prepareStatement(sql); // BUG ICI
+		PreparedStatement ps = cnx.prepareStatement(sql); 
 		
 		System.out.println("ici2 prim"); 
-		//ps.setInt(1,userSourceId);
+		ps.setInt(1,userSourceId);
 		
 		//Execution et traitement de la réponse
 		ResultSet res = ps.executeQuery();
