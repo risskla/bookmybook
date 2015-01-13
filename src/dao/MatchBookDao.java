@@ -186,9 +186,8 @@ public class MatchBookDao {
             
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
-			System.out.println("le resultat : "+res); 
 			while(res.next()){
-				System.out.println("il y a un resultat dans la boucle while matchbookdao"); 
+				//System.out.println("il y a un resultat dans la boucle while matchbookdao"); 
 				m=new MatchBook(res.getInt("id"),
 						res.getInt("userSourceId"),
 						res.getInt("livreSuggereId"),
@@ -202,8 +201,7 @@ public class MatchBookDao {
 			e2.printStackTrace();
 		}
 
-		//
-        System.out.println("match book renvoie : "+m); 
+        //System.out.println("match book renvoie : "+m); 
 		return m;
 	}
 	

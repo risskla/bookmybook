@@ -38,8 +38,8 @@
 	MatchBook m=null; 
 	MatchReader m2=null; 
 	Book bSug=null; 
-	int user= (int)request.getSession().getAttribute("id");
-	User u=UserDao.find(user); 
+	int userSource= (int)request.getSession().getAttribute("id");
+	User u=UserDao.find(userSource); 
 	if(u.getRole()==1) {%>
 	<th>ACTION SOUHAITEE</th>
 	<%} %>
@@ -108,24 +108,37 @@
     System.out.println("suite JSP"); 
     String curPage1 = request.getAttribute("currentPage").toString();
     int curPage=Integer.parseInt(curPage1); 
-    System.out.println(curPage); 
+    System.out.println("page actuelle : "+curPage); 
 		
-    if (curPage != 1) { %>
-        <td><a href="GestionBooks?page=${currentPage - 1}">Previous</a></td>
-        <%} %>
+    if (curPage != 1) { 
+    		if (u.getRole()==0) {%>
+        <td><a href="GestionUser?action=evallist&page=${currentPage - 1}">Previous</a></td>
+        <%} 
+        else {%>
+        <td><a href="GestionUser?action=evallistUserAdmin&id=${uInfo.id}&page=${currentPage - 1}">Previous</a></td>
+        <%} 
+        }%>
  
     <%--For displaying Page numbers. 
     The when condition does not display a link for the current page--%>
            <% 
+           
+           System.out.println("role de ladmin:"+u.getRole()); 
             int max; 
     		String max1=request.getAttribute("noOfPages").toString(); 
     		max=Integer.parseInt(max1); 
+    		System.out.println("nb de pages au total : "+max); 
     		PrintWriter out2 = response.getWriter();
            
     		for (int i=1; i<=max; i++)
-    		{  %>
-
-                        <a href="?page=<%=i%>"><%=i%></a>
+    		{  
+    			if (u.getRole()==0) {%>
+                        <a href="?action=evallist&page=<%=i%>"><%=i%></a>
+                <% }
+                else {
+                System.out.println("ici"); %>
+                        <a href="?action=evallistUserAdmin&id=${uInfo.id}&page=<%=i%>"><%=i%></a>
+               <% }%>
         	<%
     		}
 			
@@ -133,15 +146,21 @@
      
     <%--For displaying Next link --%>
      <% 
-     if (curPage!= max) { %>
-        <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
-        <%} }%>
+     if (curPage!= max) { 
+     	if (u.getRole()==0) {%>
+        <td><a href="GestionUser?action=evallist&page=${currentPage + 1}">Next</a></td>
+        <%}
+     	
+     	else {%>
+     		<td><a href="GestionUser?action=evallistUserAdmin&id=${uInfo.id}&page=${currentPage + 1}">Next</a></td>
+     	<%}
+     	}%>
 <br></br>
 <br>
 <%
-				if(u.getRole()==1) {
+		if(u.getRole()==1) {
 				%>
-<a href='GestionUser'>Retour vers la liste des users</a>
-<%} %>
+		<a href='GestionUser'>Retour vers la liste des users</a>
+<%} }%>
 </body>
 </html>

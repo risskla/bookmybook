@@ -93,10 +93,20 @@ public class GestionUser extends HttpServlet {
 				HttpSession session = request.getSession();
 				int userId= (int)session.getAttribute("id");
 				request.setAttribute("uInfo", UserDao.find(userId));
-				System.out.println("dans gestion user evallist2"); 
+				
+				noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
+		        noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+
 				//-> On transmet la liste de ses évaluations :
-				List<Evaluation> EvalList=EvaluationDao.findbyuser(userId); 
+				List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
 				System.out.println("liste : "+ EvalList); 
+				
+				System.out.println("dans gestionEval : pagination : nb denregistrements : "+ noOfRecords);
+		        System.out.println("noOfPages : "+noOfPages); 
+		        System.out.println("pageActuelle"+page); 
+				
+		        request.setAttribute("noOfPages", noOfPages);
+		        request.setAttribute("currentPage", page);
 				request.setAttribute("EvalList", EvalList);
 				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
 			}
@@ -106,9 +116,20 @@ public class GestionUser extends HttpServlet {
 				//Si on désire afficher les évaluations d'un utilisateur :
 				//-> On transmet des informations sur l'utilisateur:
 				 int userId = Integer.parseInt(request.getParameter("id"));
+				 noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
+			     noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+			     List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
+				 
 				request.setAttribute("uInfo", UserDao.find(userId));
 				//-> On transmet la liste de ses évaluations :
-				request.setAttribute("EvalList", EvaluationDao.findbyuser(userId));
+				System.out.println("liste : "+ EvalList); 
+				System.out.println("dans gestionEval AdminUser: pagination : nb denregistrements : "+ noOfRecords);
+		        System.out.println("noOfPages : "+noOfPages); 
+		        System.out.println("pageActuelle"+page); 
+
+		        request.setAttribute("noOfPages", noOfPages);
+		        request.setAttribute("currentPage", page);
+				request.setAttribute("EvalList", EvalList);
 				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
 			}
 		

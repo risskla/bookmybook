@@ -54,8 +54,7 @@
 		Object obj = request.getAttribute("listeE");
 		if(obj!=null){
 			List<Evaluation> le = (List<Evaluation>)obj;
-				System.out.println("EvalList :"); 
-				System.out.println(le); 
+				System.out.println("AllEvalList");
 				MatchBook m=null ;
 				MatchReader m2=null; 
 				Book b2=null; 
@@ -118,7 +117,7 @@
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionEval?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionEval?action=afficher&page=${currentPage - 1}">Previous</a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -132,7 +131,7 @@
     		for (int i=1; i<=max; i++)
     		{  %>
 
-                        <a href="?page=<%=i%>"><%=i%></a>
+                        <a href="?action=afficher&page=<%=i%>"><%=i%></a>
         	<%
     		}
 			
@@ -140,8 +139,10 @@
      
     <%--For displaying Next link --%>
      <% 
-     if (curPage!= max) { %>
-        <td><a href="GestionEval?page=${currentPage + 1}">Next</a></td>
+     if (curPage!= max) { 
+    	 int newCurPage=curPage+1; 
+     System.out.println("la page suivante : "+ newCurPage); %>
+        <td><a href="GestionEval?action=afficher&page=<%=newCurPage%>">Next</a></td>
         <%} }%>
 <br></br>
 <a href="BooksList.jsp">Ajouter une evaluation</a>

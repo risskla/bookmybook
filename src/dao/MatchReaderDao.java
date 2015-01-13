@@ -267,8 +267,7 @@ public static int insertTable2() {
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
-			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
-
+			
 			//Requete
 			String sql = "SELECT id,userSourceId,userPlusProcheId,userPlusLoinId,evaluationId FROM matchReader WHERE evaluationId=? ";
 			PreparedStatement ps = cnx.prepareStatement(sql);
@@ -291,8 +290,6 @@ public static int insertTable2() {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-
-		//
         
 		return m;
 	}

@@ -187,7 +187,7 @@ public class EvaluationDao {
 		return e;
 	}
 
-	public static List<Evaluation> findbyuser(int uid) {
+	public static List<Evaluation> findbyuser(int uid, int start, int nbElements) {
 		List<Evaluation> le = new ArrayList<Evaluation>();
 		
 		Connection cnx=null;
@@ -197,9 +197,11 @@ public class EvaluationDao {
 
 		
 			//Requete
-			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE userId=?";
+			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE userId=? LIMIT ?,?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, uid);
+			ps.setInt(2, start);
+			ps.setInt(3, nbElements);
 			
 			
 			//Execution et traitement de la réponse
@@ -394,6 +396,32 @@ public class EvaluationDao {
 			String sql = "SELECT COUNT(*) FROM evaluation WHERE livreId=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1, idBook);
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+			 counter = res.getInt("COUNT(*)");
+			 break;
+				
+			}
+			
+			ConnexionBDD.getInstance().closeCnx();		
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return counter;
+	}
+	
+public static int countEvalByUser(int idUser){
+		
+		int counter = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+		
+			String sql = "SELECT COUNT(*) FROM evaluation WHERE userId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, idUser);
 			ResultSet res = ps.executeQuery();
 			
 			while(res.next()){

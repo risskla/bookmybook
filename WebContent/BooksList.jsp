@@ -78,7 +78,7 @@
 				%>
 					<a href="GestionBooks?action=supprimer&id=<%=b.getId()%>">Supprimer</a><br></br>
 					<a href="GestionBooks?action=modifier&id=<%=b.getId()%>">Modifier</a><br></br>
-					<a href="GestionEval?action=affichEval&idBook=<%=b.getId()%>">Afficher les evaluations pour ce livre</a><br></br>
+					<a href="GestionEval?action=affichEvalForBook&idBook=<%=b.getId()%>">Afficher les evaluations pour ce livre</a><br></br>
 				<% } %>
 					<a href="GestionBooks?action=evaluer&id=<%=b.getId()%>">Evaluer</a>
 				</td>

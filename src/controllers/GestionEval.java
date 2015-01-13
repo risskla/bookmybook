@@ -81,24 +81,37 @@ public class GestionEval extends HttpServlet {
 					
 				} 
 			
-			else if (action.equals("affichEval")) {
+			else if (action.equals("affichEvalForBook")) {
+				System.out.println("dans GestionEval:affichEvalForBook"); 
+				//afficher les evaluation pour un livre en particulier
 				int idBook = Integer.parseInt(request.getParameter("idBook"));
+				
 				int noOfRecords = EvaluationDao.countEvalByBook(idBook); //nb total d'enregistrement
 		        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
 		        List<Evaluation> listeE = EvaluationDao.findByBook(idBook, (page-1)*recordsPerPage, recordsPerPage ); 
-				request.setAttribute("listeE", listeE );
+				
+		        System.out.println("liste d'eval pour ce bouquin : "+listeE); 
+		        request.setAttribute("listeE", listeE );
 				request.setAttribute("idBook", idBook );
+				request.setAttribute("noOfPages", noOfPages);
+		        request.setAttribute("currentPage", page);
 				request.getRequestDispatcher("EvalListForBook.jsp").forward(request, response);  
 				
 			}
 			
 			else if (action.equals("afficher")) {
+				//afficher toutes les evaluations
+				
 				/*gestion pagination*/
 				int noOfRecords = EvaluationDao.countEval(); //nb total d'enregistrement
 		        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
 
 		        List<Evaluation> listeE = EvaluationDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-		
+		        System.out.println("dans gestionEval : pagination : nb denregistrements : "+ noOfRecords);
+		        System.out.println("noOfPages : "+noOfPages); 
+		        System.out.println("pageActuelle"+page); 
+		        System.out.println("ma liste paginee : "+listeE); 
+		        
 				request.setAttribute("listeE", listeE);
 		        request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
