@@ -51,13 +51,19 @@ else {%>
 	
 </tr>
 <%
+			User u=null; 
+			Book b2=null; 
+			Book b=null ;
+			MatchBook m=null; 
+			MatchReader m2=null; 
+			
 			for(Evaluation e : le){
-				User u=UserDao.find(e.getUserId()); 
-				Book b=BooksDao.find(e.getLivreId()); 
+				u=UserDao.find(e.getUserId()); 
+				b=BooksDao.find(e.getLivreId()); 
 				
-				MatchBook m=MatchBookDao.findByEval(e.getId()); 
-				Book b2=BooksDao.find(m.getLivreSuggereId()); 
-				MatchReader m2=MatchReaderDao.findByEval(e.getId());
+				m=MatchBookDao.findByEval(e.getId()); 
+				if (m!=null) b2=BooksDao.find(m.getLivreSuggereId()); 
+			    m2=MatchReaderDao.findByEval(e.getId());
 	%>
 			<tr>
 				<td><%=u.getLogin()%></td>

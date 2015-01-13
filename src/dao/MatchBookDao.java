@@ -173,7 +173,7 @@ public class MatchBookDao {
 	public static MatchBook findByEval(int e) {
 		MatchBook m=null; 
 		Connection cnx=null;
-		System.out.println("dans find by eval"); 
+		System.out.println("dans find by eval MatchBookDao"); 
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
@@ -186,8 +186,9 @@ public class MatchBookDao {
             
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
-			
+			System.out.println("le resultat : "+res); 
 			while(res.next()){
+				System.out.println("il y a un resultat dans la boucle while matchbookdao"); 
 				m=new MatchBook(res.getInt("id"),
 						res.getInt("userSourceId"),
 						res.getInt("livreSuggereId"),
@@ -202,7 +203,7 @@ public class MatchBookDao {
 		}
 
 		//
-        
+        System.out.println("match book renvoie : "+m); 
 		return m;
 	}
 	

@@ -35,6 +35,9 @@
 	<th>USER LE PLUS PROCHE</th>
 	<th>USER LE PLUS LOIN</th>
 	<%
+	MatchBook m=null; 
+	MatchReader m2=null; 
+	Book bSug=null; 
 	int user= (int)request.getSession().getAttribute("id");
 	User u=UserDao.find(user); 
 	if(u.getRole()==1) {%>
@@ -46,11 +49,9 @@
 		if(obj!=null){
 			List<Evaluation> lb = (List<Evaluation>) obj; 
 			for(Evaluation b : lb){
-				MatchBook m=MatchBookDao.findByEval(b.getId()); 
-				Book b2=BooksDao.find(m.getLivreSuggereId()); 
-				MatchReader m2=MatchReaderDao.findByEval(b.getId()); 
-				
-				System.out.println("dans jsp : match reader : " + m2); 
+				m=MatchBookDao.findByEval(b.getId()); 
+				if (m!=null) { bSug=BooksDao.find(m.getLivreSuggereId()); }
+				m2=MatchReaderDao.findByEval(b.getId()); 
 				
 	%>
 			<tr>
@@ -65,7 +66,7 @@
 				<td><%=b.getRecommand()%></td>
 				
 				<% if (m!=null) { %>
-				<td><%=b2.getTitre()%> de <%=b2.getAuteur() %> (numéro : <%=b2.getId()%>)</td>
+				<td><%=bSug.getTitre()%> de <%=bSug.getAuteur() %> (numéro : <%=bSug.getId()%>)</td>
 				<%} 
 				else {%>
 				<td>aucun</td>
