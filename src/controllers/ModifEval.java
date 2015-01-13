@@ -95,7 +95,7 @@ public class ModifEval extends HttpServlet {
 		out2.println("</body>");
 		out2.println("</html>");
 		//lien vers la page precedente 
-		out.println("<a href='AllEvalList.jsp'>Retour vers la liste des evaluations</a>"); 
+		out.println("<a href='GestionEval?action=afficher'>Retour vers la liste des evaluations</a>");
 		}
 	}
 

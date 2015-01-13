@@ -1,6 +1,6 @@
 #Creation des tables BookMyBook :
 
-drop table Book;
+#drop table Book;
 create table Book (
 	id int(10) auto_increment, 
 	titre varchar(255),
@@ -18,7 +18,7 @@ INSERT INTO Book VALUES (null,'Harry Potter I','J. K. Rowling','Bloomsbury Publi
 INSERT INTO Book VALUES (null,'Harry Potter II','J. K. Rowling','Bloomsbury Publishing','0000000000000','England','Fantastique',1997,'Harry has a scare');
 INSERT INTO Book VALUES (null,'Harry Potter III','J. K. Rowling','Bloomsbury Publishing','0000000000000','England','Fantastique',1997,'Harry has a scare');
 
-drop table User;
+#drop table User;
 create table User (
 	id int(10) auto_increment,
 	login varchar(20),
@@ -42,7 +42,7 @@ INSERT INTO User VALUES (null,'mey68','0000','ulysse.meyer@gmail.com','0','Meyer
 INSERT INTO User VALUES (null,'admin','admin','admin@gmail.com','1', 'Jean', 'Troll', '14', 'H', 'rue des ours', '75003', 'Paris', '0666666666');
 
 
-drop table Evaluation;
+#drop table Evaluation;
 create table Evaluation (
 	id int(10) auto_increment,
 	livreId int(10), 
@@ -59,9 +59,9 @@ create table Evaluation (
 );
 
 #Exemples :
-INSERT INTO Evaluation VALUES (null,1,1,4,4,4,4,4,4);
+#INSERT INTO Evaluation VALUES (null,1,1,4,4,4,4,4,4);
 
-drop table MatchReader;
+#drop table MatchReader;
 create table MatchReader (
 	id int(10) auto_increment,
 	userSourceId int(10), 
@@ -75,7 +75,7 @@ create table MatchReader (
 	foreign key (evaluationId) references Evaluation(id) on delete cascade
 );
 
-drop table MatchBook;
+#drop table MatchBook;
 create table MatchBook (
 	id int(10) auto_increment,
 	userSourceId int(10), 
@@ -87,7 +87,7 @@ create table MatchBook (
 	foreign key (evaluationId) references Evaluation(id) on delete cascade
 );
 
-drop table AdminParameters;
+#drop table AdminParameters;
 create table AdminParameters (
 	id int(10) auto_increment,
     algoMatchBook int(1), 

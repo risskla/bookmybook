@@ -54,6 +54,8 @@
 		Object obj = request.getAttribute("listeE");
 		if(obj!=null){
 			List<Evaluation> le = (List<Evaluation>)obj;
+				System.out.println("EvalList :"); 
+				System.out.println(le); 
 			for(Evaluation e : le){
 				User u=UserDao.find(e.getUserId()); 
 				Book b=BooksDao.find(e.getLivreId()); 
@@ -98,7 +100,6 @@
 			</tr>
 				<%
 			}
-			
 			
 		}
 	%>
