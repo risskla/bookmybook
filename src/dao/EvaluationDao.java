@@ -231,6 +231,85 @@ public class EvaluationDao {
 		return le;
 	}
 	
+	public static List<Evaluation> findAllByBook(int id) {
+		List<Evaluation> le = new ArrayList<Evaluation>();
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+			
+			//Requete
+			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE livreId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				le.add(new Evaluation(res.getInt("id"),
+						res.getInt("livreId"),
+						res.getInt("userId"),
+						res.getInt("note"),
+						res.getInt("qualite"),
+						res.getInt("interet"),
+						res.getInt("lecture"),
+						res.getInt("souhaitAuteur"),
+						res.getInt("recommand")
+						));
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		//
+
+		return le;
+	}
+	
+	public static List<Evaluation> findAllByUser(int id) {
+		List<Evaluation> le = new ArrayList<Evaluation>();
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+
+			
+			//Requete
+			String sql = "SELECT id, livreId,userId,note,qualite,interet,lecture,souhaitAuteur,recommand FROM evaluation WHERE userId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, id);
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				le.add(new Evaluation(res.getInt("id"),
+						res.getInt("livreId"),
+						res.getInt("userId"),
+						res.getInt("note"),
+						res.getInt("qualite"),
+						res.getInt("interet"),
+						res.getInt("lecture"),
+						res.getInt("souhaitAuteur"),
+						res.getInt("recommand")
+						));
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		//
+
+		return le;
+	}
+	
+	
 	public static List<Evaluation> findByBook(int bid, int start, int nbElts) {
 		List<Evaluation> le = new ArrayList<Evaluation>();
 		

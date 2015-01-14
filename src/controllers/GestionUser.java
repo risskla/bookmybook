@@ -16,6 +16,8 @@ import beans.Evaluation;
 import beans.User;
 import beans.IsbnComp;
 import beans.TitleComp;
+import dao.MatchBookDao;
+import dao.MatchReaderDao;
 import dao.UserDao;
 import dao.EvaluationDao;
 
@@ -71,6 +73,21 @@ public class GestionUser extends HttpServlet {
 			if (action.equals("supprimer")) {
 				String UserLogin = UserDao.find(id).getLogin();
 				UserDao.delete(id);
+				//il faut alors supprimer les eval liées à ce user 
+				List<Evaluation> le=EvaluationDao.findAllByUser(id); 
+				
+				int idEval=0; 
+				for(Evaluation e : le){
+					idEval=e.getId(); 
+					EvaluationDao.delete(idEval); 
+					//et supprimer tous les match pointant vers l'eval qui nexiste plus
+					MatchBookDao.deleteByEval(idEval);  
+					MatchReaderDao.deleteByEval(idEval); //supprime tous les matchreader avec usersource=le user qu'on supprime
+				}
+				
+				//et supprimer tous les matchreader qui ont le user supprimé comme plus loin ou plus proche
+				MatchReaderDao.deleteByUser(id); 
+
 				PrintWriter out = response.getWriter();
 				response.setContentType("text/html");
 				try {

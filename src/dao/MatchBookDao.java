@@ -95,6 +95,31 @@ public class MatchBookDao {
 		return res;
 	}
 	
+	public static int deleteByBook(int id) {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+				
+			//Requete
+			String sql = "DELETE FROM MatchBook WHERE livreSuggereId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1,id);
+			
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
+	
+	
 	
 	public static List<MatchBook> findAll() {
 		List<MatchBook> lb = new ArrayList<MatchBook>();

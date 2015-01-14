@@ -67,6 +67,30 @@ public class MatchReaderDao {
 		return res;
 	}
 	
+	public static int deleteByUser(int id) {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+				
+			//Requete
+			String sql = "DELETE FROM MatchReader WHERE userPlusProcheId=? OR userPlusLoin=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1,id);
+			ps.setInt(2,id);
+			
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
 	public static int deleteTable1() {
 		int res = 0;
 		Connection cnx=null;
