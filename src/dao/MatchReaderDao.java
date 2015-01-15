@@ -287,11 +287,9 @@ public static int insertTable2() {
 	public static MatchReader findByEval(int e) {
 		MatchReader m=null; 
 		Connection cnx=null;
-<<<<<<< HEAD
-		System.out.println("dans find by eval MatchReader"); 
-=======
-		System.out.println("dans find by eval Match reader"); 
->>>>>>> a7450c9a2d25ed9e2ca456ad19b442c08989a777
+
+		System.out.println("dans find by eval Match reader Dao"); 
+
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
