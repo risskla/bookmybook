@@ -18,6 +18,8 @@ import beans.IsbnComp;
 import beans.TitleComp;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
+import dao.MatchReaderDao;
 
 /**
  * Servlet implementation class GestionBooks
@@ -69,6 +71,20 @@ public class GestionBooks extends HttpServlet {
 			if (action.equals("supprimer")) {
 				BooksDao.delete(id);
 				
+				//il faut alors supprimer les eval liées à ce livre 
+				List<Evaluation> le=EvaluationDao.findAllByBook(id); 
+				int idEval=0; 
+				for(Evaluation e : le){
+					idEval=e.getId(); 
+					EvaluationDao.delete(idEval); 
+					//et supprimer tous les match pointant vers l'eval qui nexiste plus
+					MatchBookDao.deleteByEval(idEval);  
+					MatchReaderDao.deleteByEval(idEval); 
+				}
+				
+				//et supprimer tous les matchbook qui suggerent le livre
+				MatchBookDao.deleteByBook(id); 
+	
 				request.setAttribute("alert", "Suppression du livre n° " + id +  " réalisée avec succes !");
 				doPost(request,response);
 				

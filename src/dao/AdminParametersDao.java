@@ -79,6 +79,7 @@ public class AdminParametersDao {
 
 				
 			//Requete
+			System.out.println("dans delete adminparameters"); 
 			String sql = "DELETE FROM AdminParameters WHERE id=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1,id);

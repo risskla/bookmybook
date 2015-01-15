@@ -51,13 +51,19 @@ else {%>
 	
 </tr>
 <%
+			User u=null; 
+			Book b2=null; 
+			Book b=null ;
+			MatchBook m=null; 
+			MatchReader m2=null; 
+			
 			for(Evaluation e : le){
-				User u=UserDao.find(e.getUserId()); 
-				Book b=BooksDao.find(e.getLivreId()); 
+				u=UserDao.find(e.getUserId()); 
+				b=BooksDao.find(e.getLivreId()); 
 				
-				MatchBook m=MatchBookDao.findByEval(e.getId()); 
-				Book b2=BooksDao.find(m.getLivreSuggereId()); 
-				MatchReader m2=MatchReaderDao.findByEval(e.getId());
+				m=MatchBookDao.findByEval(e.getId()); 
+				if (m!=null) b2=BooksDao.find(m.getLivreSuggereId()); 
+			    m2=MatchReaderDao.findByEval(e.getId());
 	%>
 			<tr>
 				<td><%=u.getLogin()%></td>
@@ -108,7 +114,7 @@ else {%>
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionEval?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionEval?action=affichEvalForBook&idBook=<%=idBook%>&page=${currentPage - 1}">Previous</a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -122,7 +128,7 @@ else {%>
     		for (int i=1; i<=max; i++)
     		{  %>
 
-                        <a href="?page=<%=i%>"><%=i%></a>
+                        <a href="?action=affichEvalForBook&idBook=<%=idBook%>&page=<%=i%>"><%=i%></a>
         	<%
     		}
 			
@@ -131,7 +137,7 @@ else {%>
     <%--For displaying Next link --%>
      <% 
      if (curPage!= max) { %>
-        <td><a href="GestionEval?page=${currentPage + 1}">Next</a></td>
+        <td><a href="GestionEval?action=affichEvalForBook&idBook=<%=idBook%>&page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
 <a href="BooksList.jsp">Retour à la liste des livres</a>

@@ -67,6 +67,30 @@ public class MatchReaderDao {
 		return res;
 	}
 	
+	public static int deleteByUser(int id) {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+				
+			//Requete
+			String sql = "DELETE FROM MatchReader WHERE userPlusProcheId=? OR userPlusLoin=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1,id);
+			ps.setInt(2,id);
+			
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
 	public static int deleteTable1() {
 		int res = 0;
 		Connection cnx=null;
@@ -263,12 +287,15 @@ public static int insertTable2() {
 	public static MatchReader findByEval(int e) {
 		MatchReader m=null; 
 		Connection cnx=null;
+<<<<<<< HEAD
 		System.out.println("dans find by eval MatchReader"); 
+=======
+		System.out.println("dans find by eval Match reader"); 
+>>>>>>> a7450c9a2d25ed9e2ca456ad19b442c08989a777
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
-			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
-
+			
 			//Requete
 			String sql = "SELECT id,userSourceId,userPlusProcheId,userPlusLoinId,evaluationId FROM matchReader WHERE evaluationId=? ";
 			PreparedStatement ps = cnx.prepareStatement(sql);
@@ -291,8 +318,6 @@ public static int insertTable2() {
 		} catch (SQLException e2) {
 			e2.printStackTrace();
 		}
-
-		//
         
 		return m;
 	}

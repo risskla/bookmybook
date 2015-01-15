@@ -95,6 +95,31 @@ public class MatchBookDao {
 		return res;
 	}
 	
+	public static int deleteByBook(int id) {
+		int res = 0;
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
+				
+			//Requete
+			String sql = "DELETE FROM MatchBook WHERE livreSuggereId=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1,id);
+			
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
+	
+	
+	
 	
 	public static List<MatchBook> findAll() {
 		List<MatchBook> lb = new ArrayList<MatchBook>();
@@ -173,7 +198,11 @@ public class MatchBookDao {
 	public static MatchBook findByEval(int e) {
 		MatchBook m=null; 
 		Connection cnx=null;
+<<<<<<< HEAD
 		System.out.println("dans find by eval MatchBook"); 
+=======
+		System.out.println("dans find by eval MatchBookDao"); 
+>>>>>>> a7450c9a2d25ed9e2ca456ad19b442c08989a777
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();
@@ -186,8 +215,8 @@ public class MatchBookDao {
             
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
-			
 			while(res.next()){
+				//System.out.println("il y a un resultat dans la boucle while matchbookdao"); 
 				m=new MatchBook(res.getInt("id"),
 						res.getInt("userSourceId"),
 						res.getInt("livreSuggereId"),
@@ -201,8 +230,7 @@ public class MatchBookDao {
 			e2.printStackTrace();
 		}
 
-		//
-        
+        //System.out.println("match book renvoie : "+m); 
 		return m;
 	}
 	

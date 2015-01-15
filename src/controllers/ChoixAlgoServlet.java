@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.AdminParameters;
+import beans.Book;
 import dao.AdminParametersDao;
+import dao.BooksDao;
 
 /**
  * Servlet implementation class ChoixAlgoServlet
@@ -35,7 +38,12 @@ public class ChoixAlgoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		//affichage simple
+		
+		
 		doPost(request, response); 
+    	
 	}
 
 	/**
@@ -43,10 +51,36 @@ public class ChoixAlgoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int matchBook = Integer.parseInt(request.getParameter("algoMatchBook"));
-		int matchReader = Integer.parseInt(request.getParameter("algoMatchReader"));
+
 		
-		/*à mettre au format AAAA-MM-DD pour mysql*/
+		if (request.getParameter("action")!=null) {
+			
+			System.out.println("afficher admin parameters"); 
+			int page = 1;
+	        int recordsPerPage = 5;
+	        if(request.getParameter("page") != null)
+	            page = Integer.parseInt(request.getParameter("page")); //page actuelle
+	        List<AdminParameters> listeP = AdminParametersDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+	        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
+	        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
+	        
+	        request.setAttribute("listeP", listeP);
+	        request.setAttribute("noOfPages", noOfPages);
+	        request.setAttribute("currentPage", page);
+	    	request.getRequestDispatcher("ParametersList.jsp").forward(request, response);
+			
+		}
+		
+		else {
+		
+		int matchBook=0;
+		int matchReader=0; 
+		
+		if(request.getParameter("algoMatchBook") != null)
+		{ matchBook = Integer.parseInt(request.getParameter("algoMatchBook"));}
+		
+		if(request.getParameter("algoMatchReader") != null) {
+		matchReader = Integer.parseInt(request.getParameter("algoMatchReader")); }
 
 		Calendar rightNow = Calendar.getInstance();
 		int year=rightNow.get(Calendar.YEAR)-1900; 
@@ -78,6 +112,8 @@ public class ChoixAlgoServlet extends HttpServlet {
 			AdminParametersDao.insert(newParameters); 
 			request.setAttribute("alert", "Les paramètres ont été modifiés avec succès ! ");	
 			request.getRequestDispatcher("choixAlgoMatchForm.jsp").forward(request, response); 
+		}
+		
 		}
 	}
 
