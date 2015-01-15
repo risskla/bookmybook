@@ -173,7 +173,7 @@ public class MatchBookDao {
 	public static MatchBook findByEval(int e) {
 		MatchBook m=null; 
 		Connection cnx=null;
-		System.out.println("dans find by eval"); 
+		System.out.println("dans find by eval MatchBook"); 
 		
 		try {
 			cnx = ConnexionBDD.getInstance().getCnx();

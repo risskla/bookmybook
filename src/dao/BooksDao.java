@@ -157,8 +157,8 @@ public class BooksDao {
 			ps.setString(1,"%"+k);
 			ps.setString(2,k+"%");
 			ps.setString(3,"%"+k+"%");
-			ps.setInt(5, start);
-			ps.setInt(6, nbElts);
+			ps.setInt(4, start);
+			ps.setInt(5, nbElts);
 			
 			//Execution et traitement de la réponse
 			ResultSet res = ps.executeQuery();
