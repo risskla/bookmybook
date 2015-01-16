@@ -43,22 +43,15 @@ public class GestionUser extends HttpServlet {
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
 		int forward=0; 
-		String action = request.getParameter("action");
-		/*gestion pagination*/
+		int noOfRecords;
+		int noOfPages;
+		int recordsPerPage = 5;
 		int page = 1;
-        int recordsPerPage = 5;
-        if(request.getParameter("page") != null)
+        if(request.getParameter("page") != null){
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
-        List<User> listeU = UserDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-        System.out.println(listeU); //ok
-        int noOfRecords = UserDao.countUser(); //nb total d'enregistrement
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-        System.out.println(noOfPages); 
-        System.out.println(page);
-        
-        /*fin bloc gestion pagination*/
-
-		
+        }
+		String action = request.getParameter("action");
+	
 		
 		if (action != null) {
 			String idCh = request.getParameter("id");
@@ -153,12 +146,7 @@ public class GestionUser extends HttpServlet {
 		}
 		// recuperer une liste d'utilisateurs
         if (forward==0) {
-		request.setAttribute("listeU", listeU);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-
-		// rediriger vers une page : on retourne sur la page davant 
-		request.getRequestDispatcher("UserList.jsp").forward(request, response);
+        	doPost(request,response);
         }
 	}
 
@@ -169,14 +157,23 @@ public class GestionUser extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
 
-		String action = request.getParameter("action");
+		String keyword = request.getParameter("keyword");
 		
 		/*gestion pagination*/
 		int page = 1;
         int recordsPerPage = 5;
-        if(request.getParameter("page") != null)
+        if(request.getParameter("page") != null){
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
-        List<User> listeU = UserDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        }
+        List<User> listeU;
+        if (keyword!=null){
+            listeU = UserDao.findByKeyword(keyword, (page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        }
+        else
+        {
+            listeU = UserDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        }
+        
         System.out.println(listeU); 
         int noOfRecords = UserDao.countUser(); //nb total d'enregistrement
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 

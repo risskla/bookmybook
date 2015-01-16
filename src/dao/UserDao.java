@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.Book;
 import beans.User;
 
 public class UserDao {
@@ -208,7 +209,54 @@ public class UserDao {
 		return lu;
 	}
 	
+	public static List<User> findByKeyword(String k, int start, int nbElts) {
+		List<User> lu = new ArrayList<User>();
+		Connection cnx=null;
+		try {
+			cnx = ConnexionBDD.getInstance().getCnx();
+			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 
+			
+			//Requete
+			String sql = "SELECT id,login,mdp,mail,role,nom,prenom,age,sexe,adresse,codepostale,ville,telephone FROM User WHERE login LIKE ? OR login LIKE ? OR login LIKE ? LIMIT ?,?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setString(1,"%"+k);
+			ps.setString(2,k+"%");
+			ps.setString(3,"%"+k+"%");
+			ps.setInt(4, start);
+			ps.setInt(5, nbElts);
+			
+			//Execution et traitement de la réponse
+			ResultSet res = ps.executeQuery();
+			
+			while(res.next()){
+				lu.add(new User(
+						res.getInt("id"),
+						res.getString("login"),
+						res.getString("mdp"),
+						res.getString("mail"),
+						res.getInt("role"),
+						res.getString("nom"),
+						res.getString("prenom"),
+						res.getInt("age"),
+						res.getString("sexe"),
+						res.getString("adresse"),
+						res.getInt("codepostale"),
+						res.getString("ville"),
+						res.getInt("telephone")
+						));
+			}
+			
+			res.close();
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		//
+
+		return lu;
+	}
 
 	public static User find(int id) {
 
@@ -307,6 +355,7 @@ public class UserDao {
 
 		return u;
 	}
+	
 	
 public static int countUser(){
 		

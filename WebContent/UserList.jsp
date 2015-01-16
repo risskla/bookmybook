@@ -13,6 +13,12 @@
 </head>
 <body>
 <h1>Liste des users en base</h1>
+<form method="post" action="GestionUser">
+Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input type='submit'  value='Recherche'/>
+</form>
+<form method="post" action="GestionUser">
+<input type='submit'  value='Reinitialiser'/>
+</form>
 <br>
 
 <%
