@@ -9,15 +9,27 @@
 </head>
 <body>
 
-	<h3>Modifier les informations d'un user</h3>
+	<h3>Créer / Modifier les informations d'un user</h3>
+	
+	<%
+	Object alert = request.getAttribute("alert");
+	if(alert!=null){
+		String alrt = (String)alert;
+		%>
+		<p>
+			<%=alrt%>	
+		</p>	
+		<%
+	}
+	%>
 
 	<form method="post" action="ModifUser">
 			<label for="login">Login :</label>
 			<input type="text" name="login" id="login" value="${uModif.login}">
 			<br>
-			<label for="mdp">Mdp :</label>
+			<!--<label for="mdp">Mdp :</label>
 			<input type="text" name="mdp" id="mdp" value="${uModif.mdp}">
-			<br>
+			<br> -->
 			<label for="mail">Mail :</label>
 			<input type="text" name="mail" id="mail" value="${uModif.mail}">
 			<br>

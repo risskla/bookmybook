@@ -123,7 +123,7 @@ Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input ty
         <td><a href="GestionUser?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="createUser.jsp">Ajouter un user</a>
+<a href="ModifUser.jsp">Ajouter un user</a>
 
 </body>
 </html>

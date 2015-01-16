@@ -33,7 +33,7 @@ public class UserDao {
 			ps.setString(9, u.getAdresse());
 			ps.setInt(10, u.getCodepostale());
 			ps.setString(11, u.getVille());
-			ps.setInt(12, u.getTelephone());
+			ps.setString(12, u.getTelephone());
 			
 			//Execution et traitement de la réponse
 			res = ps.executeUpdate();
@@ -56,27 +56,22 @@ public class UserDao {
 			// chargement du driver
 			cnx = ConnexionBDD.getInstance().getCnx();
 			
-			//Requete
-			String sql = "UPDATE User SET login=?,mdp=?,mail=?,role=?,nom=?,prenom=?,age=?,sexe=?,adresse=?,codepostale=?,ville=?,telephone=? WHERE id=?";
+			//Requete (sans le ,mdp=? car on ne doit pas pouvoir le modifier en clair)
+			String sql = "UPDATE User SET login=?,mail=?,role=?,nom=?,prenom=?,age=?,sexe=?,adresse=?,codepostale=?,ville=?,telephone=? WHERE id=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1, u.getLogin());
-			ps.setString(2, u.getMdp());
-			ps.setString(3, u.getMail());
-			ps.setInt(4, u.getRole());
-			ps.setString(1, u.getLogin());
-			ps.setString(2, u.getMdp());
-			ps.setString(3, u.getMail());
-			ps.setInt(4, u.getRole());
-			ps.setString(5, u.getNom());
-			ps.setString(6, u.getPrenom());
-			ps.setInt(7, u.getAge());
-			ps.setString(8, u.getSexe());
-			ps.setString(9, u.getAdresse());
-			ps.setInt(10, u.getCodepostale());
-			ps.setString(11, u.getVille());
-			ps.setInt(12, u.getTelephone());
-			
-			ps.setInt(13, u.getId());
+			//ps.setString(2, u.getMdp());
+			ps.setString(2, u.getMail());
+			ps.setInt(3, u.getRole());
+			ps.setString(4, u.getNom());
+			ps.setString(5, u.getPrenom());
+			ps.setInt(6, u.getAge());
+			ps.setString(7, u.getSexe());
+			ps.setString(8, u.getAdresse());
+			ps.setInt(9, u.getCodepostale());
+			ps.setString(10, u.getVille());
+			ps.setString(11, u.getTelephone());
+			ps.setInt(12, u.getId());
 			
 			//Execution et traitement de la réponse
 			res = ps.executeUpdate();
@@ -145,7 +140,7 @@ public class UserDao {
 						res.getString("adresse"),
 						res.getInt("codepostale"),
 						res.getString("ville"),
-						res.getInt("telephone")
+						res.getString("telephone")
 						));
 			}
 			
@@ -194,7 +189,7 @@ public class UserDao {
 						res.getString("adresse"),
 						res.getInt("codepostale"),
 						res.getString("ville"),
-						res.getInt("telephone")
+						res.getString("telephone")
 						));
 			}
 			
@@ -243,7 +238,7 @@ public class UserDao {
 						res.getString("adresse"),
 						res.getInt("codepostale"),
 						res.getString("ville"),
-						res.getInt("telephone")
+						res.getString("telephone")
 						));
 			}
 			
@@ -291,7 +286,7 @@ public class UserDao {
 						res.getString("adresse"),
 						res.getInt("codepostale"),
 						res.getString("ville"),
-						res.getInt("telephone")
+						res.getString("telephone")
 						);
 				break;
 			}
@@ -340,7 +335,7 @@ public class UserDao {
 						res.getString("adresse"),
 						res.getInt("codepostale"),
 						res.getString("ville"),
-						res.getInt("telephone")
+						res.getString("telephone")
 						);
 				break;
 			}

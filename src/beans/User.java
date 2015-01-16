@@ -16,7 +16,7 @@ public class User implements Serializable, Comparable<User>{
 		private String adresse;
 		private int codepostale;
 		private String ville;
-		private int telephone;
+		private String telephone;
 		
 		//Constructors :
 		
@@ -26,7 +26,7 @@ public class User implements Serializable, Comparable<User>{
 		
 		public User(int id, String login, String mdp, String mail, int role,
 				String nom, String prenom, int age, String sexe,
-				String adresse, int codepostale, String ville, int telephone) {
+				String adresse, int codepostale, String ville, String telephone) {
 			super();
 			this.id = id;
 			this.login = login;
@@ -141,16 +141,20 @@ public class User implements Serializable, Comparable<User>{
 			this.ville = ville;
 		}
 
-		public int getTelephone() {
+		public String getTelephone() {
 			return telephone;
 		}
 
-		public void setTelephone(int telephone) {
+		public void setTelephone(String telephone) {
 			this.telephone = telephone;
 		}
 		
 		//Compare Function :
 		
+
+
+
+
 		public int compareTo(User u) {
 			return Integer.toString(this.id).compareTo(Integer.toString(u.id));
 		}

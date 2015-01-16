@@ -32,7 +32,7 @@ create table User (
 	adresse varchar(255),
 	codepostale int(5),
 	ville varchar(255),
-	telephone int(10),
+	telephone varchar(20),
 	primary key(id)
 
 );
