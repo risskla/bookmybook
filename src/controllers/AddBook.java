@@ -48,42 +48,27 @@ public class AddBook extends HttpServlet {
 		String genre = request.getParameter("genre");
 		String anneePubli = request.getParameter("anneePubli");
 		String resume = request.getParameter("resume");
-		PrintWriter out = response.getWriter();
+		
+
 		
 		int ap=Integer.parseInt(anneePubli); 
-		int intisbn=Integer.parseInt(isbn); 
+		long intisbn=Long.parseLong(isbn); 
 		
 		Book b = new Book(0, titre, auteur, editeur, intisbn, pays, genre, ap, resume);
 		
-			BooksDao.insert(b);
-			response.setContentType("text/html");
-			try {
-			
-			out.println("<!DOCTYPE html>");
-			out.println("<html><head>"); 
-			out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-			out.println("<title>Insertion d'un livre</title></head>");
-			out.println("<body>");
-			out.println("<h1>Livre inséré dans la base avec succès ! </h1>");
-			out.println("<p> Titre : "+request.getParameter("titre") +"</p"); 
-			out.println("<p> Auteur : "+ request.getParameter("auteur")+"</p");
-			out.println("<p> Editeur : "+request.getParameter("editeur") +"</p");
-			out.println("<p> ISBN : "+request.getParameter("isbn") +"</p");
-			out.println("<p> Pays : "+request.getParameter("pays") +"</p");
-			out.println("<p> Genre : "+request.getParameter("editeur") +"</p");
-			out.println("<p> Annee de publication : "+request.getParameter("anneePubli") +"</p");
-			out.println("<p> Resume : "+request.getParameter("resume") +"</p");
-			out.println("</body>");
-			out.println("</html>");
-			//lien vers la page precedente 
-			out.println("<a href='createBookForm.jsp'>Inserer un autre livre</a>"); 
-			out.println("<a href='GestionBooks'>Retour vers la liste des livres</a>");
-			}
-			
-			finally {
-				out.close(); 
-			}
+		BooksDao.insert(b);
+		
+		request.setAttribute("titre",titre);
+		request.setAttribute("auteur",auteur);
+		request.setAttribute("editeur",editeur);
+		request.setAttribute("isbn",isbn);
+		request.setAttribute("pays",pays);
+		request.setAttribute("genre",genre);
+		request.setAttribute("anneePubli",anneePubli);
+		request.setAttribute("resume",resume);
+		
+		request.getRequestDispatcher("StatusBookModifAdd.jsp").forward(request, response);  
 	}
-	}
+}
 
 

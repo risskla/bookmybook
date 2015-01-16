@@ -26,7 +26,7 @@ public class BooksDao {
 			ps.setString(1, b.getTitre());
 			ps.setString(2, b.getAuteur());
 			ps.setString(3, b.getEditeur());
-			ps.setInt(4, b.getIsbn());
+			ps.setLong(4, b.getIsbn());
 			ps.setString(5, b.getPays());
 			ps.setString(6, b.getGenre());
 			ps.setInt(7, b.getAnneePubli());
@@ -60,7 +60,7 @@ public class BooksDao {
 			ps.setString(1, b.getTitre());
 			ps.setString(2, b.getAuteur());
 			ps.setString(3, b.getEditeur());
-			ps.setInt(4, b.getIsbn());
+			ps.setLong(4, b.getIsbn());
 			ps.setString(5, b.getPays());
 			ps.setString(6, b.getGenre());
 			ps.setInt(7, b.getAnneePubli());
@@ -124,7 +124,7 @@ public class BooksDao {
 						res.getString("titre"),
 						res.getString("auteur"),
 						res.getString("editeur"),
-						res.getInt("isbn"),
+						res.getLong("isbn"),
 						res.getString("pays"),
 						res.getString("genre"),
 						res.getInt("anneePubli"),
@@ -168,7 +168,7 @@ public class BooksDao {
 						res.getString("titre"),
 						res.getString("auteur"),
 						res.getString("editeur"),
-						res.getInt("isbn"),
+						res.getLong("isbn"),
 						res.getString("pays"),
 						res.getString("genre"),
 						res.getInt("anneePubli"),
@@ -212,7 +212,7 @@ public class BooksDao {
 						res.getString("titre"),
 						res.getString("auteur"),
 						res.getString("editeur"),
-						res.getInt("isbn"),
+						res.getLong("isbn"),
 						res.getString("pays"),
 						res.getString("genre"),
 						res.getInt("anneePubli"),
@@ -255,7 +255,7 @@ public class BooksDao {
 						res.getString("titre"),
 						res.getString("auteur"),
 						res.getString("editeur"),
-						res.getInt("isbn"),
+						res.getLong("isbn"),
 						res.getString("pays"),
 						res.getString("genre"),
 						res.getInt("anneePubli"),

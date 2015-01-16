@@ -40,33 +40,36 @@ public class ModifBook extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
 		int modif=Integer.parseInt(request.getParameter("idModif")); 
-		System.out.println(modif);
-		Book b = new Book (modif, request.getParameter("titre"), request.getParameter("auteur") , request.getParameter("editeur"), modif, request.getParameter("pays"), 
-				request.getParameter("genre"), Integer.parseInt(request.getParameter("anneePubli")), request.getParameter("resume"));
-		Book b2=BooksDao.find(modif); 
-		if (b2==null) System.out.println("NULL"); 
-		else { BooksDao.update(b); 
+		System.out.println(modif);	
 		
-		out.println("<!DOCTYPE html>");
-		out.println("<html><head>"); 
-		out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-		out.println("<title>Modification d'un livre</title></head>");
-		out.println("<body>");
-		out.println("<h1>Livre modifie dans la base avec succes ! </h1>");
-		out.println("<p> Titre : "+request.getParameter("titre") +"</p"); 
-		out.println("<p> Auteur : "+ request.getParameter("auteur")+"</p");
-		out.println("<p> Editeur : "+request.getParameter("editeur") +"</p");
-		out.println("<p> ISBN : "+request.getParameter("isbn") +"</p");
-		out.println("<p> Pays : "+request.getParameter("pays") +"</p");
-		out.println("<p> Genre : "+request.getParameter("genre") +"</p");
-		out.println("<p> Annee de publication : "+request.getParameter("anneePubli") +"</p");
-		out.println("<p> Resume : "+request.getParameter("resume") +"</p");
-		out.println("</body>");
-		out.println("</html>");
-		//lien vers la page precedente 
-		out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+		String titre = request.getParameter("titre");
+		String auteur = request.getParameter("auteur");
+		String editeur = request.getParameter("editeur");
+		String isbn = request.getParameter("isbn"); //à transformer en int
+		String pays = request.getParameter("pays");
+		String genre = request.getParameter("genre");
+		String anneePubli = request.getParameter("anneePubli");
+		String resume = request.getParameter("resume");
+		
+		int ap=Integer.parseInt(anneePubli); 
+		long intisbn=Long.parseLong(isbn);
+		
+		Book b = new Book(modif, titre, auteur, editeur, intisbn, pays, genre, ap, resume);
+		
+		Book b2=BooksDao.find(modif);
+		if (b2==null) System.out.println("NULL"); 
+		else { 
+			BooksDao.update(b);
+			request.setAttribute("titre",titre);
+			request.setAttribute("auteur",auteur);
+			request.setAttribute("editeur",editeur);
+			request.setAttribute("isbn",isbn);
+			request.setAttribute("pays",pays);
+			request.setAttribute("genre",genre);
+			request.setAttribute("anneePubli",anneePubli);
+			request.setAttribute("resume",resume);
+			request.getRequestDispatcher("StatusBookModifAdd.jsp").forward(request, response);  
 		}
 	}
 
