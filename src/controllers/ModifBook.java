@@ -61,6 +61,8 @@ public class ModifBook extends HttpServlet {
 		if (b2==null) System.out.println("NULL"); 
 		else { 
 			BooksDao.update(b);
+			
+			request.setAttribute("operation","modifié");
 			request.setAttribute("titre",titre);
 			request.setAttribute("auteur",auteur);
 			request.setAttribute("editeur",editeur);

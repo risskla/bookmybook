@@ -58,6 +58,7 @@ public class AddBook extends HttpServlet {
 		
 		BooksDao.insert(b);
 		
+		request.setAttribute("operation","créé");
 		request.setAttribute("titre",titre);
 		request.setAttribute("auteur",auteur);
 		request.setAttribute("editeur",editeur);
