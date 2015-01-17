@@ -32,6 +32,15 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		String action = request.getParameter("action");
+		if(action != null){
+			if(action.equals("deconnexion")){
+				//Ecrasement variable de session :
+				HttpSession session = request.getSession();
+				//On insère l'id du user en variable de session :
+				session.setAttribute( "id", -1);
+			}
+		}
 		request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);  
 	}
 

@@ -129,7 +129,7 @@ Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input ty
         <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="WEB-INF/createBookForm.jsp">Ajouter un livre</a>
+<a href="GestionBooks?action=ajouter">Ajouter un livre</a>
 
 </body>
 </html>

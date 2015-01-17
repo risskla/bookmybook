@@ -42,6 +42,13 @@ public class GestionEval extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int userIdcheck= (int)request.getSession().getAttribute("id");
+		if(userIdcheck==-1){
+			request.setAttribute("alert", "Veuillez vous logger !");
+			request.getRequestDispatcher("Login?action=deconnexion").forward(request, response);
+		}
+		
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
 		String action = request.getParameter("action");

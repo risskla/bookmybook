@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.Book;
+import beans.User;
 import dao.BooksDao;
+import dao.UserDao;
 
 /**
  * Servlet implementation class AddBook
@@ -39,6 +41,7 @@ public class AddBook extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		// TODO Auto-generated method stub
 		String titre = request.getParameter("titre");
 		String auteur = request.getParameter("auteur");

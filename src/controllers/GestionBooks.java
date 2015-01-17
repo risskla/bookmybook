@@ -42,6 +42,14 @@ public class GestionBooks extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		//sécurité
+		int userIdcheck= (int)request.getSession().getAttribute("id");
+		if(userIdcheck==-1){
+			request.setAttribute("alert", "Veuillez vous logger !");
+			request.getRequestDispatcher("Login?action=deconnexion").forward(request, response);
+		}
+		
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
 		int forward=0; 
@@ -85,6 +93,9 @@ public class GestionBooks extends HttpServlet {
 				forward=1;
 				request.setAttribute("bModif", BooksDao.find(id));
 				request.getRequestDispatcher("WEB-INF/ModifBook.jsp").forward(request, response);  
+				
+			} else if (action.equals("ajouter")) {
+				request.getRequestDispatcher("WEB-INF/createBookForm.jsp").forward(request, response);  
 				
 			}
 		
@@ -145,6 +156,7 @@ public class GestionBooks extends HttpServlet {
         if (keyword!=null){
             listeB = BooksDao.findByKeyword(keyword, (page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
             noOfRecords = BooksDao.countBooksByKeyword(keyword);//nb total d'enregistrement par keyword
+            request.setAttribute("alert", "Voici les livres dont le titre contient le mot clef '" + keyword + "'");
         }
         else
         {

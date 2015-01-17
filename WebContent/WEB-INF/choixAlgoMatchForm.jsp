@@ -30,7 +30,7 @@ Pour définir les lecteurs le plus loin et le plus proche (MatchReader) : <br>
 <INPUT type= "radio" name="algoMatchReader" value="2">Algorithme 2 (au hasard)<br> 
 <input type='submit'  value='SEND'/><br>
 
-<a href="WEB-INF/adminMenu.jsp">Retour au menu administrateur</a>
+<a href="SwitchRole?action=adminmenu">Retour au menu administrateur</a>
 </form>
 </body>
 </html>

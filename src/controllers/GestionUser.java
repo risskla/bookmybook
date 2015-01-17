@@ -40,6 +40,13 @@ public class GestionUser extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int userIdcheck= (int)request.getSession().getAttribute("id");
+		if(userIdcheck==-1){
+			request.setAttribute("alert", "Veuillez vous logger !");
+			request.getRequestDispatcher("Login?action=deconnexion").forward(request, response);
+		}
+		
 		//éxécuté lors de modif/suppr parce qu'on passe par des url 
 		int id = 0;
 		int forward=0; 
@@ -174,6 +181,7 @@ public class GestionUser extends HttpServlet {
         if (keyword!=null){
             listeU = UserDao.findByKeyword(keyword, (page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
             noOfRecords = UserDao.countUserByKeyword(keyword);//nb total d'enregistrement par keyword
+            request.setAttribute("alert", "Voici les utilisateurs dont le login contient le mot clef '" + keyword + "'");
         }
         else
         {
