@@ -8,8 +8,55 @@
 
 
 <%@include file="header.jsp"%>
-				
+		
+		
+	<%!
+	//Petite fonction pour les choix binaires :
+	public String choixplussimple(int choix){
+	String output;
+	switch(choix){
+	        case 0: output = "<span class=\"glyphicon glyphicon-thumbs-down\"></span>";
+	        break;
+	
+	        case 1: output = "<span class=\"glyphicon glyphicon-thumbs-up\"></span>";
+	        break;
+	
+	        case 2: output = "<span class=\"glyphicon glyphicon-question-sign\"></span>";
+	        break;
+	
+	        default: output = "ERROR";
+	}
+	
+	return output;
+	}
+	//Petite fonction pour les évals :
+	public String choixtostars(int choix){
+	String output;
+	switch(choix){
+	        case 0: output = "<span class=\"glyphicon glyphicon-question-sign\"></span>";
+	        break;
+	
+	        case 1: output = "<span class=\"glyphicon glyphicon-certificate\"></span>";
+	        break;
+	
+	        case 2: output = "<span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span>";
+	        break;
+	        
+	        case 3: output = "<span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span>";
+	        break;
+	        
+	        case 4: output = "<span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span><span class=\"glyphicon glyphicon-certificate\"></span>";
+	        break;
+	
+	        default: output = "ERROR";
+	}
+	
+	return output;
+	}
+	%>		
 	<%
+
+		
 		//Récupération des données d'entrées :
 		Object OTypeDeListe = request.getAttribute("TypeDeListe");
 		String TypeDeListe = (String)OTypeDeListe;
@@ -50,7 +97,7 @@
 		<%
 			}
 		} %>
-		<table class="table table-striped" border="1" cellpadding="5">
+		<table class="table table-striped table-hover" border="1" cellpadding="5">
 		<tr>
 			<th>USER</th>
 			<th>LIVRE</th>
@@ -60,9 +107,6 @@
 			<th>LECTURE JUSQU'AU BOUT</th>
 			<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
 			<th>RECOMMANDATION</th>
-			<th>LIVRE SUGGERE</th>
-			<th>USER LE PLUS PROCHE</th>
-			<th>USER LE PLUS LOIN</th>
 			<%	if(uRole==1) {%>
 				<th>ACTION SOUHAITEE</th>
 			<%} %>		
@@ -80,35 +124,62 @@
 			for(Evaluation e : le){
 			
 		%>
-			<tr>
+			<tr onclick="input" data-toggle="modal" href="#bookmodal<%=i %>"  >
+				<!-- Modal -->
+				<div class="modal fade" id="bookmodal<%=i%>" tabindex="<%=i %>" role="dialog" aria-labelledby="Informations Détaillées" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title" id="bookmodal<%=i%>">Informations sur les Matchs</h4>
+				      </div>
+				      <div class="modal-body">
+				            <p><strong>Voici les matchs de </strong><%=ListUser.get(i)%>
+				            <strong>sur le livre </strong><%=ListBook.get(i)%> </p>
+				            <p><strong>Qu'il a noté globalement: </strong><%=choixtostars(e.getNote())%></p>
+				            <p><strong>Qualité de l'écriture :</strong><%=choixtostars(e.getQualite())%></p>
+				            <p><strong>Intérêt :</strong><%=choixtostars(e.getInteret())%></p>
+				            <p><strong>Lecture jusqu'au bout :</strong><%=choixplussimple(e.getLecture())%></p>
+				            <p><strong>Souhait pour lire un livre du même auteur :</strong><%=choixplussimple(e.getSouhaitAuteur())%></p>
+				            <p><strong>Recommandé :</strong><%=choixplussimple(e.getRecommand())%></p>
+				            
+				            <% 
+				            if (ListMB.size()>0 && ListMB.get(i)!=null) { %>
+				            <p><strong>Livre conseillé :</strong><%=ListMB.get(i)%></p>
+				            <%
+				            } 
+				            else 
+				            {%>
+				            <p><strong>Livre conseillé :</strong> aucun</p>
+				            <%}%>
+				            
+				            <% 
+				            if (ListMRProche.size()>0 && ListMRLoin.size()>0 && ListMRProche.get(i)!=null && ListMRLoin.get(i)!=null){ %>
+				            <p><strong>User le plus proche : </strong><%=ListMRProche.get(i)%></p>
+				            <p><strong>User le plus loin : </strong><%=ListMRLoin.get(i)%></p>
+				            <%} 
+				            else {%>
+				            <p><strong>User le plus proche :</strong> aucun</p>
+				            <p><strong>User le plus loin :</strong> aucun</p>
+				            <%} %>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			
+			
+			
 				<td><%=ListUser.get(i)%></td>
 				<td><%=ListBook.get(i)%> </td>
-				<td><%=e.getNote()%></td>
-				<td><%=e.getQualite()%></td>
-				<td><%=e.getInteret()%></td>
-				<td><%=e.getLecture()%></td>
-				<td><%=e.getSouhaitAuteur()%></td>
-				<td><%=e.getRecommand()%></td>
-				
-				<% 
-				if (ListMB.size()>0 && ListMB.get(i)!=null) { %>
-				<td><%=ListMB.get(i)%></td>
-				<%
-				} 
-				else 
-				{%>
-				<td>aucun</td>
-				<%}%>
-				
-				<% 
-				if (ListMRProche.size()>0 && ListMRLoin.size()>0 && ListMRProche.get(i)!=null && ListMRLoin.get(i)!=null){ %>
-				<td><%=ListMRProche.get(i)%></td>
-				<td><%=ListMRLoin.get(i)%></td>
-				<%} 
-				else {%>
-				<td>aucun</td>
-				<td>aucun</td>
-				<%} %>
+				<td><%=choixtostars(e.getNote())%></td>
+				<td><%=choixtostars(e.getQualite())%></td>
+				<td><%=choixtostars(e.getInteret())%></td>
+				<td><%=choixplussimple(e.getLecture())%></td>
+				<td><%=choixplussimple(e.getSouhaitAuteur())%></td>
+				<td><%=choixplussimple(e.getRecommand())%></td>
 				
 				<%
 				if(uRole==1) {

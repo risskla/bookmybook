@@ -22,42 +22,58 @@
 </div>
 <br>
 
-<table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
+<table class="table table-striped table-hover" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>LOGIN</th>
-	<th>MDP</th>
 	<th>MAIL</th>
-	<th>ROLE</th>
 	<th>NOM</th>
 	<th>PRENOM</th>
-	<th>AGE</th>
-	<th>SEXE</th>
-	<th>ADRESSE</th>
-	<th>CODEPOSTALE</th>
-	<th>VILLE</th>
-	<th>TELEPHONE</th>
 	<th>ACTION</th>	
 </tr>
 <%
 		Object obj = request.getAttribute("listeU");
 		if(obj!=null){
 			List<User> lb = (List<User>)obj;
+			int i = 0;
 			for(User b : lb){
 	%>
-			<tr>
+			<tr onclick="input" data-toggle="modal" href="#bookmodal<%=i %>"  >
+			<!-- Modal -->
+			<div class="modal fade" id="bookmodal<%=i%>" tabindex="<%=i %>" role="dialog" aria-labelledby="Informations Détaillées" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="bookmodal<%=i%>">Informations Détaillées sur <%=b.getLogin()%></h4>
+			      </div>
+			      <div class="modal-body">
+			            <img src="http://www.kazeo.com/sites/fr/photos/425/dessiner-une-tete_4251109-L.jpeg" height='150px'>
+                        <p><strong>Login : </strong><%=b.getLogin()%></p>
+                        <p><strong>Mail : </strong><a href="mailto:<%=b.getMail()%>"><%=b.getMail()%></a></p>
+                        <h3>Informations personnels : <br></h3>
+                        <p><strong>Nom :</strong><%=b.getNom()%></p>
+                        <p><strong>Prénom : </strong><%=b.getPrenom()%></p>
+                        <p><strong>Age : </strong><%=b.getAge()%></p>
+                        <p><strong>Sexe : </strong><%=b.getSexe()%></p>
+                        <p><strong>Adresse : </strong><%=b.getAdresse()%></p>
+                        <p><strong>CP : </strong><%=b.getCodepostale()%></p>
+                        <p><strong>Ville : </strong><%=b.getVille()%></p>
+                        <p><strong>Téléphone : </strong><%=b.getTelephone()%></p>
+                        <h3>Informations admin : <br></h3>
+                        <p><strong>Mot de passe : </strong><%=b.getMdp()%></p>
+                        <p><strong>Role : </strong><%=b.getRole()%></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>			        
+			      </div>
+			    </div>
+			  </div>
+			</div>
 				<td><%=b.getLogin()%></td>
-				<td><%=b.getMdp()%></td>
 				<td><%=b.getMail()%></td>
-				<td><%=b.getRole()%></td>
 				<td><%=b.getNom()%></td>
 				<td><%=b.getPrenom()%></td>
-				<td><%=b.getAge()%></td>
-				<td><%=b.getSexe()%></td>
-				<td><%=b.getAdresse()%></td>
-				<td><%=b.getCodepostale()%></td>
-				<td><%=b.getVille()%></td>
-				<td><%=b.getTelephone()%></td>
-				
+
 
 				<td>
 					<a href="GestionUser?action=supprimer&id=<%=b.getId()%>">Supprimer</a>
@@ -65,7 +81,7 @@
 					<a href="GestionUser?action=affichEvalForUserAdmin&id=<%=b.getId()%>">Afficher évaluations</a>	
 				</td>
 			</tr>
-				<%
+				<%i++;
 			}	
 		}
 		else {

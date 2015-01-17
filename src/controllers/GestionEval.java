@@ -240,7 +240,7 @@ public class GestionEval extends HttpServlet {
 				   m=MatchBookDao.findByEval(e.getId()); 
 				   if (m!=null){ 
 					   b2=BooksDao.find(m.getLivreSuggereId());
-					   ListMB.add(b2.getTitre()+ " de " + b2.getAuteur() + " (numéro : " + b2.getId() + ")");
+					   ListMB.add(b2.getTitre()+ " de " + b2.getAuteur() + "(ISBN : " + b2.getIsbn() + ")");
 				   }else
 				   {
 					   ListMB.add("pas de match");
@@ -248,10 +248,10 @@ public class GestionEval extends HttpServlet {
 				   m2=MatchReaderDao.findByEval(e.getId());
 		           if (m2!=null) { 
 			           User up=UserDao.find(m2.getUserPlusProcheId()); 
-			           ListMRProche.add(up.getLogin() + "\n(" + up.getMail() + ")");
+			           ListMRProche.add(up.getLogin() + "\n(mail : <A HREF=\"mailto:" + up.getMail() + "\">" + up.getMail() + "</A>)");
 			           
 			           User ul=UserDao.find(m2.getUserPlusLoinId()); 
-			           ListMRLoin.add(ul.getLogin() + "\n(" + ul.getMail() + ")");
+			           ListMRLoin.add(ul.getLogin() + "\n(mail : <A HREF=\"mailto:" + ul.getMail() + "\">" + ul.getMail() + "</A>)");
 			       }else{
 			    	   ListMRProche.add("pas de match");
 			    	   ListMRLoin.add("pas de match");
