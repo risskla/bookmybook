@@ -8,19 +8,6 @@
 
 
 <%@include file="header.jsp"%>
-
-
-	<%
-		Object alert = request.getAttribute("alert");
-		if(alert!=null){
-			String alrt = (String)alert;
-			%>
-			<p>
-				<%=alrt%>	
-			</p>	
-			<%
-		}
-	%>
 				
 	<%
 		//Récupération des données d'entrées :
@@ -150,7 +137,9 @@
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionEval?action=${TypeDeListe}&page=${currentPage - 1}${bIdUrl}">Previous</a></td>
+        <td><a href="GestionEval?action=${TypeDeListe}&page=${currentPage - 1}${bIdUrl}">
+        <span class="glyphicon glyphicon-chevron-left"></span></a>
+        </td></a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -175,9 +164,12 @@
      if (curPage!= max) { 
     	 int newCurPage=curPage+1; 
      	System.out.println("la page suivante : "+ newCurPage); %>
-        <td><a href="GestionEval?action=${TypeDeListe}&page=<%=newCurPage%>${bIdUrl}">Next</a></td>
+  
+        <td><a href="GestionEval?action=${TypeDeListe}&page=<%=newCurPage%>${bIdUrl}">
+        <span class="glyphicon glyphicon-chevron-right"></span></a>
+        </td>
 	<%}}%>
-<br></br>
+<br>
 <%if(uRole==1){ %>
 <a href="GestionBooks">Retour à la liste globale</a>
 <%} %>

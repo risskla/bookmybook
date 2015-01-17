@@ -12,31 +12,29 @@
 
 
 <h1>Liste des livres en base</h1>
-<%
-	Object alert = request.getAttribute("alert");
-	if(alert!=null){
-		String alrt = (String)alert;
-		%>
-		<p>
-			<%=alrt%>	
-		</p>	
-		<%
-	}
-%>
-<form method="post" action="GestionBooks">
-Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input type='submit'  value='Recherche'/>
-</form>
-<form method="post" action="GestionBooks">
-<input type='submit'  value='Reinitialiser'/>
-</form>
 
-<h4>Trier l'affichage des livres par : </h4>
-<form method="post" action="GestionBooks">
-	<input name="sortType" type="radio" value="1"/>Titre
-	<input name="sortType" type="radio" value="2"/>ISBN
-	<input type="hidden" name="action" value="sort" />
-	<input type="submit" value="Afficher" />
-</form>
+<div class="row">
+	<div class="col-md-3">
+		<h4>Trier l'affichage des livres par : </h4>
+		<form method="post" action="GestionBooks">
+			<input name="sortType" type="radio" value="1"/>Titre
+			<input name="sortType" type="radio" value="2"/>ISBN
+			<input type="hidden" name="action" value="sort" />
+			<input type="submit" value="Afficher" />
+		</form>
+		</div>
+	<div class="col-md-6"></div>
+	<div class="col-md-3">
+		<form method="post" action="GestionBook">
+		Mot clé contenu dans le titre :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control" type='submit'  value='Recherche'/>
+		</form>
+		<form method="post" action="GestionBooks">
+		<input class="form-control" type='submit'  value='Reinitialiser'/>
+		</form>
+	</div>
+</div>
+
+
 <br>
 
 <table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
@@ -98,7 +96,8 @@ Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input ty
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionBooks?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionBooks?page=${currentPage - 1}"><span class="glyphicon glyphicon-chevron-left"></span>
+        </a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -121,7 +120,8 @@ Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input ty
     <%--For displaying Next link --%>
      <% 
      if (curPage!= max) { %>
-        <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
+        <td><a href="GestionBooks?page=${currentPage + 1}"><span class="glyphicon glyphicon-chevron-right"></span>
+        </a></td>
         <%} }%>
 <br></br>
 <a href="GestionBooks?action=ajouter">Ajouter un livre</a>

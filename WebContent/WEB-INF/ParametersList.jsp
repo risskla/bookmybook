@@ -8,19 +8,6 @@
 
 <h1>Historique des paramètres d'administration</h1>
 
-<%
-	Object alert = request.getAttribute("alert");
-	if(alert!=null){
-		String alrt = (String)alert;
-		%>
-		<p>
-			<%=alrt%>	
-		</p>	
-		<%
-	}
-%>
-
-
 <table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>ALGO MATCHBOOK</th>
@@ -59,7 +46,8 @@
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="ChoixAlgoServlet?action=afficher&page=${currentPage - 1}">Previous</a></td>
+        <td><a href="ChoixAlgoServlet?action=afficher&page=${currentPage - 1}">
+        <span class="glyphicon glyphicon-chevron-left"></span></a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -82,9 +70,10 @@
     <%--For displaying Next link --%>
      <% 
      if (curPage!= max) { %>
-        <td><a href="ChoixAlgoServlet?action=afficher&page=${currentPage + 1}">Next</a></td>
+        <td><a href="ChoixAlgoServlet?action=afficher&page=${currentPage + 1}">
+        <span class="glyphicon glyphicon-chevron-right"></span></a></td>
         <%} }%>
 <br></br>
-<a href="ChoixAlgoServlet">Entrer de nouveaux paramètres</a>
+<a href="ChoixAlgoServlet?action=formalgo">Entrer de nouveaux paramètres</a>
 
 <%@include file="footer.jsp"%>

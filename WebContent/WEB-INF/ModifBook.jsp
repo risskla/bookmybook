@@ -3,23 +3,28 @@
 
 <%@include file="header.jsp"%>
 
-<h3>Modifier les informations d'un livre</h3>
-
+<h2><span class="label label-default">Modifier les informations d'un livre</span></h2>
+<br>
 <form method="post" action="ModifBook">
-		<label for="titre">Titre :</label>
-		<input type="text" name="titre" id="titre" value="${bModif.titre}"/>
-		<br />
-		<label for="auteur">Auteur :</label>
-		<input type="text" name="auteur" id="auteur" value="${bModif.auteur}"/>
-		<br />
-		<label for="editeur">Editeur :</label>
-		<input type="text" name="editeur" id="editeur" value="${bModif.editeur}"/>
-		<br />
-		<label for="isbn">ISBN :</label>
-		<input type="text" name="isbn" id="isbn" value="${bModif.isbn}"/>
-		<br />
-		<label for="pays">Pays :</label>
-		<select name="pays" id="pays" value="${bModif.pays}"> 
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Titre :</span>
+		<input class="form-control" type="text" name="titre" id="titre" value="${bModif.titre}"/>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Auteur :</span>
+		<input class="form-control" type="text" name="auteur" id="auteur" value="${bModif.auteur}"/>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Editeur :</span>
+		<input class="form-control" type="text" name="editeur" id="editeur" value="${bModif.editeur}"/>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">ISBN :</span>
+		<input class="form-control" type="text" name="isbn" id="isbn" value="${bModif.isbn}"/>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Pays :</span>
+		<select class="form-control" name="pays" id="pays" value="${bModif.pays}"> 
 		<option value="France">France </option>
 		<option value="Afghanistan">Afghanistan </option>
 		<option value="Afrique_Centrale">Afrique_Centrale </option>
@@ -250,9 +255,10 @@
 		<option value="Zambie">Zambie </option>
 		<option value="Zimbabwe">Zimbabwe </option>
 		</select>
-		<br />
-		<label for="genre">Genre :</label>
-		<select name="genre" id="isbn" value="${bModif.genre}">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Genre :</span>
+		<select class="form-control" name="genre" id="isbn" value="${bModif.genre}">
 		<option value="Art">Art</option>
 		<option value="Actu">Actualité/politique/société</option>
 		<option value="Aventure">Aventure</option>
@@ -281,24 +287,28 @@
 		<option value="Tourisme">Tourisme</option>
 		<option value="Vie pratique">Vie pratique</option>
 		</select>
-		<br />
-		<label for="anneePubli">Annee de publication :</label>
-		<select name="anneePubli" id="anneePubli" value="${bModif.anneePubli}">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Annee de publication :</span>
+		<select class="form-control" name="anneePubli" id="anneePubli" value="${bModif.anneePubli}">
 	    <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
 		for(i=new Date().getFullYear();i>0;i--) 
 		document.write('<option value="'+i+'">'+i+'</option>'); 
 	    </script>
 	    </select>
-	    <br>
-	    <label for="resume">Résumé :</label>
-	    <input type="text" name="resume" id="resume" rows="10" cols="50" value="${bModif.resume}"/>
-	    <br>
-	    
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon" id="sizing-addon1">Résumé :</span>
+	    <input class="form-control" type="text" name="resume" id="resume" rows="10" cols="50" value="${bModif.resume}"/>
+	</div>
 		<input type="hidden" name="idModif" id = "idModif" value="${bModif.id}"/>
-		<input type="submit" value="Valider" />
-		</br>
-		</form>
+	<br>
+	<div class="input-group">
+		<input type="submit" class="btn btn-success" value="Valider" />
+	</div>
+	
+</form>
 
 
 <%@include file="footer.jsp"%>

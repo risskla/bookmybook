@@ -9,25 +9,18 @@
 <%@include file="header.jsp"%>
 
 <h1>Liste des users en base</h1>
-<form method="post" action="GestionUser">
-Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input type='submit'  value='Recherche'/>
-</form>
-<form method="post" action="GestionUser">
-<input type='submit'  value='Reinitialiser'/>
-</form>
+<div class="row">
+	<div class="col-md-9"></div>
+	<div class="col-md-3">
+		<form method="post" action="GestionUser">
+		Mot clé contenu dans le login :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control" type='submit'  value='Recherche'/>
+		</form>
+		<form method="post" action="GestionUser">
+		<input class="form-control" type='submit'  value='Reinitialiser'/>
+		</form>
+	</div>
+</div>
 <br>
-
-<%
-	Object alert = request.getAttribute("alert");
-	if(alert!=null){
-		String alrt = (String)alert;
-		%>
-		<p>
-			Message d'alert : <%=alrt%>	
-		</p>	
-		<%
-	}
-%>
 
 <table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
 <tr>
@@ -94,7 +87,7 @@ Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input ty
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionUser?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionUser?page=${currentPage - 1}"><span class="glyphicon glyphicon-chevron-left"></span></a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -117,7 +110,7 @@ Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input ty
     <%--For displaying Next link --%>
      <% 
      if (curPage!= max) { %>
-        <td><a href="GestionUser?page=${currentPage + 1}">Next</a></td>
+        <td><a href="GestionUser?page=${currentPage + 1}"><span class="glyphicon glyphicon-chevron-right"></span></a></td>
         <%} }%>
 <br></br>
 <a href="GestionUser?action=ajouter">Ajouter un user</a>

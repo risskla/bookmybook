@@ -95,6 +95,7 @@ public class GestionBooks extends HttpServlet {
 				request.getRequestDispatcher("WEB-INF/ModifBook.jsp").forward(request, response);  
 				
 			} else if (action.equals("ajouter")) {
+				forward=1;
 				request.getRequestDispatcher("WEB-INF/createBookForm.jsp").forward(request, response);  
 				
 			}

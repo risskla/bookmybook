@@ -40,9 +40,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		//affichage simple
-
-		doPost(request, response); 
-    	
+		doPost(request, response);
 	}
 
 	/**
@@ -51,8 +49,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 
-		
-		if (request.getParameter("action")!=null) {
+		if (request.getParameter("action")!=null && request.getParameter("action").equals("afficher")) {
 			
 			System.out.println("afficher admin parameters"); 
 			int page = 1;
@@ -71,6 +68,11 @@ public class ChoixAlgoServlet extends HttpServlet {
 		}
 		
 		else {
+		
+		if (request.getParameter("action")!=null && request.getParameter("action").equals("formalgo")) {
+			request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response);  			
+		}
+		else{
 		
 		int matchBook=0;
 		int matchReader=0; 
@@ -94,14 +96,14 @@ public class ChoixAlgoServlet extends HttpServlet {
 		    
 			if (matchBook==a.getAlgoMatchBook() && matchReader==a.getAlgoMatchReader()) {
 				request.setAttribute("alert", "Les paramètres sélectionnés sont identiques à ceux déjà existants ! ");
-				request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response);  
+				request.getRequestDispatcher("ChoixAlgoServlet?action=formalgo").forward(request, response);  
 			} //OK ici
 			
 			else { //les derniers paramètres sont bien différents des nouveaux
 				AdminParameters newParameters= new AdminParameters(0, matchBook, matchReader, dateS);
 				AdminParametersDao.insert(newParameters); 
 				request.setAttribute("alert", "Les paramètres ont été modifiés avec succès ! ");	
-				request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response); 
+				request.getRequestDispatcher("ChoixAlgoServlet?action=formalgo").forward(request, response); 
 				
 			}
 		}
@@ -113,6 +115,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 			request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response); 
 		}
 		
+		}
 		}
 	}
 
