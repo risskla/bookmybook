@@ -44,7 +44,7 @@
 	      <ul class="nav navbar-nav navbar-right">
 	      	<%if(role==1){%>
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestions des Users <span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestion des Users <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
 	            <li><a href="GestionUser">Consulter/Chercher dans la liste de tous les users</a></li>
 	            <li><a href="GestionUser?action=ajouter">Ajouter un user</a></li>
@@ -66,7 +66,7 @@
 	          </ul>
 	        </li>
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestions des Matchs <span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestion des Matchs <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
 	            <li><a href="ChoixAlgoServlet?action=formalgo">Choisir les algorithmes</a></li>
 	            <li><a href="ChoixAlgoServlet?action=afficher">Consulter l'historique des paramètres de match</a></li>
@@ -74,7 +74,7 @@
 	        </li>
 	        <%}else{%>
 	        <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestions des Matchs <span class="caret"></span></a>
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Gestion des Matchs <span class="caret"></span></a>
 	          <ul class="dropdown-menu" role="menu">
 	            <li><a href="GestionUser?action=affichEvalForUser">Historique de vos évaluations et de vos matches</a></li>
 	          </ul>

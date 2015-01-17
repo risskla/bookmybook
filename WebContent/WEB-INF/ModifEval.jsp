@@ -4,9 +4,9 @@
 
 <%@include file="header.jsp"%>
 
-<h2><span class="label label-default">Modifier d'une évaluation</span></h2>
+<h2><span class="label label-default">Modifier d'une évaluation de l'utilisateur  ${Login}</span></h2><br>
 <h3>
-	<span class="label label-info">Livre : "${Titre}" de ${Auteur} <br><br> (isbn : ${Isbn}) User : ${Login}
+	<span class="label label-info">Livre : "${Titre}" de ${Auteur} (ISBN : ${Isbn})
 	</span>
 </h3>
 

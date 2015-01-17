@@ -48,8 +48,8 @@ Le recommanderiez-vous à un ami  ?
 <br><br>
 
 <input type="hidden" name="idBook" id = "idBook" value="${bEval.id}"/>
-<input type='submit'  value='SEND'/>
-<input type='reset'  value='CLEAR'/>
+<input class="btn btn-success" type='submit'  value='Valider'/>
+<input class="btn btn-default" type='reset'  value='Réinitialiser'/>
 </form>
 
 <%@include file="footer.jsp"%>

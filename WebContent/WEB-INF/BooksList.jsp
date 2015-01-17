@@ -45,16 +45,12 @@
 
 <br>
 
-<table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
+<table class="table table-striped table-hover" data-link="row" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>TITRE</th>
 	<th>AUTEUR</th>
-	<th>EDITEUR</th>
 	<th>ISBN</th>
-	<th>PAYS</th>
 	<th>GENRE</th>
-	<th>ANNEE DE PUBLICATION</th>
-	<th>RESUME</th>
 	<th>ACTION SOUHAITEE</th>
 	
 </tr>
@@ -63,33 +59,55 @@
 		if(obj!=null){
 			//User u= get le user actuel
 			List<Book> lb = (List<Book>)obj;
+			int i=0;
 			for(Book b : lb){
 	%>
-			<tr>
+			<tr onclick="input" data-toggle="modal" href="#bookmodal<%=i %>"  >
+			<!-- Modal -->
+			<div class="modal fade" id="bookmodal<%=i%>" tabindex="<%=i %>" role="dialog" aria-labelledby="Informations Détaillées" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title" id="bookmodal<%=i%>">Informations Détaillées</h4>
+			      </div>
+			      <div class="modal-body">
+			            <h3>Titre : <%=b.getTitre()%></h3>
+			            <p><strong>Auteur : </strong><%=b.getAuteur()%></p>
+			            <p><strong>Editeur : </strong><%=b.getEditeur()%></p>
+			            <p><strong>ISBN : </strong><%=b.getIsbn()%></p>
+			            <p><strong>Pays : </strong><%=b.getPays()%></p>
+			            <p><strong>Genre : </strong><%=b.getGenre()%></p>
+			            <p><strong>Année de publication : </strong><%=b.getAnneePubli()%></p>
+			            <p><strong>Résumé : </strong><br><%=b.getResume()%></p>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-warning"><a href="GestionBooks?action=evaluer&id=<%=b.getId()%>"><span class="glyphicon glyphicon-pencil">Evaluer</span></a></button>
+			        
+			      </div>
+			    </div>
+			  </div>
+			</div>
 				<td><%=b.getTitre()%></td>
 				<td><%=b.getAuteur()%></td>
-				<td><%=b.getEditeur()%></td>
 				<td><%=b.getIsbn()%></td>
-				<td><%=b.getPays()%></td>
 				<td><%=b.getGenre()%></td>
-				<td><%=b.getAnneePubli()%></td>
-				<td><%=b.getResume()%></td>
 				<td>
 				
 				<%
 					if((int)request.getAttribute("role")==1) {
 				%>
-					<a href="GestionBooks?action=supprimer&id=<%=b.getId()%>">Supprimer</a><br></br>
-					<a href="GestionBooks?action=modifier&id=<%=b.getId()%>">Modifier</a><br></br>
-					<a href="GestionEval?action=affichEvalForBook&idBook=<%=b.getId()%>">Afficher les evaluations pour ce livre</a><br></br>
+					<a href="GestionBooks?action=supprimer&id=<%=b.getId()%>">Supprimer</a><br>
+					<a href="GestionBooks?action=modifier&id=<%=b.getId()%>">Modifier</a><br>
+					<a href="GestionEval?action=affichEvalForBook&idBook=<%=b.getId()%>">Afficher ses évaluations</a><br>
 				<% } %>
 					<a href="GestionBooks?action=evaluer&id=<%=b.getId()%>">Evaluer</a>
 				</td>
 			</tr>
-				<%
+				<% i++;
 			}
-			
-			
+
 		}
 	%>
 </table>
