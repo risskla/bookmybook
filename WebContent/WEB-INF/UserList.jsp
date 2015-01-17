@@ -13,7 +13,7 @@
 	<div class="col-md-9"></div>
 	<div class="col-md-3">
 		<form method="post" action="GestionUser">
-		Mot clé contenu dans le login :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control" type='submit'  value='Recherche'/>
+		Mot clé contenu dans le login :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control btn btn-info" type='submit'  value='Recherche'/>
 		</form>
 		<form method="post" action="GestionUser">
 		<input class="form-control" type='submit'  value='Reinitialiser'/>

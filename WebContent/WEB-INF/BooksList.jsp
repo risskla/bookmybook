@@ -17,16 +17,24 @@
 	<div class="col-md-3">
 		<h4>Trier l'affichage des livres par : </h4>
 		<form method="post" action="GestionBooks">
+		<div class="radio">
+		<label>
 			<input name="sortType" type="radio" value="1"/>Titre
+		</label>
+		</div>
+		<div class="radio">
+		<label>
 			<input name="sortType" type="radio" value="2"/>ISBN
+		</label>
+		</div>
 			<input type="hidden" name="action" value="sort" />
-			<input type="submit" value="Afficher" />
+			<input class="btn btn-info" type="submit" value="Afficher" />
 		</form>
 		</div>
 	<div class="col-md-6"></div>
 	<div class="col-md-3">
 		<form method="post" action="GestionBooks">
-		Mot clé contenu dans le titre :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control" type='submit'  value='Recherche'/>
+		Mot clé contenu dans le titre :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control btn btn-info" type='submit'  value='Recherche'/>
 		</form>
 		<form method="post" action="GestionBooks">
 		<input class="form-control" type='submit'  value='Reinitialiser'/>
