@@ -25,7 +25,7 @@
 		</div>
 	<div class="col-md-6"></div>
 	<div class="col-md-3">
-		<form method="post" action="GestionBook">
+		<form method="post" action="GestionBooks">
 		Mot clé contenu dans le titre :  <input class="form-control" type='text'  name='keyword'/> <input class="form-control" type='submit'  value='Recherche'/>
 		</form>
 		<form method="post" action="GestionBooks">
