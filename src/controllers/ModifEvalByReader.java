@@ -112,7 +112,7 @@ public class ModifEvalByReader extends HttpServlet {
 					+ "Recommandation : " + recommand + "\n " ; 
 			
 			String sujet="Modif d'une evaluation demandee par un reader"; 
-			PrintWriter out = response.getWriter();
+
 
 					try {
 						MailingTools.sendMail(exp, sujet, msg);

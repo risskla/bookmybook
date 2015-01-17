@@ -105,11 +105,11 @@ public class AddEval extends HttpServlet {
 			//CALCUL DU MATCH BOOK
 			
 			AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
-			MatchBook m=null; 
+			MatchBook m=null;
 			MatchReader m2=null; 
 			Book b=null;
 			User userPlusProche=null;
-			User userPlusLoin=null; 
+			User userPlusLoin=null;
 			Evaluation e2=EvaluationDao.findByBookAndUser(book, user); 
 			
 			System.out.println("dans add eval avant matchbook, jai le user "+user+" et l'eval : "+e2.getId()); 

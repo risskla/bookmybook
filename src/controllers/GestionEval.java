@@ -42,7 +42,7 @@ public class GestionEval extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//sécurité
 		int userIdcheck= (int)request.getSession().getAttribute("id");
 		if(userIdcheck==-1){
 			request.setAttribute("alert", "Veuillez vous logger !");
@@ -74,10 +74,8 @@ public class GestionEval extends HttpServlet {
 				System.out.println("id de l'eval à supprimer : "+id); 
 				MatchBookDao.deleteByEval(id);  
 				MatchReaderDao.deleteByEval(id); 
-				PrintWriter out = response.getWriter();
-				response.setContentType("text/html");
 				request.setAttribute("alert", "Suppression de l'evaluation n° " + id +  " réalisée avec succes !");
-				doPost(request,response);
+				request.getRequestDispatcher("GestionEval?action=afficher").forward(request, response);  
 				
 			} else if (action.equals("modifier")) {
 				Evaluation currenteval = EvaluationDao.find(id);

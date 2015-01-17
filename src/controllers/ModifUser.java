@@ -2,13 +2,17 @@ package controllers;
 
 import java.io.IOException;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import services.MailingTools;
+import beans.Book;
 import beans.User;
+import dao.BooksDao;
 import dao.UserDao;
 
 /**
@@ -187,6 +191,7 @@ public class ModifUser extends HttpServlet {
 				//Correspond à create user :
 				//verif s'il existe pas déjà :
 				if(UserDao.findByLogin(login)!=null){
+					//Modification de l'user :
 					alert_msg = alert_msg + "Login déjà utilisé !<br>";
 					request.setAttribute("alert", alert_msg);
 					request.setAttribute("uModif", u);
@@ -194,10 +199,39 @@ public class ModifUser extends HttpServlet {
 					
 				}
 				else{
-					//TODO generate password + mailing ici :
+					//Création de l'user :
 					String default_password = "password";
 					u.setMdp(default_password);
-					UserDao.insert(u); 
+					UserDao.insert(u); 			
+					
+					//mailing :
+					String exp = "clarisse.durand.henriot@gmail.com";
+					String msg="Bonjour, \n"
+							+ "Merci d'avoir choisi BookMyBook pour gérer vos relations littéraires !\n\n"
+							+ "Voici vos informations de connexion : !\n "
+							+ "Votre Login : " + u.getLogin() + "\n " 
+							+ "Votre Mot de Passe : " + default_password + "\n\n " 
+							+ "A bientôt !\n\n " 
+							+ "Cordialement,\n\n " 
+							+ "Toute l'équipe de BookMyBook.\n ";
+					
+					String sujet="Création de votre compte utilisateur sur BookMyBook"; 
+
+						
+							try {
+								System.out.println("Envoi du mail:");
+								MailingTools.sendMail(exp, sujet, msg);	
+								alert_msg = alert_msg + "Envoi du mail en cours...<br>";
+								request.setAttribute("alert", alert_msg);
+								request.getRequestDispatcher("GestionUser").forward(request, response);
+							} catch (MessagingException e2) {
+								System.out.println("PB lors de l'envoi !");
+								alert_msg = alert_msg + "Erreur lors de l'envoi de votre demande<br>Message d'erreur : "+ e2.getMessage() +"<br>";
+								alert_msg = alert_msg + "Création de l'utilisateur " + u.getLogin() +  " en base réalisée !<br>";
+								request.setAttribute("alert", alert_msg);
+								request.getRequestDispatcher("GestionUser").forward(request, response);
+							}
+					alert_msg = alert_msg + "Envoi du mail réalisé !<br>";	
 					alert_msg = alert_msg + "Création de l'utilisateur " + u.getLogin() +  " réalisée avec Succés !<br>";
 				}
 			}

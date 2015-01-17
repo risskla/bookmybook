@@ -41,6 +41,7 @@ public class GestionUser extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//sécurité
 		int userIdcheck= (int)request.getSession().getAttribute("id");
 		if(userIdcheck==-1){
 			request.setAttribute("alert", "Veuillez vous logger !");
