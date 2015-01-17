@@ -1,14 +1,7 @@
+<%@page import="java.io.Console"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@page import="beans.User"%>
-<%@page import="dao.UserDao"%>
-<%@page import="beans.Book"%>
-<%@page import="dao.BooksDao"%>
-<%@page import="beans.Evaluation"%>
-<%@page import="dao.EvaluationDao"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.Comparator"%>
-<%@page import="java.io.PrintWriter"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -16,130 +9,61 @@
 <title>Modification d'une evaluation</title>
 </head>
 <body>
-<%Evaluation e=(Evaluation) request.getAttribute("eModif");
-Book b=BooksDao.find(e.getLivreId());
-User u=UserDao.find(e.getUserId());%>
+
 <h1>Modification d'une évaluation</h1> 
-Livre : "<%=b.getTitre()%>" de <%=b.getAuteur()%> (isbn : <%=b.getIsbn()%>)<br>
-User : <%=u.getLogin()%>
+Livre : "${Titre}" de ${Auteur} (isbn : ${Isbn})<br>
+User : ${Login}
 <br><br>
 <form method='post' action='ModifEval'>
 Note globale : 
-<%if (e.getNote()==1) {%>
-<INPUT type= "radio" name="note" id="note" value="1" checked="true">1
-<INPUT type= "radio" name="note" id="note" value="2">2
-<INPUT type= "radio" name="note" id="note" value="3">3
-<INPUT type= "radio" name="note" id="note" value="4">4
-<%} 
-else if (e.getNote()==2) {%>
-<INPUT type= "radio" name="note" id="note" value="1">1
-<INPUT type= "radio" name="note" id="note" value="2" checked="true">2
-<INPUT type= "radio" name="note" id="note" value="3">3
-<INPUT type= "radio" name="note" id="note" value="4">4
-<%} 
-else if (e.getNote()==3) {%>
-<INPUT type= "radio" name="note" id="note" value="1">1
-<INPUT type= "radio" name="note" id="note" value="2">2
-<INPUT type= "radio" name="note" id="note" value="3" checked="true">3
-<INPUT type= "radio" name="note" id="note" value="4">4
-<%} 
-else if (e.getNote()==4) {%>
-<INPUT type= "radio" name="note" id="note" value="1">1
-<INPUT type= "radio" name="note" id="note" value="2">2
-<INPUT type= "radio" name="note" id="note" value="3">3
-<INPUT type= "radio" name="note" id="note" value="4" checked="true">4
-<%}%>
+<%int note = (int)request.getAttribute("Note"); %>
+<INPUT type= "radio" name="note" id="note" value="1" <%if (note==1) {%><%="checked"%><%}%> >1
+<INPUT type= "radio" name="note" id="note" value="2" <%if (note==2) {%><%="checked"%><%}%> >2
+<INPUT type= "radio" name="note" id="note" value="3" <%if (note==3) {%><%="checked"%><%}%> >3
+<INPUT type= "radio" name="note" id="note" value="4" <%if (note==4) {%><%="checked"%><%}%> >4
+
 
 <br><br>
 Qualité d'écriture : 
-<%if (e.getQualite()==1) {%>
-<INPUT type= "radio" name="qualite" id="qualite" value="1" checked="true">1
-<INPUT type= "radio" name="qualite" id="qualite" value="2">2
-<INPUT type= "radio" name="qualite" id="qualite" value="3">3
-<INPUT type= "radio" name="qualite" id="qualite" value="4">4
-<%}
-else if (e.getQualite()==2) { %>
-<INPUT type= "radio" name="qualite" id="qualite" value="1">1
-<INPUT type= "radio" name="qualite" id="qualite" value="2" checked="true">2
-<INPUT type= "radio" name="qualite" id="qualite" value="3">3
-<INPUT type= "radio" name="qualite" id="qualite" value="4">4
-<%}
-else if (e.getQualite()==3) { %>
-<INPUT type= "radio" name="qualite" id="qualite" value="1">1
-<INPUT type= "radio" name="qualite" id="qualite" value="2">2
-<INPUT type= "radio" name="qualite" id="qualite" value="3" checked="true">3
-<INPUT type= "radio" name="qualite" id="qualite" value="4">4
-<%}
-else if (e.getQualite()==4) { %>
-<INPUT type= "radio" name="qualite" id="qualite" value="1">1
-<INPUT type= "radio" name="qualite" id="qualite" value="2">2
-<INPUT type= "radio" name="qualite" id="qualite" value="3">3
-<INPUT type= "radio" name="qualite" id="qualite" value="4" checked="true">4
-<%}%>
+<%int qualite = (int)request.getAttribute("Qualite");%>
+<INPUT type= "radio" name="qualite" id="qualite" value="1" <%if (qualite==1) {%><%="checked"%><%}%> >1
+<INPUT type= "radio" name="qualite" id="qualite" value="2" <%if (qualite==2) {%><%="checked"%><%}%> >2
+<INPUT type= "radio" name="qualite" id="qualite" value="3" <%if (qualite==3) {%><%="checked"%><%}%> >3
+<INPUT type= "radio" name="qualite" id="qualite" value="4" <%if (qualite==4) {%><%="checked"%><%}%> >4
 
 <br><br>
 Intérêt sur le sujet : 
-<%if (e.getInteret()==1) {%>
-<INPUT type= "radio" name="interet" id="interet" value="1" checked="true">1
-<INPUT type= "radio" name="interet" id="interet" value="2">2
-<INPUT type= "radio" name="interet" id="interet" value="3">3
-<INPUT type= "radio" name="interet" id="interet" value="4">4
-<%}
-else if (e.getInteret()==2) { %>
-<INPUT type= "radio" name="interet" id="interet" value="1">1
-<INPUT type= "radio" name="interet" id="interet" value="2" checked="true">2
-<INPUT type= "radio" name="interet" id="interet" value="3">3
-<INPUT type= "radio" name="interet" id="interet" value="4">4
-<%}
-else if (e.getInteret()==3) { %>
-<INPUT type= "radio" name="interet" id="interet" value="1">1
-<INPUT type= "radio" name="interet" id="interet" value="2">2
-<INPUT type= "radio" name="interet" id="interet" value="3" checked="true">3
-<INPUT type= "radio" name="interet" id="interet" value="4">4
-<%}
-else if (e.getInteret()==4) { %>
-<INPUT type= "radio" name="interet" id="interet" value="1">1
-<INPUT type= "radio" name="interet" id="interet" value="2">2
-<INPUT type= "radio" name="interet" id="interet" value="3">3
-<INPUT type= "radio" name="interet" id="interet" value="4" checked="true">4
-<%}%>
+<%int interet = (int)request.getAttribute("Interet"); %>
+<INPUT type= "radio" name="interet" id="interet" value="1" <%if (interet==1) {%><%="checked"%><%}%> >1
+<INPUT type= "radio" name="interet" id="interet" value="2" <%if (interet==2) {%><%="checked"%><%}%> >2
+<INPUT type= "radio" name="interet" id="interet" value="3" <%if (interet==3) {%><%="checked"%><%}%> >3
+<INPUT type= "radio" name="interet" id="interet" value="4" <%if (interet==4) {%><%="checked"%><%}%> >4
+
 <br><br>
 
 L'avez-vous lu jusqu'au bout ? 
-<%if (e.getLecture()==0) {%>
-<INPUT type= "radio" name="lecture" id="lecture"  value="0" checked="true">Non
-<INPUT type= "radio" name="lecture" id="lecture" value="1">Oui
-<%}
-else if (e.getLecture()==1) { %>
-<INPUT type= "radio" name="lecture" id="lecture"  value="0">Non
-<INPUT type= "radio" name="lecture" id="lecture" value="1" checked="true">Oui
-<%}%>
+<%int lecture = (int)request.getAttribute("Lecture"); %>
+<INPUT type= "radio" name="lecture" id="lecture"  value="0" <%if (lecture==0) {%><%="checked"%><%}%> >Non
+<INPUT type= "radio" name="lecture" id="lecture" value="1" <%if (lecture==1) {%><%="checked"%><%}%> >Oui
+
 <br><br>
 
 Souhaiteriez-vous lire un autre livre du même auteur ?
-<%if (e.getSouhaitAuteur()==0) {%>
-<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur"  value="0" checked="true">Non
-<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur" value="1">Oui
-<%}
-else if (e.getSouhaitAuteur()==1) { %>
-<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur"  value="0">Non
-<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur" value="1" checked="true">Oui
-<%}%>
+<%int souhaitauteur = (int)request.getAttribute("SouhaitAuteur"); %>
+<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur"  value="0" <%if (souhaitauteur==0) {%><%="checked"%><%}%> >Non
+<INPUT type= "radio" name="souhaitAuteur" id="souhaitAuteur" value="1" <%if (souhaitauteur==1) {%><%="checked"%><%}%> >Oui
+
 <br><br>
 
 Le recommanderiez-vous à un ami  ?
-<%if (e.getRecommand()==0) {%>
-<INPUT type= "radio" name="recommandation" id="recommandation" value="0" checked="true">Non
-<INPUT type= "radio" name="recommandation" id="recommandation" value="1">Oui
-<%}
-else if (e.getRecommand()==1) {%>
-<INPUT type= "radio" name="recommandation" id="recommandation" value="0">Non
-<INPUT type= "radio" name="recommandation" id="recommandation" value="1" checked="true">Oui
-<%}%>
+<%int recommand = (int)request.getAttribute("Recommand"); %>
+<INPUT type= "radio" name="recommandation" id="recommandation" value="0" <%if (recommand==0) {%><%="checked"%><%}%> >Non
+<INPUT type= "radio" name="recommandation" id="recommandation" value="1" <%if (recommand==1) {%><%="checked"%><%}%> >Oui
+
 <br><br>
-<input type="hidden" name="idModif" id = "idModif" value="${eModif.id}"/>
-<input type="hidden" name="idBook" id = "idBook" value=<%=e.getLivreId()%> />
-<input type="hidden" name="idUser" id = "idUser" value=<%=e.getUserId()%> />
+<input type="hidden" name="idModif" id = "idModif" value="${IdModif}"/>
+<input type="hidden" name="idBook" id = "idBook" value="${LivreId}" />
+<input type="hidden" name="idUser" id = "idUser" value="${UserId}" />
 <input type='submit'  value='SEND'/>
 <input type='reset'  value='CLEAR'/>
 </form>

@@ -145,7 +145,7 @@
         <td><a href="GestionEval?action=afficher&page=<%=newCurPage%>">Next</a></td>
         <%} }%>
 <br></br>
-<a href="BooksList.jsp">Ajouter une evaluation</a>
+<a href="GestionBooks">Ajouter une evaluation</a>
 
 </body>
 </html>

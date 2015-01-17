@@ -120,68 +120,47 @@ public class AddEval extends HttpServlet {
 				MatchBookDao.insert(m); 
 				b=BooksDao.find(m.getLivreSuggereId()); 
 				System.out.println("livre conseille : "+m.getLivreSuggereId());
+				
+				request.setAttribute("Titre",b.getTitre());
+				request.setAttribute("Auteur",b.getAuteur());
+				request.setAttribute("Editeur",b.getEditeur());
+				request.setAttribute("Isbn",b.getIsbn());
+				request.setAttribute("Genre",b.getGenre());
+				request.setAttribute("Pays",b.getPays());
+				request.setAttribute("Resume",b.getResume());
 			}
 			
 			//CALCUL DU MATCH USER
 			
-			if (a==null || a.getAlgoMatchReader()==1) m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
-			else m2=MatchReaderDao.calculMatchReader2(user, e2.getId()); 
+			if (a==null || a.getAlgoMatchReader()==1){
+				m2=MatchReaderDao.calculMatchReader1(user, e2.getId());
+			}
+			else{ m2=MatchReaderDao.calculMatchReader2(user, e2.getId());
+			}
 			
 			if (m2!=null)  {
 				MatchReaderDao.insert(m2); 
 				userPlusProche=UserDao.find(m2.getUserPlusProcheId()); 
-				userPlusLoin=UserDao.find(m2.getUserPlusLoinId()); 
+				userPlusLoin=UserDao.find(m2.getUserPlusLoinId());
+				request.setAttribute("userPlusProche",userPlusProche.getLogin());
+				request.setAttribute("userPlusLoin",userPlusLoin.getLogin());
 			}
 			
 			//recapitulatif de l'eval et du match nouvellement calculé
-			response.setContentType("text/html");
-			try {
 			
-			out.println("<!DOCTYPE html>");
-			out.println("<html><head>"); 
-			out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-			out.println("<title>Insertion d'une evaluation</title></head>");
-			out.println("<body>");
-			out.println("<h1>Evaluation insérée dans la base avec succès ! </h1>");
-			out.println("<p> Note globale : "+request.getParameter("note") +"</p");
-			out.println("<p> Qualité d'écriture : "+request.getParameter("qualite") +"</p");
-			out.println("<p> Intérêt : "+request.getParameter("interet") +"</p");
-			out.println("<p> Lecture jusqu'à la fin : "+request.getParameter("lecture") +"</p");
-			out.println("<p> Souhait pour livre un livre du même auteur : "+request.getParameter("souhaitAuteur") +"</p");
-			out.println("<p> Recommandation du livre :  "+request.getParameter("recommandation") +"</p");
+
+			request.setAttribute("note",request.getParameter("note"));
+			request.setAttribute("qualite",request.getParameter("qualite"));
+			request.setAttribute("interet",request.getParameter("interet"));
+			request.setAttribute("lecture",request.getParameter("lecture"));
+			request.setAttribute("souhaitAuteur",request.getParameter("souhaitAuteur"));
+			request.setAttribute("recommandation",request.getParameter("recommandation"));
 			
-			if (m!=null) {
-			out.println("<h1>Nous vous proposons un prochain livre à lire ! </h1>");
-			out.println("<p> Titre : "+b.getTitre() +"</p");
-			out.println("<p> Auteur : "+b.getAuteur() +"</p");
-			out.println("<p> Editeur : "+b.getEditeur() +"</p");
-			out.println("<p> ISBN : "+b.getIsbn() +"</p");
-			out.println("<p> Genre : "+b.getGenre() +"</p");
-			out.println("<p> Pays :  "+b.getPays()+"</p");
-			out.println("<p> Resume :  "+b.getResume() +"</p");
-			}
-			else {
-				out.println("<h1>Il n'y a pas assez de livres en base pour vous proposer un match livre!</h1>");
-			}
-			if (m2!=null) {
-			out.println("<h1>Le lecteur le plus proche de vous est : </h1>");
-			out.println("<p> Login : "+userPlusProche.getLogin() +"</p");
-			out.println("<h1>Le lecteur le plus eloigne de vous est : </h1>");
-			out.println("<p> Login : "+userPlusLoin.getLogin() +"</p");
-			}
-			else {
-				out.println("<h1>Il n'y a pas assez de lecteurs en base pour vous proposer un match lecteur!</h1>");
-			}
+			request.setAttribute("m",m);
+			request.setAttribute("m2",m2);
 			
-			out.println("</body>");
-			out.println("</html>");
-			//lien vers la page precedente 
-			out.println("<a href='GestionBooks'>Retour à la liste des livres</a>"); 
-			}
 			
-			finally {
-				out.close(); 
-			}
+			request.getRequestDispatcher("StatusAddEval.jsp").forward(request, response);
 	}
 	}
 

@@ -55,25 +55,50 @@ public class ModifEvalByReader extends HttpServlet {
 			//ici valeur juste de test
 			String exp = "clarisse.durand.henriot@gmail.com"; 
 
-				//recuperation des infos 
-			String bookId = request.getParameter("idBook");
-			String userId = request.getParameter("idUser");
-			String noteG = request.getParameter("note");
-			String qualiteG = request.getParameter("qualite"); //à transformer en int
-			String interetG = request.getParameter("interet");
-			String lectureG = request.getParameter("lecture");
-			String souhaitAuteurG = request.getParameter("souhaitAuteur");
-			String recommandG = request.getParameter("recommandation");
 			PrintWriter out2 = response.getWriter();
 			
-			int book=Integer.parseInt(bookId); 
-			int user=Integer.parseInt(userId); 
-			int note=Integer.parseInt(noteG); 
-			int qualite=Integer.parseInt(qualiteG); 
-			int interet=Integer.parseInt(interetG); 
-			int lecture=Integer.parseInt(lectureG); 
-			int souhaitAuteur=Integer.parseInt(souhaitAuteurG); 
-			int recommand=Integer.parseInt(recommandG); 
+			int book=-1;
+			int user=-1; 
+			int note=0; 
+			int qualite=0; 
+			int interet=0; 
+			int lecture=2;
+			int souhaitAuteur=2; 
+			int recommand=2; 
+			
+			if (request.getParameter("idBook")!=null) {
+				String bookId = request.getParameter("idBook");
+				book=Integer.parseInt(bookId); 
+			}
+			if (request.getParameter("idUser")!=null) {
+				String userId = request.getParameter("idUser"); 
+				user=Integer.parseInt(userId); 
+			}
+			
+			if (request.getParameter("note")!=null) {
+				String noteG = request.getParameter("note");
+			    note=Integer.parseInt(noteG); 
+			}
+			if (request.getParameter("qualite")!=null) {
+				String qualiteG = request.getParameter("qualite"); 
+				qualite=Integer.parseInt(qualiteG); 
+			}
+			if (request.getParameter("interet")!=null) {
+				String interetG = request.getParameter("interet");
+				interet=Integer.parseInt(interetG); 
+			}
+			if (request.getParameter("lecture")!=null) { 
+				String lectureG = request.getParameter("lecture");
+				lecture=Integer.parseInt(lectureG); 
+			}
+			if (request.getParameter("souhaitAuteur")!=null) {
+				String souhaitAuteurG = request.getParameter("souhaitAuteur");
+				souhaitAuteur=Integer.parseInt(souhaitAuteurG); 
+			}
+			if (request.getParameter("recommandation")!=null) {
+				String recommandG = request.getParameter("recommandation");
+				recommand=Integer.parseInt(recommandG); 
+			}
 			
 			Evaluation e=EvaluationDao.findByBookAndUser(book, user); 
 			

@@ -140,7 +140,7 @@ else {%>
         <td><a href="GestionEval?action=affichEvalForBook&idBook=<%=idBook%>&page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="BooksList.jsp">Retour à la liste des livres</a>
+<a href="GestionBooks">Retour à la liste des livres</a>
 <%} %>
 </body>
 </html>

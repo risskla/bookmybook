@@ -56,16 +56,41 @@ public class ModifEval extends HttpServlet {
 		String lectureG = request.getParameter("lecture");
 		String souhaitAuteurG = request.getParameter("souhaitAuteur");
 		String recommandG = request.getParameter("recommandation");
-		PrintWriter out2 = response.getWriter();
 		
-		int book=Integer.parseInt(bookId); 
-		int user=Integer.parseInt(userId); 
-		int note=Integer.parseInt(noteG); 
-		int qualite=Integer.parseInt(qualiteG); 
-		int interet=Integer.parseInt(interetG); 
-		int lecture=Integer.parseInt(lectureG); 
-		int souhaitAuteur=Integer.parseInt(souhaitAuteurG); 
-		int recommand=Integer.parseInt(recommandG); 
+		int book=-1;
+		int user=-1; 
+		int note=0; 
+		int qualite=0; 
+		int interet=0; 
+		int lecture=2;
+		int souhaitAuteur=2; 
+		int recommand=2; 
+		
+		if (bookId!=null) {
+			book=Integer.parseInt(bookId); 
+		}
+		if (userId!=null) {
+			user=Integer.parseInt(userId); 
+		}
+		
+		if (noteG!=null) {
+		    note=Integer.parseInt(noteG); 
+		}
+		if (qualiteG!=null) { 
+			qualite=Integer.parseInt(qualiteG); 
+		}
+		if (interetG!=null) {
+			interet=Integer.parseInt(interetG); 
+		}
+		if (lectureG!=null) { 
+			lecture=Integer.parseInt(lectureG); 
+		}
+		if (souhaitAuteurG!=null) {
+			souhaitAuteur=Integer.parseInt(souhaitAuteurG); 
+		}
+		if (recommandG!=null) {
+			recommand=Integer.parseInt(recommandG); 
+		} 
 		
 		User u=UserDao.find(user); 
 		Book b=BooksDao.find(book); 
@@ -75,27 +100,20 @@ public class ModifEval extends HttpServlet {
 				lecture, souhaitAuteur, recommand);
 		Evaluation e2=EvaluationDao.find(modif); 
 		if (e2==null) System.out.println("NULL"); 
-		else { EvaluationDao.update(e); 
+		else { 
+		EvaluationDao.update(e); 
 		//GERER ICI LES UPDATE DE MATCHES : A FAIRE 
 		
-		out2.println("<!DOCTYPE html>");
-		out2.println("<html><head>"); 
-		out2.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-		out2.println("<title>Modification d'un livre</title></head>");
-		out2.println("<body>");
-		out2.println("<h1>Evaluation modifiee dans la base avec succes ! </h1>");
-		out2.println("<p> Livre (isbn) : "+ b.getIsbn() +"</p");
-		out2.println("<p> User (login) : "+ u.getLogin() +"</p");
-		out2.println("<p> Note globale : "+request.getParameter("note") +"</p");
-		out2.println("<p> Qualité d'écriture : "+request.getParameter("qualite") +"</p");
-		out2.println("<p> Intérêt : "+request.getParameter("interet") +"</p");
-		out2.println("<p> Lecture jusqu'à la fin : "+request.getParameter("lecture") +"</p");
-		out2.println("<p> Souhait pour livre un livre du même auteur : "+request.getParameter("souhaitAuteur") +"</p");
-		out2.println("<p> Livre recommandé :  "+request.getParameter("recommandation") +"</p");
-		out2.println("</body>");
-		out2.println("</html>");
-		//lien vers la page precedente 
-		out.println("<a href='GestionEval?action=afficher'>Retour vers la liste des evaluations</a>");
+		request.setAttribute("isbn",b.getIsbn());
+		request.setAttribute("login",u.getLogin());
+		request.setAttribute("note",request.getParameter("note"));
+		request.setAttribute("qualite",request.getParameter("qualite"));
+		request.setAttribute("interet",request.getParameter("interet"));
+		request.setAttribute("lecture",request.getParameter("lecture"));
+		request.setAttribute("souhaitAuteur",request.getParameter("souhaitAuteur"));
+		request.setAttribute("recommandation",request.getParameter("recommandation"));
+		request.getRequestDispatcher("StatusModifEval.jsp").forward(request, response);  
+
 		}
 	}
 

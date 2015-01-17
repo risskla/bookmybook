@@ -16,10 +16,12 @@ import beans.Evaluation;
 import beans.IsbnComp;
 import beans.MatchBook;
 import beans.TitleComp;
+import beans.User;
 import dao.BooksDao;
 import dao.EvaluationDao;
 import dao.MatchBookDao;
 import dao.MatchReaderDao;
+import dao.UserDao;
 
 /**
  * Servlet implementation class GestionEval
@@ -71,7 +73,27 @@ public class GestionEval extends HttpServlet {
 				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
-				request.setAttribute("eModif", EvaluationDao.find(id));
+				Evaluation currenteval = EvaluationDao.find(id);
+				Book currentbook=BooksDao.find(currenteval.getLivreId());
+	            User currentuser=UserDao.find(currenteval.getUserId());
+				
+	            request.setAttribute("IdModif", currenteval.getId());
+				
+	            request.setAttribute("LivreId", currenteval.getLivreId());
+	            request.setAttribute("UserId", currenteval.getUserId());
+	            request.setAttribute("Note", currenteval.getNote());
+	            request.setAttribute("Qualite", currenteval.getQualite());
+	            request.setAttribute("Interet", currenteval.getInteret());
+	            request.setAttribute("Lecture", currenteval.getLecture());
+	            request.setAttribute("SouhaitAuteur", currenteval.getSouhaitAuteur());
+	            request.setAttribute("Recommand", currenteval.getRecommand());
+	            
+	            request.setAttribute("Titre", currentbook.getTitre());
+	            request.setAttribute("Auteur", currentbook.getAuteur());
+	            request.setAttribute("Isbn", currentbook.getIsbn());
+
+	            request.setAttribute("Login", currentuser.getLogin());
+	            
 				request.getRequestDispatcher("ModifEval.jsp").forward(request, response);  
 				
 			} 
@@ -126,7 +148,7 @@ public class GestionEval extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-String action = request.getParameter("action");
+		String action = request.getParameter("action");
 		
 		/*gestion pagination*/
 		int page = 1;

@@ -115,19 +115,9 @@ public class GestionBooks extends HttpServlet {
 					response.setContentType("text/html");
 					try {
 					int eid=e.getId(); 
-					out.println("<!DOCTYPE html>");
-					out.println("<html><head>"); 
-					out.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-					out.println("<title>Evaluation d'un livre</title></head>");
-					out.println("<body>");
-					out.println("<h1>Vous avez déjà évalué ce livre ! </h1>");
-					String s1="GestionEval?action=modifierByReader&id="+eid;
-					String s="<a href='"+s1+"'>Demander une modification</a><br>"; 
-					out.println(s);
-					out.println("<a href='GestionBooks'>Retour vers la liste des livres</a>"); 
-					out.println("</body>");
-					out.println("</html>");
-					
+					request.setAttribute("eModif",e);
+					request.setAttribute("alert","Vous avez déjà évalué ce livre ! <br><a href='GestionEval?action=modifierByReader&id=" + eid + "'>Demander une modification</a>");
+					doPost(request,response);
 					}
 					finally { out.close() ;}
 				}
