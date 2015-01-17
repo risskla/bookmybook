@@ -60,7 +60,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 	        if(request.getParameter("page") != null)
 	            page = Integer.parseInt(request.getParameter("page")); //page actuelle
 	        List<AdminParameters> listeP = AdminParametersDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-	        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
+	        int noOfRecords = AdminParametersDao.countAdminParameters(); //nb total d'enregistrement
 	        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
 	        
 	        request.setAttribute("listeP", listeP);
