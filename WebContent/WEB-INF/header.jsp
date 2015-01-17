@@ -4,11 +4,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<link rel="icon" href="../../favicon.ico">
 
-        <title>Login-BookMyBook</title>
+        <title>BookMyBook</title>
 
         <!-- Bootstrap core CSS 
         <link href="css/bootstrap.min.css" rel="stylesheet">-->
         <link href="css/bootswatch.min.css" rel="stylesheet">
+        <link href="css/mycustomtheme.css" rel="stylesheet">
+        
 
         <!-- Custom styles for this template
         <link href="css/bootstrap-theme.min.css" rel="stylesheet"> -->

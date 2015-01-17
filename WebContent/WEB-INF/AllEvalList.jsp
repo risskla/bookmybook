@@ -170,8 +170,5 @@
         </td>
 	<%}}%>
 <br>
-<%if(uRole==1){ %>
-<a href="GestionBooks">Retour à la liste globale</a>
-<%} %>
 
 <%@include file="footer.jsp"%>
