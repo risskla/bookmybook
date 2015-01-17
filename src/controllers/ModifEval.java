@@ -114,7 +114,7 @@ public class ModifEval extends HttpServlet {
 		request.setAttribute("lecture",request.getParameter("lecture"));
 		request.setAttribute("souhaitAuteur",request.getParameter("souhaitAuteur"));
 		request.setAttribute("recommandation",request.getParameter("recommandation"));
-		request.getRequestDispatcher("StatusModifEval.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/StatusModifEval.jsp").forward(request, response);  
 
 		}
 	}

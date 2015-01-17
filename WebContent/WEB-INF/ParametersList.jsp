@@ -89,7 +89,7 @@
         <td><a href="ChoixAlgoServlet?action=afficher&page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="choixAlgoMatchForm.jsp">Entrer de nouveaux paramètres</a>
+<a href="WEB-INF/choixAlgoMatchForm.jsp">Entrer de nouveaux paramètres</a>
 
 </body>
 

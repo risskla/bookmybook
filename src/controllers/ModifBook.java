@@ -71,7 +71,7 @@ public class ModifBook extends HttpServlet {
 			request.setAttribute("genre",genre);
 			request.setAttribute("anneePubli",anneePubli);
 			request.setAttribute("resume",resume);
-			request.getRequestDispatcher("StatusBookModifAdd.jsp").forward(request, response);  
+			request.getRequestDispatcher("WEB-INF/StatusBookModifAdd.jsp").forward(request, response);  
 		}
 	}
 

@@ -92,7 +92,7 @@ public class GestionUser extends HttpServlet {
 			} else if (action.equals("modifier")) {
 				forward=1; 
 				request.setAttribute("uModif", UserDao.find(id));
-				request.getRequestDispatcher("ModifUser.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  
 				
 			}
 			 else if (action.equals("evallist")) {
@@ -118,7 +118,7 @@ public class GestionUser extends HttpServlet {
 		        request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
 				request.setAttribute("EvalList", EvalList);
-				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/EvalListForUser.jsp").forward(request, response);  
 			}
 			
 			 else if (action.equals("evallistUserAdmin")) {
@@ -140,7 +140,7 @@ public class GestionUser extends HttpServlet {
 		        request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
 				request.setAttribute("EvalList", EvalList);
-				request.getRequestDispatcher("EvalListForUser.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/EvalListForUser.jsp").forward(request, response);  
 			}
 		
 		}
@@ -186,7 +186,7 @@ public class GestionUser extends HttpServlet {
 		request.setAttribute("listeU", listeU);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
-		request.getRequestDispatcher("UserList.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/UserList.jsp").forward(request, response);  
 		// tri OK
 		
 	}

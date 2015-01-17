@@ -127,7 +127,7 @@
         <td><a href="GestionBooks?page=${currentPage + 1}">Next</a></td>
         <%} }%>
 <br></br>
-<a href="createBookForm.jsp">Ajouter un livre</a>
+<a href="WEB-INF/createBookForm.jsp">Ajouter un livre</a>
 
 </body>
 </html>

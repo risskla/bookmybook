@@ -55,7 +55,7 @@ public class SearchBooks extends HttpServlet {
         request.setAttribute("keyword", keyword);
 
 		// rediriger vers une page : on retourne sur la page davant 
-		request.getRequestDispatcher("searchBook.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/searchBook.jsp").forward(request, response);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class SearchBooks extends HttpServlet {
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
         request.setAttribute("keyword", keyword);
-		request.getRequestDispatcher("searchBook.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/searchBook.jsp").forward(request, response);  
 	}
 
 }

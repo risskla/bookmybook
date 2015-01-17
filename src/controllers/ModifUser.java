@@ -190,7 +190,7 @@ public class ModifUser extends HttpServlet {
 					alert_msg = alert_msg + "Login déjà utilisé !<br>";
 					request.setAttribute("alert", alert_msg);
 					request.setAttribute("uModif", u);
-					request.getRequestDispatcher("ModifUser.jsp").forward(request, response); 
+					request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response); 
 					
 				}
 				else{
@@ -209,7 +209,7 @@ public class ModifUser extends HttpServlet {
 			
 			request.setAttribute("alert", alert_msg);
 			request.setAttribute("uModif", u);
-			request.getRequestDispatcher("ModifUser.jsp").forward(request, response);  
+			request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  
 		}
 	}
 

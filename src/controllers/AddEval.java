@@ -160,7 +160,7 @@ public class AddEval extends HttpServlet {
 			request.setAttribute("m2",m2);
 			
 			
-			request.getRequestDispatcher("StatusAddEval.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/StatusAddEval.jsp").forward(request, response);
 	}
 	}
 

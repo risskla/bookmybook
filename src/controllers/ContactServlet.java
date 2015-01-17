@@ -33,7 +33,7 @@ public class ContactServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("contact.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/contact.jsp").forward(request, response);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class ContactServlet extends HttpServlet {
 					request.setAttribute("errorMsg",
 							"Erreur d'envoi" + e.getMessage());
 				}
-				request.getRequestDispatcher("testMail.jsp").forward(request,
+				request.getRequestDispatcher("WEB-INF/testMail.jsp").forward(request,
 						response);
 			}
 		}

@@ -32,7 +32,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.getRequestDispatcher("login.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);  
 	}
 
 	/**
@@ -54,9 +54,9 @@ public class Login extends HttpServlet {
 				
 				//Ensuite on va sur le bon menu en fonction du role :
 				if(b.getRole() == 1){
-					request.getRequestDispatcher("adminMenu.jsp").forward(request, response);  
+					request.getRequestDispatcher("WEB-INF/adminMenu.jsp").forward(request, response);  
 				} else {
-					request.getRequestDispatcher("readerMenu.jsp").forward(request, response);  
+					request.getRequestDispatcher("WEB-INF/readerMenu.jsp").forward(request, response);  
 				}
 			} 
 			else

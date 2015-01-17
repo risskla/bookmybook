@@ -30,7 +30,7 @@ Book b1= BooksDao.find(idBook); %>
 List<Evaluation> le = (List<Evaluation>)obj;
 if (le.isEmpty()) {%> 
 <h3>Aucune évalution enregistrée pour ce livre</h3>
-<a href="BooksList.jsp">Retour à la liste des livres</a>
+<a href="GestionBooks">Retour à la liste des livres</a>
 <%}
 else {%>
 

@@ -130,7 +130,7 @@ public class ModifEvalByReader extends HttpServlet {
 						request.setAttribute("lecture",lecture);
 						request.setAttribute("souhaitAuteur",souhaitAuteur);
 						request.setAttribute("recommandation",recommand);
-						request.getRequestDispatcher("StatusModifEval.jsp").forward(request, response);  
+						request.getRequestDispatcher("WEB-INF/StatusModifEval.jsp").forward(request, response);  
 						
 					} catch (MessagingException e2) {
 						request.setAttribute("alert","Erreur lors de l'envoi de votre demande<br>Message d'erreur : "+ e2.getMessage());

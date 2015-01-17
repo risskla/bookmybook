@@ -67,7 +67,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 	        request.setAttribute("listeP", listeP);
 	        request.setAttribute("noOfPages", noOfPages);
 	        request.setAttribute("currentPage", page);
-	    	request.getRequestDispatcher("ParametersList.jsp").forward(request, response);
+	    	request.getRequestDispatcher("WEB-INF/ParametersList.jsp").forward(request, response);
 			
 		}
 		
@@ -95,14 +95,14 @@ public class ChoixAlgoServlet extends HttpServlet {
 		    
 			if (matchBook==a.getAlgoMatchBook() && matchReader==a.getAlgoMatchReader()) {
 				request.setAttribute("alert", "Les paramètres sélectionnés sont identiques à ceux déjà existants ! ");
-				request.getRequestDispatcher("choixAlgoMatchForm.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response);  
 			} //OK ici
 			
 			else { //les derniers paramètres sont bien différents des nouveaux
 				AdminParameters newParameters= new AdminParameters(0, matchBook, matchReader, dateS);
 				AdminParametersDao.insert(newParameters); 
 				request.setAttribute("alert", "Les paramètres ont été modifiés avec succès ! ");	
-				request.getRequestDispatcher("choixAlgoMatchForm.jsp").forward(request, response); 
+				request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response); 
 				
 			}
 		}
@@ -111,7 +111,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 			AdminParameters newParameters= new AdminParameters(0, matchBook, matchReader, dateS);
 			AdminParametersDao.insert(newParameters); 
 			request.setAttribute("alert", "Les paramètres ont été modifiés avec succès ! ");	
-			request.getRequestDispatcher("choixAlgoMatchForm.jsp").forward(request, response); 
+			request.getRequestDispatcher("WEB-INF/choixAlgoMatchForm.jsp").forward(request, response); 
 		}
 		
 		}

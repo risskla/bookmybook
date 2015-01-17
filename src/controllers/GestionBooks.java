@@ -91,7 +91,7 @@ public class GestionBooks extends HttpServlet {
 			} else if (action.equals("modifier")) {
 				forward=1;
 				request.setAttribute("bModif", BooksDao.find(id));
-				request.getRequestDispatcher("ModifBook.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/ModifBook.jsp").forward(request, response);  
 				
 			}
 		
@@ -108,7 +108,7 @@ public class GestionBooks extends HttpServlet {
 					forward=1;
 					System.out.println("evaluation gestionboook"); 
 				request.setAttribute("bEval", BooksDao.find(id)); 
-				request.getRequestDispatcher("EvaluationForm.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/EvaluationForm.jsp").forward(request, response);  
 				System.out.println("redirection");
 				}
 				else {
@@ -131,7 +131,7 @@ public class GestionBooks extends HttpServlet {
         request.setAttribute("currentPage", page);
 
 		// rediriger vers une page : on retourne sur la page davant 
-		request.getRequestDispatcher("BooksList.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/BooksList.jsp").forward(request, response);
         }
 	}
 
@@ -170,7 +170,7 @@ public class GestionBooks extends HttpServlet {
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
-		request.getRequestDispatcher("BooksList.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/BooksList.jsp").forward(request, response);  
 		// tri OK
 		
 	}

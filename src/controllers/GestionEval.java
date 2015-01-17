@@ -94,12 +94,12 @@ public class GestionEval extends HttpServlet {
 
 	            request.setAttribute("Login", currentuser.getLogin());
 	            
-				request.getRequestDispatcher("ModifEval.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/ModifEval.jsp").forward(request, response);  
 				
 			} 
 			 else if (action.equals("modifierByReader")) {
 					request.setAttribute("eModif", EvaluationDao.find(id));
-					request.getRequestDispatcher("AskEvalModif.jsp").forward(request, response);  
+					request.getRequestDispatcher("WEB-INF/AskEvalModif.jsp").forward(request, response);  
 					
 				} 
 			
@@ -117,7 +117,7 @@ public class GestionEval extends HttpServlet {
 				request.setAttribute("idBook", idBook );
 				request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
-				request.getRequestDispatcher("EvalListForBook.jsp").forward(request, response);  
+				request.getRequestDispatcher("WEB-INF/EvalListForBook.jsp").forward(request, response);  
 				
 			}
 			
@@ -137,7 +137,7 @@ public class GestionEval extends HttpServlet {
 				request.setAttribute("listeE", listeE);
 		        request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
-				request.getRequestDispatcher("AllEvalList.jsp").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/AllEvalList.jsp").forward(request, response);
 			} 
 		}
 
@@ -167,7 +167,7 @@ public class GestionEval extends HttpServlet {
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
-		request.getRequestDispatcher("AllEvalList.jsp").forward(request, response);  
+		request.getRequestDispatcher("WEB-INF/AllEvalList.jsp").forward(request, response);  
 		// tri OK
 		
 	}
