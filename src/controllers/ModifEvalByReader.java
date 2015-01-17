@@ -120,38 +120,21 @@ public class ModifEvalByReader extends HttpServlet {
 						User u=UserDao.find(user); 
 						Book b=BooksDao.find(book); 
 						
-						out2.println("<!DOCTYPE html>");
-						out2.println("<html><head>"); 
-						out2.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-						out2.println("<title>Modification d'un livre</title></head>");
-						out2.println("<body>");
-						out2.println("<h1>Votre demande a bien ete envoyee a l'administrateur ! </h1>");
-						out2.println("<p> Livre (isbn) : "+ b.getIsbn() +"</p");
-						out2.println("<p> User (login) : "+ u.getLogin() +"</p");
-						out2.println("<p> Note globale : "+ note +"</p");
-						out2.println("<p> Qualite d'ecriture : "+ qualite +"</p");
-						out2.println("<p> Interet : "+ interet +"</p");
-						out2.println("<p> Lecture jusqu'e la fin : " + lecture +"</p");
-						out2.println("<p> Souhait pour livre un livre du meme auteur : "+souhaitAuteur +"</p");
-						out2.println("<p> Livre recommande :  "+recommand +"</p");
-						out2.println("</body>");
-						out2.println("</html>");
-						//lien vers la page precedente 
-						out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+						request.setAttribute("action","modifreader");
+						
+						request.setAttribute("isbn",b.getIsbn());
+						request.setAttribute("login",u.getLogin());
+						request.setAttribute("note",note);
+						request.setAttribute("qualite",qualite);
+						request.setAttribute("interet",interet);
+						request.setAttribute("lecture",lecture);
+						request.setAttribute("souhaitAuteur",souhaitAuteur);
+						request.setAttribute("recommandation",recommand);
+						request.getRequestDispatcher("StatusModifEval.jsp").forward(request, response);  
 						
 					} catch (MessagingException e2) {
-						
-						out2.println("<!DOCTYPE html>");
-						out2.println("<html><head>"); 
-						out2.println("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-						out2.println("<title>Modification d'un livre</title></head>");
-						out2.println("<body>");
-						out2.println("<h1>Erreur lors de l'envoi de votre demande</h1>");
-						out2.println("<p> Message d'erreur : "+ e2.getMessage() +"</p");
-						out2.println("</body>");
-						out2.println("</html>");
-						//lien vers la page precedente 
-						out.println("<a href='BooksList.jsp'>Retour vers la liste des livres</a>"); 
+						request.setAttribute("alert","Erreur lors de l'envoi de votre demande<br>Message d'erreur : "+ e2.getMessage());
+						request.getRequestDispatcher("GestionBooks").forward(request, response);
 
 					}
 

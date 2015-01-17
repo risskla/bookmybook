@@ -104,6 +104,8 @@ public class ModifEval extends HttpServlet {
 		EvaluationDao.update(e); 
 		//GERER ICI LES UPDATE DE MATCHES : A FAIRE 
 		
+		request.setAttribute("action","modifadmin");
+		
 		request.setAttribute("isbn",b.getIsbn());
 		request.setAttribute("login",u.getLogin());
 		request.setAttribute("note",request.getParameter("note"));
