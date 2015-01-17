@@ -89,7 +89,10 @@ public class GestionUser extends HttpServlet {
 				}
 				finally { out.close() ;}
 				
-			} else if (action.equals("modifier")) {
+			} else if (action.equals("ajouter")) {
+				request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  	
+			}
+			else if (action.equals("modifier")) {
 				forward=1; 
 				request.setAttribute("uModif", UserDao.find(id));
 				request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  
@@ -162,20 +165,25 @@ public class GestionUser extends HttpServlet {
 		/*gestion pagination*/
 		int page = 1;
         int recordsPerPage = 5;
+        int noOfRecords;
+        
         if(request.getParameter("page") != null){
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
         }
         List<User> listeU;
         if (keyword!=null){
             listeU = UserDao.findByKeyword(keyword, (page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+            noOfRecords = UserDao.countUserByKeyword(keyword);//nb total d'enregistrement par keyword
         }
         else
         {
             listeU = UserDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+            noOfRecords = UserDao.countUser();//nb total d'enregistrement
         }
         
         System.out.println(listeU); 
-        int noOfRecords = UserDao.countUser(); //nb total d'enregistrement
+        System.out.println("nb user by keyword"); 
+        System.out.println(noOfRecords); 
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
         System.out.println(noOfPages); 
         System.out.println(page);

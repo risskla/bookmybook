@@ -16,10 +16,12 @@ import beans.Book;
 import beans.Evaluation;
 import beans.IsbnComp;
 import beans.TitleComp;
+import beans.User;
 import dao.BooksDao;
 import dao.EvaluationDao;
 import dao.MatchBookDao;
 import dao.MatchReaderDao;
+import dao.UserDao;
 
 /**
  * Servlet implementation class GestionBooks
@@ -45,16 +47,7 @@ public class GestionBooks extends HttpServlet {
 		int forward=0; 
 		
 		String action = request.getParameter("action");
-		/*gestion pagination*/
-		int page = 1;
-        int recordsPerPage = 5;
-        if(request.getParameter("page") != null)
-            page = Integer.parseInt(request.getParameter("page")); //page actuelle
-        List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-        
-        /*fin bloc gestion pagination*/
+
 
         PrintWriter out = response.getWriter();
 		
@@ -96,8 +89,7 @@ public class GestionBooks extends HttpServlet {
 			}
 		
 			else if (action.equals("sort")) {
-
-				Collections.sort(listeB);
+				//cf dopost
 			} else if (action.equals("evaluer")) {
 				
 				HttpSession session = request.getSession();
@@ -126,12 +118,8 @@ public class GestionBooks extends HttpServlet {
 		}
 
         if (forward==0) {
-		request.setAttribute("listeB", listeB);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-
-		// rediriger vers une page : on retourne sur la page davant 
-		request.getRequestDispatcher("WEB-INF/BooksList.jsp").forward(request, response);
+			doPost(request,response);
+			
         }
 	}
 
@@ -143,33 +131,56 @@ public class GestionBooks extends HttpServlet {
 		//List<Book> listeB = BooksDao.findAll();
 
 		String action = request.getParameter("action");
+		String keyword = request.getParameter("keyword");
 		
 		/*gestion pagination*/
 		int page = 1;
         int recordsPerPage = 5;
-        if(request.getParameter("page") != null)
+        int noOfRecords;
+        
+        if(request.getParameter("page") != null){
             page = Integer.parseInt(request.getParameter("page")); //page actuelle
-        List<Book> listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+        }
+        List<Book> listeB;
+        if (keyword!=null){
+            listeB = BooksDao.findByKeyword(keyword, (page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+            noOfRecords = BooksDao.countBooksByKeyword(keyword);//nb total d'enregistrement par keyword
+        }
+        else
+        {
+        	listeB = BooksDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
+            noOfRecords = BooksDao.countBooks();//nb total d'enregistrement
+        }
+        
         System.out.println(listeB); 
-        int noOfRecords = BooksDao.countBooks(); //nb total d'enregistrement
+        System.out.println("nb book by keyword"); 
+        System.out.println(noOfRecords); 
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
         System.out.println(noOfPages); 
         System.out.println(page);
         
         /*fin bloc gestion pagination*/
-
+        
 		if (action != null) {
 			if (action.equals("sort")) { //on trie simplement
 				String sortType = request.getParameter("sortType");
-				if (sortType.equals("1"))
-					Collections.sort(listeB, new TitleComp());
-				else if (sortType.equals("2"))
-					Collections.sort(listeB, new IsbnComp());
+				if(sortType!=null){
+					if (sortType.equals("1"))
+						Collections.sort(listeB, new TitleComp());
+					else if (sortType.equals("2"))
+						Collections.sort(listeB, new IsbnComp());
+				}
 			}
-		} 
+		}
+		
 		request.setAttribute("listeB", listeB);
         request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
+        request.setAttribute("currentPage", page); 
+		
+        int userId= (int)request.getSession().getAttribute("id");
+		User u=UserDao.find(userId); 
+		request.setAttribute("role", u.getRole());
+		
 		request.getRequestDispatcher("WEB-INF/BooksList.jsp").forward(request, response);  
 		// tri OK
 		

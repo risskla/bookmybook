@@ -375,4 +375,34 @@ public static int countUser(){
 		}
 		return counter;
 	}
+public static int countUserByKeyword(String k){
+	
+	int counter = 0;
+	Connection cnx=null;
+	try {
+		cnx = ConnexionBDD.getInstance().getCnx();
+	
+		String sql = "SELECT COUNT(*) FROM User WHERE login LIKE ? OR login LIKE ? OR login LIKE ?";
+		PreparedStatement ps = cnx.prepareStatement(sql);
+		ps.setString(1,"%"+k);
+		ps.setString(2,k+"%");
+		ps.setString(3,"%"+k+"%");
+		
+		ResultSet res = ps.executeQuery();
+		
+		while(res.next()){
+		 counter = res.getInt("COUNT(*)");
+		 break;
+			
+		}
+		
+		ConnexionBDD.getInstance().closeCnx();		
+	}catch (SQLException e) {
+		e.printStackTrace();
+	}
+	return counter;
+}
+
+
+
 }

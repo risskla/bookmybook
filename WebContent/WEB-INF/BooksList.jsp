@@ -28,7 +28,12 @@
 		<%
 	}
 %>
-
+<form method="post" action="GestionBooks">
+Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input type='submit'  value='Recherche'/>
+</form>
+<form method="post" action="GestionBooks">
+<input type='submit'  value='Reinitialiser'/>
+</form>
 
 <h4>Trier l'affichage des livres par : </h4>
 <form method="post" action="GestionBooks">
@@ -71,10 +76,7 @@
 				<td>
 				
 				<%
-				int userId= (int)request.getSession().getAttribute("id");
-				User u=UserDao.find(userId); 
-				
-				if(u.getRole()==1) {
+					if((int)request.getAttribute("role")==1) {
 				%>
 					<a href="GestionBooks?action=supprimer&id=<%=b.getId()%>">Supprimer</a><br></br>
 					<a href="GestionBooks?action=modifier&id=<%=b.getId()%>">Modifier</a><br></br>

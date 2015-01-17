@@ -40,8 +40,7 @@ public class ChoixAlgoServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		
 		//affichage simple
-		
-		
+
 		doPost(request, response); 
     	
 	}
