@@ -73,6 +73,7 @@
 			      </div>
 			      <div class="modal-body">
 			            <h3>Titre : <%=b.getTitre()%></h3>
+			            <img src="http://ecrire-et-senrichir.com/wp-content/uploads/2014/05/page-livre-%C3%A9crire-et-senrichir.jpg" height='150px'>
 			            <p><strong>Auteur : </strong><%=b.getAuteur()%></p>
 			            <p><strong>Editeur : </strong><%=b.getEditeur()%></p>
 			            <p><strong>ISBN : </strong><%=b.getIsbn()%></p>
