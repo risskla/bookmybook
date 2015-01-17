@@ -123,9 +123,9 @@
 			int i = 0;	
 			for(Evaluation e : le){
 			
-		%>
+		%> 
 			<tr onclick="input" data-toggle="modal" href="#bookmodal<%=i %>"  >
-				<!-- Modal -->
+				<!-- Modal C'est le popup :)-->
 				<div class="modal fade" id="bookmodal<%=i%>" tabindex="<%=i %>" role="dialog" aria-labelledby="Informations Détaillées" aria-hidden="true">
 				  <div class="modal-dialog">
 				    <div class="modal-content">
@@ -142,10 +142,12 @@
 				            <p><strong>Lecture jusqu'au bout :</strong><%=choixplussimple(e.getLecture())%></p>
 				            <p><strong>Souhait pour lire un livre du même auteur :</strong><%=choixplussimple(e.getSouhaitAuteur())%></p>
 				            <p><strong>Recommandé :</strong><%=choixplussimple(e.getRecommand())%></p>
-				            
+				            <h3><STRONG>Matchs :<br></STRONG></h3>
 				            <% 
 				            if (ListMB.size()>0 && ListMB.get(i)!=null) { %>
-				            <p><strong>Livre conseillé :</strong><%=ListMB.get(i)%></p>
+				            <p><strong>Livre conseillé :</strong><a href="GestionBooks?keyword=<%=ListMB.get(i)%>"> <%= ListMB.get(i)%> </a>
+	
+				            </p>
 				            <%
 				            } 
 				            else 

@@ -240,7 +240,7 @@ public class GestionEval extends HttpServlet {
 				   m=MatchBookDao.findByEval(e.getId()); 
 				   if (m!=null){ 
 					   b2=BooksDao.find(m.getLivreSuggereId());
-					   ListMB.add(b2.getTitre()+ " de " + b2.getAuteur() + "(ISBN : " + b2.getIsbn() + ")");
+					   ListMB.add(b2.getTitre());
 				   }else
 				   {
 					   ListMB.add("pas de match");
