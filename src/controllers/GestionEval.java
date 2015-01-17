@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,11 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.Book;
 import beans.Evaluation;
 import beans.IsbnComp;
 import beans.MatchBook;
+import beans.MatchReader;
 import beans.TitleComp;
 import beans.User;
 import dao.BooksDao;
@@ -107,39 +110,164 @@ public class GestionEval extends HttpServlet {
 					request.getRequestDispatcher("WEB-INF/AskEvalModif.jsp").forward(request, response);  
 					
 				} 
-			
+			 else if (action.equals("affichEvalForUser")) {
+					 System.out.println("dans gestion eval affichEvalForUser"); 
+					//Si on désire afficher les évaluations d'un utilisateur :
+					//-> On transmet des informations sur l'utilisateur:
+					HttpSession session = request.getSession();
+					int userId= (int)session.getAttribute("id");
+					
+					int noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
+				    List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
+				     
+				    User u = UserDao.find(userId);
+					request.setAttribute("uId", u.getId());
+					request.setAttribute("uLogin", u.getLogin());
+					request.setAttribute("uRole", u.getRole());
+				    request.setAttribute("TypeDeListe","affichEvalForUser");
+					request.setAttribute("noOfRecords", noOfRecords);
+					request.setAttribute("EvalList", EvalList);
+				    request.getRequestDispatcher("GestionEval?action=afficher").forward(request, response);			
+				}
+			else if (action.equals("affichEvalForUserAdmin")) {
+				
+				//Si on désire afficher les évaluations d'un utilisateur :
+				//-> On transmet des informations sur l'utilisateur:
+				 int userId = Integer.parseInt(request.getParameter("id"));
+				 
+				 int noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
+			     List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
+			     
+			    User u = UserDao.find(userId);
+				request.setAttribute("uId", u.getId());
+				request.setAttribute("uLogin", u.getLogin());
+				request.setAttribute("uRole", 1);
+			    request.setAttribute("TypeDeListe","affichEvalForUserAdmin");   
+				request.setAttribute("uInfo", UserDao.find(userId));
+				request.setAttribute("noOfRecords", noOfRecords);
+				request.setAttribute("EvalList", EvalList);
+				
+				request.getRequestDispatcher("GestionEval?action=afficher").forward(request, response);  
+			}
 			else if (action.equals("affichEvalForBook")) {
 				System.out.println("dans GestionEval:affichEvalForBook"); 
 				//afficher les evaluation pour un livre en particulier
 				int idBook = Integer.parseInt(request.getParameter("idBook"));
+				Book b = BooksDao.find(idBook);
 				
 				int noOfRecords = EvaluationDao.countEvalByBook(idBook); //nb total d'enregistrement
-		        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-		        List<Evaluation> listeE = EvaluationDao.findByBook(idBook, (page-1)*recordsPerPage, recordsPerPage ); 
+		        List<Evaluation> EvalList = EvaluationDao.findByBook(idBook, (page-1)*recordsPerPage, recordsPerPage ); 
 				
-		        System.out.println("liste d'eval pour ce bouquin : "+listeE); 
-		        request.setAttribute("listeE", listeE );
-				request.setAttribute("idBook", idBook );
-				request.setAttribute("noOfPages", noOfPages);
-		        request.setAttribute("currentPage", page);
-				request.getRequestDispatcher("WEB-INF/EvalListForBook.jsp").forward(request, response);  
+		        System.out.println("liste d'eval pour ce bouquin : "+EvalList); 
+		        
+		        request.setAttribute("bTitre", b.getTitre());
+		        request.setAttribute("bAuteur", b.getAuteur());
+		        request.setAttribute("bIsbn", b.getIsbn());
+		        request.setAttribute("bIdUrl", "&idBook=" + b.getId());
+		        
+				request.setAttribute("uRole", 1);
+		        request.setAttribute("TypeDeListe","affichEvalForBook");
+		        request.setAttribute("EvalList", EvalList );
+		        request.setAttribute("noOfRecords", noOfRecords);
+				request.setAttribute("infoBook", b.getTitre() + " de " + b.getAuteur());
+				
+
+				request.getRequestDispatcher("GestionEval?action=afficher").forward(request, response);  
 				
 			}
 			
 			else if (action.equals("afficher")) {
 				//afficher toutes les evaluations
+				int uRole;
+				if(request.getAttribute("uRole")==null){
+					uRole=1;
+				}else{
+					uRole=(int)request.getAttribute("uRole");
+				}
+				
+				
+				String TypeDeListe;
+				if(request.getAttribute("TypeDeListe")==null){
+					TypeDeListe = "afficher"; //nb total d'enregistrement
+				}
+				else
+				{
+					TypeDeListe = (String)request.getAttribute("TypeDeListe");
+				}
+				
+				
 				
 				/*gestion pagination*/
-				int noOfRecords = EvaluationDao.countEval(); //nb total d'enregistrement
+				int noOfRecords;
+				if(request.getAttribute("noOfRecords")==null){
+					noOfRecords = EvaluationDao.countEval(); //nb total d'enregistrement
+				}
+				else
+				{
+					noOfRecords = (int)request.getAttribute("noOfRecords");
+				}
+				
 		        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
 
-		        List<Evaluation> listeE = EvaluationDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
 		        System.out.println("dans gestionEval : pagination : nb denregistrements : "+ noOfRecords);
 		        System.out.println("noOfPages : "+noOfPages); 
 		        System.out.println("pageActuelle"+page); 
-		        System.out.println("ma liste paginee : "+listeE); 
 		        
-				request.setAttribute("listeE", listeE);
+		        List<Evaluation> EvalList = null;
+				if(request.getAttribute("EvalList")==null){
+					EvalList = EvaluationDao.findAll((page-1)*recordsPerPage, recordsPerPage);
+				}
+				else
+				{
+					EvalList = (List<Evaluation>)request.getAttribute("EvalList");
+				}
+		        System.out.println("ma liste paginee : "+ EvalList); 
+		        List<String> ListUser = new ArrayList<String>();
+		        List<String> ListBook = new ArrayList<String>();
+		        List<String> ListMB = new ArrayList<String>();
+		        List<String> ListMRLoin = new ArrayList<String>();
+		        List<String> ListMRProche = new ArrayList<String>();
+	            MatchBook m=null ;
+	            MatchReader m2=null; 
+	            Book b2=null; 
+	            
+				for(Evaluation e : EvalList){
+				   User u=UserDao.find(e.getUserId()); 
+				   ListUser.add(u.getLogin());
+				   Book b=BooksDao.find(e.getLivreId());
+				   ListBook.add(b.getTitre());
+				   
+				   m=MatchBookDao.findByEval(e.getId()); 
+				   if (m!=null){ 
+					   b2=BooksDao.find(m.getLivreSuggereId());
+					   ListMB.add(b2.getTitre()+ " de " + b2.getAuteur() + " (numéro : " + b2.getId() + ")");
+				   }else
+				   {
+					   ListMB.add("pas de match");
+				   }
+				   m2=MatchReaderDao.findByEval(e.getId());
+		           if (m2!=null) { 
+			           User up=UserDao.find(m2.getUserPlusProcheId()); 
+			           ListMRProche.add(up.getLogin() + "\n(" + up.getMail() + ")");
+			           
+			           User ul=UserDao.find(m2.getUserPlusLoinId()); 
+			           ListMRLoin.add(ul.getLogin() + "\n(" + ul.getMail() + ")");
+			       }else{
+			    	   ListMRProche.add("pas de match");
+			    	   ListMRLoin.add("pas de match");
+			       }
+				}
+		        
+				request.setAttribute("uRole", uRole);
+				request.setAttribute("TypeDeListe", TypeDeListe);
+				request.setAttribute("EvalList", EvalList);
+				request.setAttribute("ListUser", ListUser);
+				request.setAttribute("ListBook", ListBook);
+				request.setAttribute("ListMB", ListMB);
+				request.setAttribute("ListMRLoin", ListMRLoin);
+				request.setAttribute("ListMRProche", ListMRProche);
+				
+				
 		        request.setAttribute("noOfPages", noOfPages);
 		        request.setAttribute("currentPage", page);
 				request.getRequestDispatcher("WEB-INF/AllEvalList.jsp").forward(request, response);
@@ -153,27 +281,7 @@ public class GestionEval extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String action = request.getParameter("action");
-		
-		/*gestion pagination*/
-		int page = 1;
-        int recordsPerPage = 5;
-        if(request.getParameter("page") != null)
-            page = Integer.parseInt(request.getParameter("page")); //page actuelle
-        List<Evaluation> listeB = EvaluationDao.findAll((page-1)*recordsPerPage, recordsPerPage); //de page actuelle au max : de 0 à 5
-        System.out.println(listeB); 
-        int noOfRecords = EvaluationDao.countEval(); //nb total d'enregistrement
-        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-        System.out.println(noOfPages); 
-        System.out.println(page);
-        
-        /*fin bloc gestion pagination*/
-
-		request.setAttribute("listeB", listeB);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-		request.getRequestDispatcher("WEB-INF/AllEvalList.jsp").forward(request, response);  
-		// tri OK
+		request.getRequestDispatcher("GestionEval?action=afficher").forward(request, response);  
 		
 	}
 

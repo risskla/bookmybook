@@ -14,6 +14,35 @@ import beans.MatchBook;
 import beans.MatchReader;
 
 public class MatchReaderDao {
+	
+	public static int update(MatchReader m) {
+		int res = 0;
+		
+		Connection cnx=null;
+		
+		try {
+			// chargement du driver
+			cnx = ConnexionBDD.getInstance().getCnx();
+			
+			//Requete
+			String sql = "UPDATE MatchReader SET userSourceId=?,userPlusProcheId=?,userPlusLoinId=?,evaluationId=? WHERE id=?";
+			PreparedStatement ps = cnx.prepareStatement(sql);
+			ps.setInt(1, m.getUserSourceId());
+			ps.setInt(2, m.getUserPlusProcheId());
+			ps.setInt(3, m.getUserPlusLoinId());
+			ps.setInt(3, m.getEvaluationId());
+			ps.setInt(4, m.getId());
+			
+			//Execution et traitement de la réponse
+			res = ps.executeUpdate();
+			
+			ConnexionBDD.getInstance().closeCnx();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return res;
+	}
 
 	public static int insert(MatchReader m) {
 		int res = 0;

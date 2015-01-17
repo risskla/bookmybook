@@ -39,6 +39,7 @@ public class Login extends HttpServlet {
 				HttpSession session = request.getSession();
 				//On insère l'id du user en variable de session :
 				session.setAttribute( "id", -1);
+				session.setAttribute( "role", -1);
 			}
 		}
 		request.getRequestDispatcher("WEB-INF/login.jsp").forward(request, response);  
@@ -60,6 +61,7 @@ public class Login extends HttpServlet {
 				
 				//On insère l'id du user en variable de session :
 				session.setAttribute( "id", b.getId());
+				session.setAttribute( "role", b.getRole());
 				
 				//Ensuite on va sur le bon menu en fonction du role :
 				if(b.getRole() == 1){

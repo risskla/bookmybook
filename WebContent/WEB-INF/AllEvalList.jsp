@@ -2,73 +2,100 @@
     pageEncoding="UTF-8"%>
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@page import="beans.Evaluation"%>
-<%@page import="beans.User"%>
-<%@page import="beans.Book"%>
-<%@page import="dao.BooksDao"%>
-<%@page import="dao.UserDao"%>
-<%@page import="beans.MatchBook"%>
-<%@page import="dao.MatchBookDao"%>
-<%@page import="beans.MatchReader"%>
-<%@page import="dao.MatchReaderDao"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.PrintWriter" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Liste des evaluations</title>
-</head>
-<body>
 
-<h1>Liste des évaluations en base</h1>
-<%
-	Object alert = request.getAttribute("alert");
-	if(alert!=null){
-		String alrt = (String)alert;
-		%>
-		<p>
-			<%=alrt%>	
-		</p>	
-		<%
-	}
-%>
 
-<table border="1" cellpadding="5" cellspacing="5">
-<tr>
-	<th>USER</th>
-	<th>LIVRE</th>
-	<th>NOTE GLOBALE</th>
-	<th>QUALITE D'ECRITURE</th>
-	<th>INTERET</th>
-	<th>LECTURE JUSQU'AU BOUT</th>
-	<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
-	<th>RECOMMANDATION</th>
-	<th>LIVRE SUGGERE</th>
-	<th>USER LE PLUS PROCHE</th>
-	<th>USER LE PLUS LOIN</th>
-	<th>ACTION SOUHAITEE</th>
+<%@include file="header.jsp"%>
+
+
+	<%
+		Object alert = request.getAttribute("alert");
+		if(alert!=null){
+			String alrt = (String)alert;
+			%>
+			<p>
+				<%=alrt%>	
+			</p>	
+			<%
+		}
+	%>
+				
+	<%
+		//Récupération des données d'entrées :
+		Object OTypeDeListe = request.getAttribute("TypeDeListe");
+		String TypeDeListe = (String)OTypeDeListe;
 	
-</tr>
-<%
-		Object obj = request.getAttribute("listeE");
+		Object OListUser = request.getAttribute("ListUser");
+		List<String> ListUser = (List<String>)OListUser;
+		
+		Object OListBook = request.getAttribute("ListBook");
+		List<String> ListBook = (List<String>)OListBook;
+		
+		Object OListMB = request.getAttribute("ListMB");
+		List<String> ListMB = (List<String>)OListMB;
+		
+		Object OListMRLoin = request.getAttribute("ListMRLoin");
+		List<String> ListMRLoin = (List<String>)OListMRLoin;
+
+		Object OListMRProche = request.getAttribute("ListMRProche");
+		List<String> ListMRProche = (List<String>)OListMRProche;
+		
+		Object obj = request.getAttribute("EvalList");
+		
+		Object OuRole = request.getAttribute("uRole");
+		int uRole = (int)OuRole;
+		
+		if (TypeDeListe.equals("afficher")){
+		%>
+		<h1>Liste des évaluations en base</h1>
+		<%
+		}
+		else
+		{
+			if(TypeDeListe.equals("affichEvalForBook")){%>
+				<h3>Liste des évaluations en base pour le livre :<br>
+				${bTitre} de ${bAuteur} (isbn : ${bIsbn})
+				</h3>
+			<%}if(TypeDeListe.equals("affichEvalForUser") || TypeDeListe.equals("affichEvalForUserAdmin")){%>
+				<h3>Liste des evaluations de l'utilisateur ${uLogin}</h3>
+		<%
+			}
+		} %>
+		<table border="1" cellpadding="5" cellspacing="5">
+		<tr>
+			<th>USER</th>
+			<th>LIVRE</th>
+			<th>NOTE GLOBALE</th>
+			<th>QUALITE D'ECRITURE</th>
+			<th>INTERET</th>
+			<th>LECTURE JUSQU'AU BOUT</th>
+			<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
+			<th>RECOMMANDATION</th>
+			<th>LIVRE SUGGERE</th>
+			<th>USER LE PLUS PROCHE</th>
+			<th>USER LE PLUS LOIN</th>
+			<%	if(uRole==1) {%>
+				<th>ACTION SOUHAITEE</th>
+			<%} %>		
+		</tr>
+		
+		<%
 		if(obj!=null){
 			List<Evaluation> le = (List<Evaluation>)obj;
-				System.out.println("AllEvalList");
-				MatchBook m=null ;
-				MatchReader m2=null; 
-				Book b2=null; 
-				
+			if(le.isEmpty()){
+		%>		<h3>Aucune évalution enregistrée pour ce livre</h3>
+		<%} else {
+			System.out.println("EvalList");
+			
+			int i = 0;	
 			for(Evaluation e : le){
-				User u=UserDao.find(e.getUserId()); 
-				Book b=BooksDao.find(e.getLivreId()); 
-				m=MatchBookDao.findByEval(e.getId()); 
-				if (m!=null) b2=BooksDao.find(m.getLivreSuggereId()); 
-				m2=MatchReaderDao.findByEval(e.getId());
-	%>
+			
+		%>
 			<tr>
-				<td><%=u.getLogin()%></td>
-				<td><%=b.getTitre()%> de <%=b.getAuteur() %> (numéro : <%=b.getId()%>) </td>
+				<td><%=ListUser.get(i)%></td>
+				<td><%=ListBook.get(i)%> </td>
 				<td><%=e.getNote()%></td>
 				<td><%=e.getQualite()%></td>
 				<td><%=e.getInteret()%></td>
@@ -76,34 +103,40 @@
 				<td><%=e.getSouhaitAuteur()%></td>
 				<td><%=e.getRecommand()%></td>
 				
-				<% if (m!=null) { %>
-				<td><%=b2.getTitre()%> de <%=b2.getAuteur() %> (numéro : <%=b2.getId()%>)</td>
+				<% 
+				if (ListMB.size()>0 && ListMB.get(i)!=null) { %>
+				<td><%=ListMB.get(i)%></td>
+				<%
+				} 
+				else 
+				{%>
+				<td>aucun</td>
+				<%}%>
+				
+				<% 
+				if (ListMRProche.size()>0 && ListMRLoin.size()>0 && ListMRProche.get(i)!=null && ListMRLoin.get(i)!=null){ %>
+				<td><%=ListMRProche.get(i)%></td>
+				<td><%=ListMRLoin.get(i)%></td>
 				<%} 
 				else {%>
 				<td>aucun</td>
-				<%} %>
-				
-				<% if (m2!=null) { 
-				User up=UserDao.find(m2.getUserPlusProcheId()); 
-				User ul=UserDao.find(m2.getUserPlusLoinId()); %>
-				
-				<td><%=up.getLogin()%></td>
-				<td><%=ul.getLogin()%></td>
-				<%} 
-				else {%>
-				<td>aucun</td>
 				<td>aucun</td>
 				<%} %>
 				
+				<%
+				if(uRole==1) {
+				%>
 				<td>
-					<a href="GestionEval?action=supprimer&id=<%=e.getId()%>">Supprimer</a>
-					<a href="GestionEval?action=modifier&id=<%=e.getId()%>">Modifier</a>
+					<a href="GestionEval?action=supprimer&id=<%=e.getId()%>">Supprimer</a> <br></br>
+					<a href="GestionEval?action=modifier&id=<%=e.getId()%>">Modifier</a>	
 				</td>
+				<% } %>
 			</tr>
 				<%
+				i++;
 			}
-			
 		}
+			} 
 	%>
 </table>
 <br>
@@ -117,7 +150,7 @@
     System.out.println(curPage); 
 		
     if (curPage != 1) { %>
-        <td><a href="GestionEval?action=afficher&page=${currentPage - 1}">Previous</a></td>
+        <td><a href="GestionEval?action=${TypeDeListe}&page=${currentPage - 1}${bIdUrl}">Previous</a></td>
         <%} %>
  
     <%--For displaying Page numbers. 
@@ -131,7 +164,7 @@
     		for (int i=1; i<=max; i++)
     		{  %>
 
-                        <a href="?action=afficher&page=<%=i%>"><%=i%></a>
+                        <a href="?action=${TypeDeListe}&page=<%=i%>${bIdUrl}"><%=i%></a>
         	<%
     		}
 			
@@ -141,11 +174,12 @@
      <% 
      if (curPage!= max) { 
     	 int newCurPage=curPage+1; 
-     System.out.println("la page suivante : "+ newCurPage); %>
-        <td><a href="GestionEval?action=afficher&page=<%=newCurPage%>">Next</a></td>
-        <%} }%>
+     	System.out.println("la page suivante : "+ newCurPage); %>
+        <td><a href="GestionEval?action=${TypeDeListe}&page=<%=newCurPage%>${bIdUrl}">Next</a></td>
+	<%}}%>
 <br></br>
-<a href="GestionBooks">Ajouter une evaluation</a>
+<%if(uRole==1){ %>
+<a href="GestionBooks">Retour à la liste globale</a>
+<%} %>
 
-</body>
-</html>
+<%@include file="footer.jsp"%>

@@ -106,52 +106,14 @@ public class GestionUser extends HttpServlet {
 				request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  
 				
 			}
-			 else if (action.equals("evallist")) {
-				 System.out.println("dans gestion user evallist"); 
+			 else if (action.equals("affichEvalForUser")) {
 				 forward=1;
-				//Si on désire afficher les évaluations d'un utilisateur :
-				//-> On transmet des informations sur l'utilisateur:
-				HttpSession session = request.getSession();
-				int userId= (int)session.getAttribute("id");
-				request.setAttribute("uInfo", UserDao.find(userId));
-				
-				noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
-		        noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-
-				//-> On transmet la liste de ses évaluations :
-				List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
-				System.out.println("liste : "+ EvalList); 
-				
-				System.out.println("dans gestionEval : pagination : nb denregistrements : "+ noOfRecords);
-		        System.out.println("noOfPages : "+noOfPages); 
-		        System.out.println("pageActuelle"+page); 
-				
-		        request.setAttribute("noOfPages", noOfPages);
-		        request.setAttribute("currentPage", page);
-				request.setAttribute("EvalList", EvalList);
-				request.getRequestDispatcher("WEB-INF/EvalListForUser.jsp").forward(request, response);  
+				 request.getRequestDispatcher("GestionEval?action=affichEvalForUser").forward(request, response);  
 			}
 			
-			 else if (action.equals("evallistUserAdmin")) {
+			 else if (action.equals("affichEvalForUserAdmin")) {
 				 forward=1;
-				//Si on désire afficher les évaluations d'un utilisateur :
-				//-> On transmet des informations sur l'utilisateur:
-				 int userId = Integer.parseInt(request.getParameter("id"));
-				 noOfRecords = EvaluationDao.countEvalByUser(userId); //nb total d'enregistrement
-			     noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage); //nb total de pages possible 
-			     List<Evaluation> EvalList=EvaluationDao.findbyuser(userId, (page-1)*recordsPerPage, recordsPerPage); 
-				 
-				request.setAttribute("uInfo", UserDao.find(userId));
-				//-> On transmet la liste de ses évaluations :
-				System.out.println("liste : "+ EvalList); 
-				System.out.println("dans gestionEval AdminUser: pagination : nb denregistrements : "+ noOfRecords);
-		        System.out.println("noOfPages : "+noOfPages); 
-		        System.out.println("pageActuelle"+page); 
-
-		        request.setAttribute("noOfPages", noOfPages);
-		        request.setAttribute("currentPage", page);
-				request.setAttribute("EvalList", EvalList);
-				request.getRequestDispatcher("WEB-INF/EvalListForUser.jsp").forward(request, response);  
+				 request.getRequestDispatcher("GestionEval?action=affichEvalForUserAdmin").forward(request, response);
 			}
 		
 		}

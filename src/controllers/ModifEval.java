@@ -9,11 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.AdminParameters;
 import beans.Book;
 import beans.Evaluation;
+import beans.MatchBook;
+import beans.MatchReader;
 import beans.User;
+import dao.AdminParametersDao;
 import dao.BooksDao;
 import dao.EvaluationDao;
+import dao.MatchBookDao;
+import dao.MatchReaderDao;
 import dao.UserDao;
 
 /**
@@ -44,7 +50,9 @@ public class ModifEval extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		PrintWriter out = response.getWriter();
+		
+		String alert_msg = "";
+		
 		int modif=Integer.parseInt(request.getParameter("idModif")); 
 		System.out.println(modif);
 		
@@ -102,7 +110,45 @@ public class ModifEval extends HttpServlet {
 		if (e2==null) System.out.println("NULL"); 
 		else { 
 		EvaluationDao.update(e); 
-		//GERER ICI LES UPDATE DE MATCHES : A FAIRE 
+		
+		//GERER ICI LES UPDATE DE MATCHES : 
+		AdminParameters a=AdminParametersDao.find(AdminParametersDao.getLastParameters()); 
+		
+		MatchBook matchbooksource=MatchBookDao.findByEval(modif);
+		MatchReader matchreadersource=MatchReaderDao.findByEval(modif);
+		
+		MatchBook matchbookcurrent=null;
+		MatchReader matchreadercurrent=null; 
+		
+		if (a==null || a.getAlgoMatchBook()==1){
+			matchbookcurrent=MatchBookDao.calculMatchBook1(user, e2.getId());
+		}
+		else{
+			matchbookcurrent=MatchBookDao.calculMatchBook2(user, e2.getId());  
+		}
+		
+		if(matchbookcurrent!=matchbooksource && matchbookcurrent!=null){
+			matchbooksource.setLivreSuggereId(matchbookcurrent.getLivreSuggereId());
+			MatchBookDao.update(matchbooksource);
+			alert_msg = alert_msg + "Match Book Mise à Jour !<br>";
+		}
+
+		//CALCUL DU MATCH USER
+		
+		if (a==null || a.getAlgoMatchReader()==1){
+			matchreadercurrent=MatchReaderDao.calculMatchReader1(user, e2.getId());
+		}
+		else{ matchreadercurrent=MatchReaderDao.calculMatchReader2(user, e2.getId());
+		}
+		
+		if (matchreadercurrent!=matchreadersource && matchreadercurrent!=null)  {
+			matchreadersource.setUserPlusLoinId(matchreadercurrent.getUserPlusLoinId());
+			matchreadersource.setUserPlusProcheId(matchreadercurrent.getUserPlusProcheId());
+			MatchReaderDao.update(matchreadersource);
+			alert_msg = alert_msg + "Match Reader Mise à Jour !<br>";
+		}
+		
+		request.setAttribute("alert",alert_msg);
 		
 		request.setAttribute("action","modifadmin");
 		
