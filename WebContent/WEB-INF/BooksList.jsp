@@ -39,7 +39,7 @@ Mot clé contenu dans le titre :  <input type='text'  name='keyword'/> <input ty
 </form>
 <br>
 
-<table border="1" cellpadding="5" cellspacing="5">
+<table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>TITRE</th>
 	<th>AUTEUR</th>

@@ -21,7 +21,7 @@
 %>
 
 
-<table border="1" cellpadding="5" cellspacing="5">
+<table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>ALGO MATCHBOOK</th>
 	<th>ALGO MATCHREADER</th>

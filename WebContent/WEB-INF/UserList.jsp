@@ -29,7 +29,7 @@ Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input ty
 	}
 %>
 
-<table border="1" cellpadding="5" cellspacing="5">
+<table class="table table-striped" border="1" cellpadding="5" cellspacing="5">
 <tr>
 	<th>LOGIN</th>
 	<th>MDP</th>
@@ -42,7 +42,8 @@ Mot clé contenu dans le login :  <input type='text'  name='keyword'/> <input ty
 	<th>ADRESSE</th>
 	<th>CODEPOSTALE</th>
 	<th>VILLE</th>
-	<th>TELEPHONE</th>	
+	<th>TELEPHONE</th>
+	<th>ACTION</th>	
 </tr>
 <%
 		Object obj = request.getAttribute("listeU");
