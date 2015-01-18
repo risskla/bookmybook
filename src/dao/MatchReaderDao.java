@@ -30,8 +30,8 @@ public class MatchReaderDao {
 			ps.setInt(1, m.getUserSourceId());
 			ps.setInt(2, m.getUserPlusProcheId());
 			ps.setInt(3, m.getUserPlusLoinId());
-			ps.setInt(3, m.getEvaluationId());
-			ps.setInt(4, m.getId());
+			ps.setInt(4, m.getEvaluationId());
+			ps.setInt(5, m.getId());
 			
 			//Execution et traitement de la réponse
 			res = ps.executeUpdate();

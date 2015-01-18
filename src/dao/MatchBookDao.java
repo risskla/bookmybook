@@ -342,7 +342,7 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 			String sql = "SELECT * FROM Book WHERE auteur = ? and id <> ? limit 1 "; 
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setString(1,b.getAuteur());
-			ps.setInt(1,bookId);
+			ps.setInt(2,bookId);
 			res = ps.executeQuery();
 			while(res.next()){
 				b2 = new Book(res.getInt("id"),
@@ -356,7 +356,7 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 						res.getString("resume"));
 				break;
 			}
-			if (b2!=null) m=new MatchBook(0, userSourceId, b.getId(), evalId); 
+			if (b2!=null) m=new MatchBook(0, userSourceId, b2.getId(), evalId); 
 		}
 			
 		//-si cette rubrique n'est pas cochee ou s'il n'existe pas de livres du meme auteur, et s'il a aime le genre (3,4) alors on lui propose le premier livre du meme genre et avec un auteur different ;
@@ -379,7 +379,7 @@ public static MatchBook calculMatchBook1(int userSourceId, int evalId){
 							res.getString("resume"));
 					break;
 				}
-				if (b2!=null) m=new MatchBook(0, userSourceId, b.getId(), evalId); 
+				if (b2!=null) m=new MatchBook(0, userSourceId, b2.getId(), evalId); 
 			}
 			if (b2==null) {
 				//livre au hasard
