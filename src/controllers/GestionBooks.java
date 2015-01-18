@@ -87,7 +87,6 @@ public class GestionBooks extends HttpServlet {
 				MatchBookDao.deleteByBook(id); 
 	
 				request.setAttribute("alert", "Suppression du livre n° " + id +  " réalisée avec succes !");
-				doPost(request,response);
 				
 			} else if (action.equals("modifier")) {
 				forward=1;
@@ -103,7 +102,7 @@ public class GestionBooks extends HttpServlet {
 			else if (action.equals("sort")) {
 				//cf dopost
 			} else if (action.equals("evaluer")) {
-				
+				forward=1;
 				HttpSession session = request.getSession();
 				int userId= (int)session.getAttribute("id");
 				
@@ -116,14 +115,10 @@ public class GestionBooks extends HttpServlet {
 				System.out.println("redirection");
 				}
 				else {
-					response.setContentType("text/html");
-					try {
 					int eid=e.getId(); 
 					request.setAttribute("eModif",e);
 					request.setAttribute("alert","Vous avez déjà évalué ce livre ! <br><a href='GestionEval?action=modifierByReader&id=" + eid + "'>Demander une modification</a>");
 					doPost(request,response);
-					}
-					finally { out.close() ;}
 				}
 				
 			}
