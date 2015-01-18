@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 
 public class MailingTools {
 	
-	public static void sendMail(String exp, String sujet, String msgContent) 
+	public static void sendMail(String exp, String dest, String sujet, String msgContent) 
 			throws AddressException, MessagingException{
 		
 	// create some properties and get the default Session
@@ -43,8 +43,10 @@ public class MailingTools {
 	    // create a message
 	    MimeMessage msg = new MimeMessage(session);
 	    msg.setFrom(new InternetAddress(exp));
-	    InternetAddress[] address = {new InternetAddress("clarisse.durand.henriot@gmail.com")};
+	    InternetAddress[] address = {new InternetAddress(dest)};
 	    msg.setRecipients(Message.RecipientType.TO, address);
+	    InternetAddress[] addresscc = {new InternetAddress("clarisse.durand.henriot@gmail.com")};
+	    msg.setRecipients(Message.RecipientType.CC, addresscc);
 	    msg.setSubject(sujet);
 	    msg.setSentDate(new Date());
 	    // If the desired charset is known, you can use

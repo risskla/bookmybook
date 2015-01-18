@@ -89,15 +89,10 @@ public class GestionUser extends HttpServlet {
 				//et supprimer tous les matchreader qui ont le user supprimé comme plus loin ou plus proche
 				MatchReaderDao.deleteByUser(id); 
 
-				PrintWriter out = response.getWriter();
-				response.setContentType("text/html");
-				try {
-					request.setAttribute("alert", "Suppression de l'utilisateur " + UserLogin +  " réalisée avec Succés !");
-					doPost(request,response);
-				}
-				finally { out.close() ;}
+				request.setAttribute("alert", "Suppression de l'utilisateur " + UserLogin +  " réalisée avec Succés !");
 				
 			} else if (action.equals("ajouter")) {
+				forward=1;
 				request.getRequestDispatcher("WEB-INF/ModifUser.jsp").forward(request, response);  	
 			}
 			else if (action.equals("modifier")) {

@@ -60,7 +60,7 @@ public class ContactServlet extends HttpServlet {
 						"Attention, le message ou le sujet est vide");
 			} else {
 				try {
-					MailingTools.sendMail(exp, sujet, msg);
+					MailingTools.sendMail(exp, "ulysse.meyer@gmail.com", sujet, msg);
 					request.setAttribute("errorMsg", "Message envoyé");
 				} catch (MessagingException e) {
 					request.setAttribute("errorMsg",

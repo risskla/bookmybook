@@ -104,7 +104,7 @@ public class MatchReaderDao {
 			// ou Class.forName(com.mysql.jdbc.Driver.class.getName());
 				
 			//Requete
-			String sql = "DELETE FROM MatchReader WHERE userPlusProcheId=? OR userPlusLoin=?";
+			String sql = "DELETE FROM MatchReader WHERE userPlusProcheId=? OR userPlusLoinId=?";
 			PreparedStatement ps = cnx.prepareStatement(sql);
 			ps.setInt(1,id);
 			ps.setInt(2,id);

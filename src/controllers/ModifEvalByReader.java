@@ -53,9 +53,7 @@ public class ModifEvalByReader extends HttpServlet {
 			//expediteur : le mail du user actuel
 			//User u= recup celui de la session
 			//ici valeur juste de test
-			String exp = "clarisse.durand.henriot@gmail.com"; 
-
-			PrintWriter out2 = response.getWriter();
+			String dest = "ulysse.meyer@gmail.com"; 
 			
 			int book=-1;
 			int user=-1; 
@@ -115,10 +113,12 @@ public class ModifEvalByReader extends HttpServlet {
 
 
 					try {
-						MailingTools.sendMail(exp, sujet, msg);
-
 						User u=UserDao.find(user); 
 						Book b=BooksDao.find(book); 
+						
+						String exp = u.getMail();
+						
+						MailingTools.sendMail(exp, dest, sujet, msg);
 						
 						request.setAttribute("action","modifreader");
 						

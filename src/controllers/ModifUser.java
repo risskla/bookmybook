@@ -205,34 +205,37 @@ public class ModifUser extends HttpServlet {
 					UserDao.insert(u); 			
 					
 					//mailing :
-					String exp = "clarisse.durand.henriot@gmail.com";
+					String exp = "admin@bookmybook.com";
+					String dest = "\"" + u.getAdresse() + "\"";
+					System.out.println("Adresse dest :");
+					System.out.println(dest);
 					String msg="Bonjour, \n"
 							+ "Merci d'avoir choisi BookMyBook pour gérer vos relations littéraires !\n\n"
-							+ "Voici vos informations de connexion : !\n "
+							+ "Voici vos informations de connexion : \n "
 							+ "Votre Login : " + u.getLogin() + "\n " 
 							+ "Votre Mot de Passe : " + default_password + "\n\n " 
 							+ "A bientôt !\n\n " 
 							+ "Cordialement,\n\n " 
 							+ "Toute l'équipe de BookMyBook.\n ";
 					
-					String sujet="Création de votre compte utilisateur sur BookMyBook"; 
-
-						
+							String sujet="Création de votre compte utilisateur sur BookMyBook"; 
+							request.setAttribute("action", null);
+							int exception = 0;
 							try {
 								System.out.println("Envoi du mail:");
-								MailingTools.sendMail(exp, sujet, msg);	
-								alert_msg = alert_msg + "Envoi du mail en cours...<br>";
-								request.setAttribute("alert", alert_msg);
-								request.getRequestDispatcher("GestionUser").forward(request, response);
+								alert_msg = alert_msg + "Envoi du mail en cous...<br>";
+								MailingTools.sendMail(exp, dest, sujet, msg);	
 							} catch (MessagingException e2) {
+								exception++;
 								System.out.println("PB lors de l'envoi !");
-								alert_msg = alert_msg + "Erreur lors de l'envoi de votre demande<br>Message d'erreur : "+ e2.getMessage() +"<br>";
+								alert_msg = alert_msg + "Erreur lors de l'envoi de votre demande (Message d'erreur : "+ e2.getMessage() +")<br>";
 								alert_msg = alert_msg + "Création de l'utilisateur " + u.getLogin() +  " en base réalisée !<br>";
-								request.setAttribute("alert", alert_msg);
-								request.getRequestDispatcher("GestionUser").forward(request, response);
+
 							}
-					alert_msg = alert_msg + "Envoi du mail réalisé !<br>";	
-					alert_msg = alert_msg + "Création de l'utilisateur " + u.getLogin() +  " réalisée avec Succés !<br>";
+					if (exception == 0){
+						alert_msg = alert_msg + "Envoi du mail réalisé !<br>";	
+						alert_msg = alert_msg + "Création de l'utilisateur " + u.getLogin() +  " réalisée avec Succés !<br>";
+					}
 				}
 			}
 			request.setAttribute("alert", alert_msg);

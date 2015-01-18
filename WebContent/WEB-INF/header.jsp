@@ -95,7 +95,7 @@
 		String alrt = (String)alert;
 		%>
 		<div class="alert alert-info" role="alert">
-			<strong>Message d'alert :</strong> <%=alrt%>	
+			<strong>Message d'alerte :</strong> <%=alrt%>	
 		</div>
 		<%
 	}
