@@ -57,6 +57,8 @@ public class AddBook extends HttpServlet {
 		//****************************************************************
 		String alert_msg = "";
 		int error = 0;
+		int ap=-1;
+		long intisbn=-1;
 		//sur le Titre :
 		if(titre==""){
 			alert_msg = alert_msg + "Titre vide !<br>";
@@ -80,6 +82,8 @@ public class AddBook extends HttpServlet {
 			if(!isbn.matches("^\\d{10,13}$")){
 				alert_msg = alert_msg + "L'ISBN '" + isbn + "' n'est pas correct !<br>";
 				error = error + 1;
+			}else{
+				intisbn=Long.parseLong(isbn); 
 			}
 		}
 		//sur le pays
@@ -100,12 +104,12 @@ public class AddBook extends HttpServlet {
 			if(!anneePubli.matches("^\\d{1,4}$")){
 				alert_msg = alert_msg + "L'année '" + anneePubli + "' n'est pas correcte !<br>";
 				error = error + 1;
+			}else{
+				ap=Integer.parseInt(anneePubli); 
 			}
 		}
 		
-		int ap=Integer.parseInt(anneePubli); 
-		long intisbn=Long.parseLong(isbn); 
-		
+
 		Book b = new Book(0, titre, auteur, editeur, intisbn, pays, genre, ap, resume);
 		
 		if(error!=0){
