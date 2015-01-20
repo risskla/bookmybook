@@ -39,9 +39,9 @@
             <form class="form-signin" method="post" action="Login">
                 <h2 class="form-signin-heading">Bienvenue !</h2>
                 <label for="inputEmail" class="label label-info">Login</label>
-                <input type="text" name="login" class="form-control" placeholder="aaa@bbb.ccc" required autofocus>
+                <input type="text" name="login" class="form-control" placeholder="mylogin" required autofocus>
                 <label for="inputPassword" class="label label-info">Mot de passe :</label>
-                <input type="text" name="pwd" class="form-control" placeholder="xxxx" required>
+                <input type="password" name="pwd" class="form-control" placeholder="mypassword" required>
                 <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
             </form>
 

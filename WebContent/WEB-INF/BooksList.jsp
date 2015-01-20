@@ -138,7 +138,7 @@
     		for (int i=1; i<=max; i++)
     		{  %>
 
-                        <a href="?page=<%=i%>"><%=i%></a>
+                        <a href="GestionBooks?page=<%=i%>"><%=i%></a>
         	<%
     		}
 			

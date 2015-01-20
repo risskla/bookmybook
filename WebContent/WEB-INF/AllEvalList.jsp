@@ -107,9 +107,7 @@
 			<th>LECTURE JUSQU'AU BOUT</th>
 			<th>SOUHAIT POUR LIRE UN LIVRE DU MEME AUTEUR</th>
 			<th>RECOMMANDATION</th>
-			<%	if(uRole==1) {%>
-				<th>ACTION SOUHAITEE</th>
-			<%} %>		
+			<th>ACTION SOUHAITEE</th>	
 		</tr>
 		
 		<%
@@ -190,7 +188,9 @@
 					<a href="GestionEval?action=supprimer&id=<%=e.getId()%>">Supprimer</a> <br></br>
 					<a href="GestionEval?action=modifier&id=<%=e.getId()%>">Modifier</a>	
 				</td>
-				<% } %>
+				<% }else{ %>
+					<td><a href="GestionEval?action=modifierByReader&id=<%=e.getId()%>">Modifier</a></td>
+				<%} %>
 			</tr>
 				<%
 				i++;
@@ -226,7 +226,7 @@
     		for (int i=1; i<=max; i++)
     		{  %>
 
-                        <a href="?action=${TypeDeListe}&page=<%=i%>${bIdUrl}"><%=i%></a>
+                        <a href="GestionEval?action=${TypeDeListe}&page=<%=i%>${bIdUrl}"><%=i%></a>
         	<%
     		}
 			
